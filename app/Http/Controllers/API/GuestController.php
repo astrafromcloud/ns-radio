@@ -11,7 +11,7 @@ class GuestController extends Controller
     public function index()
     {
         $guests = Guest::all(); // Retrieve all guests
-        return view('guests.index', compact('guests')); // Pass guests to the view
+        return response()->json($guests);
     }
 
     public function show($id)

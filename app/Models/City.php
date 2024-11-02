@@ -9,9 +9,8 @@ use Spatie\Translatable\HasTranslations;
 class City extends Model
 {
     /** @use HasFactory<\Database\Factories\CityFactory> */
-    use HasFactory,HasTranslations;
+    use HasFactory;
 
     protected $guarded = false;
 
-    protected $translatable = ['name'];
 }

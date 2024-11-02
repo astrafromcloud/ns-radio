@@ -14,7 +14,6 @@ class CityResource extends Resource
 {
     protected static ?string $model = City::class;
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
-    protected static ?string $navigationLabel = 'Cities';
     protected static ?string $modelLabel = 'City';
     protected static ?int $navigationSort = 1;
 
@@ -29,10 +28,10 @@ class CityResource extends Resource
                             ->maxLength(255)
                             ->placeholder('Enter city name')
                             ->autofocus(),
-                        Forms\Components\TextInput::make('radio_wave')
+                        Forms\Components\TextInput::make('frequency')
                             ->required()
                             ->maxLength(255)
-                            ->placeholder('Enter radio wave frequency'),
+                            ->placeholder('Enter radio frequency'),
                     ])
                     ->columns(1)
             ]);
@@ -45,7 +44,7 @@ class CityResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('radio_wave')
+                Tables\Columns\TextColumn::make('frequency')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -86,4 +85,15 @@ class CityResource extends Resource
             'edit' => Pages\EditCity::route('/{record}/edit'),
         ];
     }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('city.navigation_label');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('city.plural_label');
+    }
+
 }

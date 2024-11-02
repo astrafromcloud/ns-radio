@@ -19,7 +19,7 @@ class CityController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'radio_wave' => 'required|string|max:255',
+            'frequency' => 'required|string|max:255',
         ]);
 
         $city = City::create($validatedData);
@@ -42,7 +42,7 @@ class CityController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'sometimes|required|string|max:255',
-            'radio_wave' => 'sometimes|required|string|max:255',
+            'frequency' => 'sometimes|required|string|max:255',
         ]);
 
         $city->update($validatedData);
@@ -56,30 +56,27 @@ class CityController extends Controller
         return response()->json(null, 204);
     }
 
-    private function getWeather($cityName)
+    public function getWeather()
     {
-        // Replace with your actual API endpoint and key
-        $apiKey = '082d24b2afae40eba43210130243110';
-//        $response = Http::get("http://api.weatherapi.com/v1/current.json?key={$apiKey}&q={$cityName}");
-        $response = Http::get("http://api.weatherapi.com/v1/current.json?key={$apiKey}&q={$cityName}");
-
-        if ($response->successful()) {
-            return $response->json()['city']['temp_c']; // Assuming the temperature is in Celsius
-        }
-
-        return null; // Return null or an appropriate message if the API call fails
-    }
-
-    private function getCity($cityName)
-    {
-        // Replace with your actual API endpoint and key
+        $cityName = $this->getCity();
         $apiKey = '082d24b2afae40eba43210130243110';
         $response = Http::get("http://api.weatherapi.com/v1/current.json?key={$apiKey}&q={$cityName}");
 
         if ($response->successful()) {
-            return $response->json()['city']; // Assuming the temperature is in Celsius
+            return $response->json()['current']['temp_c'];
         }
 
-        return null;
+        return $response->json();
     }
+
+    public function getCity() : string
+    {
+        $response = Http::get("https://ipinfo.io/json?token=7c784a69a464b4");
+
+        if ($response->successful()) {
+            return $response->json()['city'] ?? 'Unknown City';
+        }
+        return 'Almaty - Default';
+    }
+
 }

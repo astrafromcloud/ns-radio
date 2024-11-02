@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 
@@ -11,7 +12,7 @@ class ContactController extends Controller
     public function index()
     {
         $contacts = Contact::all();
-        return view('contacts.index', compact('contacts')); // Adjust the view path as needed
+        return response()->json($contacts);
     }
 
     // Show the form for creating a new contact

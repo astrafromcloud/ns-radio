@@ -9,9 +9,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class GuestResource extends Resource
 {
@@ -126,5 +123,15 @@ class GuestResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('guest.navigation_label');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('guest.plural_label');
     }
 }

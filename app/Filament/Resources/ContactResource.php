@@ -14,12 +14,7 @@ class ContactResource extends Resource
 {
     protected static ?string $model = Contact::class;
     protected static ?string $navigationIcon = 'heroicon-o-phone';
-//    protected static ?string $navigationLabel = __('Contact Information', [], 'kz');
 
-    public static function getNavigationLabel(): string
-    {
-        return __('Contact Information', [], 'navigation');
-    }
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -110,5 +105,15 @@ class ContactResource extends Resource
             'create' => Pages\CreateContact::route('/create'),
             'edit' => Pages\EditContact::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('contact.navigation_label');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('contact.plural_label');
     }
 }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('cities', function (Blueprint $table) {
             $table->id();
             $table->string('name'); // City name
-            $table->string('radio_wave'); // Radio wave frequency or details
+            $table->string('frequency'); // Radio wave frequency or details
             $table->timestamps();
         });
     }

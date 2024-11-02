@@ -11,7 +11,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 
 class BroadcasterResource extends Resource
 {
@@ -181,5 +180,15 @@ class BroadcasterResource extends Resource
             'create' => Pages\CreateBroadcaster::route('/create'),
             'edit' => Pages\EditBroadcaster::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('broadcaster.navigation_label');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('broadcaster.plural_label');
     }
 }
