@@ -56,9 +56,8 @@ class CityController extends Controller
         return response()->json(null, 204);
     }
 
-    public function getWeather()
+    public function getWeather($cityName) : string
     {
-        $cityName = $this->getCity();
         $apiKey = '082d24b2afae40eba43210130243110';
         $response = Http::get("http://api.weatherapi.com/v1/current.json?key={$apiKey}&q={$cityName}");
 
@@ -69,14 +68,51 @@ class CityController extends Controller
         return $response->json();
     }
 
-    public function getCity() : string
+    public function getCity()
     {
+
+        $cities = City::all();
+
+        // Тест үшін
+//        $address = "45.86.82.205";
+//        $response = Http::get("https://ipinfo.io/{$address}/json?token=7c784a69a464b4");
+
         $response = Http::get("https://ipinfo.io/json?token=7c784a69a464b4");
 
-        if ($response->successful()) {
-            return $response->json()['city'] ?? 'Unknown City';
-        }
-        return 'Almaty - Default';
+        $currentCity = $response['city'];
+
+        $weather = $this->getWeather($currentCity);
+
+        $data = json_decode($cities->where('name', $currentCity), true);
+        $frequency = reset($data)['frequency'] ?? '106.0 FM';
+
+        $translateKazakhResponse = Http::get("https://trap.her.st/api/translate/", [
+            "engine" => 'google',
+            'from' => 'en',
+            'to' => 'kk',
+            'text' => $currentCity
+        ]);
+
+        $translateRussianResponse = Http::get("https://trap.her.st/api/translate/", [
+            "engine" => 'google',
+            'from' => 'en',
+            'to' => 'ru',
+            'text' => $currentCity
+        ]);
+
+        $russianCity = $this->decodeUnicode($translateKazakhResponse['translated-text']);
+        $kazakhCity = $this->decodeUnicode($translateRussianResponse['translated-text']);
+
+        return json_encode([
+            'ru' => $russianCity,
+            'kz' => $kazakhCity,
+            'weather' => $weather,
+            'frequency' => $frequency
+        ], JSON_UNESCAPED_UNICODE);
+    }
+
+    function decodeUnicode($string) {
+        return json_decode('"' . $string . '"');
     }
 
 }

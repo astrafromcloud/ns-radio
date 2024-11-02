@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->string('image_path');
-            $table->string('bio');
+            $table->text('bio');
             $table->string('instagram_url')->nullable();
             $table->string('youtube_url')->nullable();
             $table->string('whatsapp_url')->nullable();

@@ -14,16 +14,16 @@ class CitySeeder extends Seeder
     public function run()
     {
         $cities = [
-            ['name' => 'Актау', 'frequency' => '106.2 FM'],
-            ['name' => 'Караганда', 'frequency' => '105.6 FM'],
-            ['name' => 'Актобе', 'frequency' => '103.8 FM'],
-            ['name' => 'Кокшетау', 'frequency' => '105.7 FM'],
-            ['name' => 'Алма-Ата', 'frequency' => '106.0 FM'],
-            ['name' => 'Костанай', 'frequency' => '107.0 FM'],
-            ['name' => 'Астана', 'frequency' => '105.9 FM'],
-            ['name' => 'Кызылорда', 'frequency' => '107.7 FM'],
-            ['name' => 'Атырау', 'frequency' => '104.4 FM'],
-            ['name' => 'Павлодар', 'frequency' => '104.6 FM'],
+            ['name' => 'Aqtau', 'frequency' => '106.2 FM'],
+            ['name' => 'Karaganda', 'frequency' => '105.6 FM'],
+            ['name' => 'Aktobe', 'frequency' => '103.8 FM'],
+            ['name' => 'Kokshetau', 'frequency' => '105.7 FM'],
+            ['name' => 'Almaty', 'frequency' => '106.0 FM'],
+            ['name' => 'Qostanai', 'frequency' => '107.0 FM'],
+            ['name' => 'Astana', 'frequency' => '105.9 FM'],
+            ['name' => 'Qyzylorda', 'frequency' => '107.7 FM'],
+            ['name' => 'Atyrau', 'frequency' => '104.4 FM'],
+            ['name' => 'Pavlodar', 'frequency' => '104.6 FM'],
         ];
 
         foreach ($cities as $city) {
