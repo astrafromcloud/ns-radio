@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('programs', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('from')->nullable();
-            $table->integer('to')->nullable();
+            $table->string('from')->nullable();
+            $table->string('to')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();
         });
