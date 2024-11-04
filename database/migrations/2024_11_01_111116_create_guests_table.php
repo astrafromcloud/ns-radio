@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('guests', function (Blueprint $table) {
             $table->id();
             $table->string('name'); // Guest name
+            $table->string('program'); // Guest name
             $table->string('image_url'); // URL of the guest's image
             $table->integer('views')->default(0); // Number of views
             $table->string('hashtag')->nullable(); // Optional hashtag
