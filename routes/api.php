@@ -8,6 +8,7 @@ use App\Http\Controllers\API\GuestController;
 use App\Http\Controllers\API\ProgramController;
 use App\Http\Controllers\API\SongController;
 use App\Http\Controllers\API\UserController;
+use App\Models\City;
 use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,7 +19,9 @@ Route::get('/user', function (Request $request) {
 
 Route::apiResource('/banners', BannerController::class);
 
-Route::apiResource('cities', CityController::class);
+
+Route::apiResource('cities', CityController::class)->middleware([\App\Http\Middleware\SetLocale::class]);
+
 
 Route::apiResource('broadcasters', BroadcasterController::class);
 

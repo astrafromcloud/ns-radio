@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CityResource\Pages;
 use App\Models\City;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -27,7 +28,14 @@ class CityResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->placeholder('Enter city name')
-                            ->autofocus(),
+                            ->autofocus()
+                            ->default(fn ($record) => json_decode($record->name, JSON_PRETTY_PRINT)),
+                        TextInput::make('name.ru')
+                            ->label('City Name (Russian)')
+                            ->default(fn ($record) => $record->getTranslation('name', 'ru')),
+                        TextInput::make('name.kk')
+                            ->label('City Name (Kazakh)')
+                            ->default(fn ($record) => $record->getTranslation('name', 'kk')),
                         Forms\Components\TextInput::make('frequency')
                             ->required()
                             ->maxLength(255)

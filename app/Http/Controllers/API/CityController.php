@@ -11,10 +11,21 @@ class CityController extends Controller
 {
     public function index()
     {
-        $locale = app()->getLocale();
         $cities = City::all();
-        return response()->json($cities);
+        // Get the current locale
+        $locale = app()->getLocale();
+
+        // Map through the cities to get names and frequencies
+        $data = $cities->map(function ($city) use ($locale) {
+            return [
+                'name' => $city->getTranslation('name', $locale),
+                'frequency' => $city->frequency, // Assuming frequency is a property of City model
+            ];
+        });
+
+        return response()->json($data);
     }
+
 
     public function store(Request $request)
     {
@@ -106,7 +117,7 @@ class CityController extends Controller
 
         return json_encode([
             'ru' => $russianCity,
-            'kz' => $kazakhCity,
+            'kk' => $kazakhCity,
             'weather' => $weather,
             'frequency' => $frequency
         ], JSON_UNESCAPED_UNICODE);
