@@ -1,16 +1,20 @@
 <?php
 
 namespace App\Http\Controllers\API;
+
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BroadcasterResource;
 use App\Models\Broadcaster;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Broadcast;
 
 class BroadcasterController extends Controller
 {
+
     public function index()
     {
         $broadcasters = Broadcaster::all();
-        return response()->json($broadcasters);
+        return response()->json(BroadcasterResource::collection(Broadcaster::all()));
     }
 
     public function store(Request $request)

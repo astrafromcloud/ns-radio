@@ -16,7 +16,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::apiResource('banners', BannerController::class);
+Route::apiResource('/banners', BannerController::class);
 
 Route::apiResource('cities', CityController::class);
 
