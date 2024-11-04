@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Broadcaster;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -16,12 +15,14 @@ class ProgramResource extends ResourceCollection
     public function toArray(Request $request): array
     {
         return $this->collection->transform(function($item) {
+            $broadcasters = $item->broadcasters;
+            $names = $broadcasters->pluck('name')->toArray();
             return [
                 'id' => $item->id,
                 'name' => $item->name,
                 'from' => $item->from,
                 'to' => $item->to,
-                'broadcaster_name' => optional(Broadcaster::find($item->broadcaster_id))->name,
+                'broadcasters_name' => $names,
                 'image' => asset('/storage/' . $item->image),
             ];
         })->toArray();

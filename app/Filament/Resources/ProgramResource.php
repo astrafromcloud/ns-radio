@@ -35,7 +35,9 @@ class ProgramResource extends Resource
                     ->nullable(),
                 Forms\Components\Select::make('broadcasters')
                     ->multiple()
-                    ->relationship('broadcasters', 'name')
+                    ->relationship('broadcasters', 'name', function (Builder $query) {
+                        return $query->select('broadcasters.id', 'broadcasters.name')->distinct();
+                    })->distinct()
                     ->preload()
                     ->createOptionForm([
                         Forms\Components\TextInput::make('name')

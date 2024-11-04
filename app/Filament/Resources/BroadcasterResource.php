@@ -31,8 +31,17 @@ class BroadcasterResource extends Resource
                 Forms\Components\FileUpload::make('image_path')
                     ->image()
                     ->required(),
-                Forms\Components\Textarea::make('bio')
+                Forms\Components\RichEditor::make('bio')
                     ->required()
+                    ->toolbarButtons([
+                        'bold',
+                        'italic',
+                        'link',
+                        'bulletList',
+                        'orderedList',
+                        'redo',
+                        'undo',
+                    ])
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('instagram_url')
                     ->url()

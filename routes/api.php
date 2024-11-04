@@ -36,3 +36,5 @@ Route::get('/getWeather', [CityController::class, 'getWeather']);
 Route::get('/programs', function (Request $request) {
     return new \App\Http\Resources\ProgramResource(Program::all());
 });
+
+

@@ -11,6 +11,7 @@ class CityController extends Controller
 {
     public function index()
     {
+        $locale = app()->getLocale();
         $cities = City::all();
         return response()->json($cities);
     }
