@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'weather' => [
+        'api_key' => env('WEATHER_API_KEY'),
+    ],
+
+    'ip2location' => [
+        'api_key' => env('IP2LOCATION_API_KEY'),
+    ]
 ];

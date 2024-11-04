@@ -45,4 +45,7 @@ Route::get('/programs', function (Request $request) {
     return new \App\Http\Resources\ProgramResource(Program::all());
 });
 
+Route::get('/banners', function (Request $request) {
+    return new \App\Http\Resources\BannerResource(\App\Models\Banner::all());
+});
 
