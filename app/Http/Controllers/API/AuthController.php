@@ -6,11 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class AuthController extends Controller
@@ -19,22 +15,24 @@ class AuthController extends Controller
     {
         return response()->json(User::all());
     }
-
-
     public function login(LoginRequest $request)
     {
-            if (Auth::attempt(['phone' => $request->phone, 'password' => $request->password])) {
-                $user = Auth::user();
-                $token = $user->createToken('Auth')->plainTextToken;
 
-                return response()->json([
-                    'message' => 'Login successful',
-                    'user' => $user,
-                    'token' => $token,
-                ], 200);
-            }
+        $data = $request->validated();
 
-        return response()->json(['message' => 'Invalid credentials'], 401);
+        if (Auth::attempt($request->only('phone', 'password'))) {
+            $user = Auth::user();
+            $token = $user->createToken('auth-token')->plainTextToken;
+
+            return response()->json([
+                'token' => $token,
+                'user' => $user,
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Invalid credentials'
+        ], 401);
     }
 
     /**
