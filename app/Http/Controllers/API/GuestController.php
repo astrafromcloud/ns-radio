@@ -17,7 +17,7 @@ class GuestController extends Controller
     public function show($id)
     {
         $guest = Guest::findOrFail($id); // Retrieve guest by ID
-        return view('guests.show', compact('guest')); // Pass guest to the view
+        return response()->json($guest);
     }
 
     public function create()
