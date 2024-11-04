@@ -122,5 +122,13 @@ return [
     ],
 
 
+    'auth' => [
+        'guard' => 'web',
+        'middleware' => [
+            'auth',
+            'canAccessFilament'
+        ],
+    ]
+
 
 ];

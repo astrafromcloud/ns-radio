@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use App\Observers\UserObserver;
 use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentColor;
@@ -26,6 +28,8 @@ class AppServiceProvider extends ServiceProvider
             'primary' => Color::hex('#ffffff'),
             'gray' => Color::hex('#5e6477'),
         ]);
+
+        User::observe(UserObserver::class);
 
         LanguageSwitch::configureUsing(function (LanguageSwitch $languageSwitch) {
            $languageSwitch

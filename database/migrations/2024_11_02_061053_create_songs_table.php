@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('artist');
-            $table->integer('rank')->nullable();
+//            $table->integer('rank')->nullable();
             $table->string('image_url')->nullable();
             $table->integer('likes')->default(0);
             $table->timestamps();

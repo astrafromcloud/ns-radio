@@ -19,13 +19,15 @@ class MakeCustomFilamentUser extends Command
         $email = $this->ask('Email');
         $password = $this->secret('Password');
 
-        User::create([
+        $admin = User::create([
             'name' => $name,
             'last_name' => $lastName,
             'phone' => $phone,
             'email' => $email,
             'password' => Hash::make($password),
         ]);
+
+//        $admin->assignRole('admin');
 
         $this->info('User created successfully!');
     }
