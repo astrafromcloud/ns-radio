@@ -5,7 +5,7 @@ use App\Http\Controllers\API\BroadcasterController;
 use App\Http\Controllers\API\CityController;
 use App\Http\Controllers\API\GuestController;
 use App\Http\Controllers\API\SongController;
-use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\AuthController;
 use App\Models\Contact;
 use App\Models\Program;
 use Illuminate\Http\Request;
@@ -29,11 +29,11 @@ Route::get('/contacts', function () {
 
 Route::apiResource('songs', SongController::class);
 
-Route::apiResource('users', UserController::class);
-Route::post('/login', [UserController::class, 'login']);
-Route::post('/register', [UserController::class, 'register']);
-Route::post('/logout', [UserController::class, 'logout']);
-Route::post('/getUserByToken', [UserController::class, 'getUserByToken']);
+Route::apiResource('users', AuthController::class);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout']);
+Route::post('/getUserByToken', [AuthController::class, 'getUserByToken']);
 
 
 Route::apiResource('guests', GuestController::class);

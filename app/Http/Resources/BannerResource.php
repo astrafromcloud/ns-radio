@@ -17,8 +17,8 @@ class BannerResource extends ResourceCollection
     {
         return $this->collection->transform(function ($item) {
             return [
-                'image_url' => asset('storage/'.$item->image_url),
-                'video_url' => asset('storage/'.$item->video_url),
+                'image_url' => $item->image_url ? asset('storage/'.$item->image_url) : null,
+                'video_url' => $item->video_url ? asset('storage/'.$item->video_url) : null,
                 'description' => $item->description,
             ];
         })->toArray();
