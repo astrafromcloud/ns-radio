@@ -127,4 +127,12 @@ class UserController extends Controller
         ], 201);
     }
 
+    public function getUserByToken(Request $request) {
+        $data = $request->validate([
+            'token' => 'required',
+        ]);
+        $user = User::all()->where('token', $data['token']);
+
+        return response()->json($user);
+    }
 }

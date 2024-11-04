@@ -12,14 +12,12 @@ class CityController extends Controller
     public function index()
     {
         $cities = City::all();
-        // Get the current locale
         $locale = app()->getLocale();
 
-        // Map through the cities to get names and frequencies
         $data = $cities->map(function ($city) use ($locale) {
             return [
                 'name' => $city->getTranslation('name', $locale),
-                'frequency' => $city->frequency, // Assuming frequency is a property of City model
+                'frequency' => $city->frequency
             ];
         });
 

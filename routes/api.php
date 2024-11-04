@@ -5,10 +5,8 @@ use App\Http\Controllers\API\BroadcasterController;
 use App\Http\Controllers\API\CityController;
 use App\Http\Controllers\API\ContactController;
 use App\Http\Controllers\API\GuestController;
-use App\Http\Controllers\API\ProgramController;
 use App\Http\Controllers\API\SongController;
 use App\Http\Controllers\API\UserController;
-use App\Models\City;
 use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -19,17 +17,22 @@ Route::get('/user', function (Request $request) {
 
 Route::apiResource('/banners', BannerController::class);
 
-
+//Route::get('/cities', function (Request $request) {
 Route::apiResource('cities', CityController::class)->middleware([\App\Http\Middleware\SetLocale::class]);
+//});
 
-
-Route::apiResource('broadcasters', BroadcasterController::class);
+Route::apiResource('broadcasters', BroadcasterController::class)->middleware([\App\Http\Middleware\SetLocale::class]);
 
 Route::apiResource('contacts', ContactController::class);
 
 Route::apiResource('songs', SongController::class);
 
 Route::apiResource('users', UserController::class);
+Route::post('/login', [UserController::class, 'login']);
+Route::post('/register', [UserController::class, 'register']);
+Route::post('/logout', [UserController::class, 'logout']);
+Route::post('/getUserByToken', [UserController::class, 'getUserByToken']);
+
 
 Route::apiResource('guests', GuestController::class);
 
