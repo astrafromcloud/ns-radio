@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('phone_1')->nullable();
             $table->string('phone_2')->nullable();
             $table->string('phone_3')->nullable();
+            $table->text('description')->nullable();
             $table->text('address');
             $table->string('email')->nullable();
             $table->string('instagram_url')->nullable();

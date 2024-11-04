@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
             ProgramSeeder::class,
             UserSeeder::class,
             BroadcasterProgramSeeder::class,
-            GuestSeeder::class
+            GuestSeeder::class,
+            ContactSeeder::class,
         ]);
     }
 }
