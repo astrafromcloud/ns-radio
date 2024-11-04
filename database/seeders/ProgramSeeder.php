@@ -14,13 +14,13 @@ class ProgramSeeder extends Seeder
     public function run(): void
     {
         $programs = [
-            ['name' => 'Утреннее шоу «Твоё утро!»',  'from' => '11', 'to' => '12', 'image' => 'programs/program1.webp'],
-            ['name' => 'Шоу Мода',  'from' => '12', 'to' => '13', 'image' => 'programs/program2.webp'],
-            ['name' => 'Утреннее шоу «Твоё утро!»',  'from' => '13', 'to' => '14', 'image' => 'programs/program3.webp'],
-            ['name' => 'Утреннее шоу «Твоё утро!»',  'from' => '15', 'to' => '16', 'image' => 'programs/program4.webp'],
-            ['name' => 'Утреннее шоу «Твоё утро!»',  'from' => '17', 'to' => '18', 'image' => 'programs/program5.webp'],
-            ['name' => 'Утреннее шоу «Твоё утро!»',  'from' => '19', 'to' => '20', 'image' => 'programs/program6.webp'],
-            ['name' => 'Утреннее шоу «Твоё утро!»',  'from' => '21', 'to' => '22', 'image' => 'programs/program7.webp'],
+            ['name' => 'Утреннее шоу «Твоё утро!»',  'from' => '11:00', 'to' => '12:00', 'image' => 'programs/program1.webp'],
+            ['name' => 'Шоу Мода',  'from' => '12:00', 'to' => '13:00', 'image' => 'programs/program2.webp'],
+            ['name' => 'Утреннее шоу «Твоё утро!»',  'from' => '13:00', 'to' => '14:00', 'image' => 'programs/program3.webp'],
+            ['name' => 'Утреннее шоу «Твоё утро!»',  'from' => '15:00', 'to' => '16:00', 'image' => 'programs/program4.webp'],
+            ['name' => 'Утреннее шоу «Твоё утро!»',  'from' => '17:00', 'to' => '18:00', 'image' => 'programs/program5.webp'],
+            ['name' => 'Утреннее шоу «Твоё утро!»',  'from' => '19:00', 'to' => '20:00', 'image' => 'programs/program6.webp'],
+            ['name' => 'Утреннее шоу «Твоё утро!»',  'from' => '21:00', 'to' => '22:00', 'image' => 'programs/program7.webp'],
         ];
 
         foreach ($programs as $program) {
