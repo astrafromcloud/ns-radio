@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
             CitySeeder::class,
             ProgramSeeder::class,
             UserSeeder::class,
-            BroadcasterProgramSeeder::class
+            BroadcasterProgramSeeder::class,
+            GuestSeeder::class
         ]);
     }
 }
