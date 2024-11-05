@@ -13,14 +13,14 @@ class BannerSeeder extends Seeder
         $banners = [
             [
                 'image_url' => 'banners/1.png',
-//                'video_url' => '/assets/banner/video1.mp4',
+                //                'video_url' => '/assets/banner/video1.mp4',
             ],
             [
-//                'image_url' => '/assets/banner/banner2.png',
+                //                'image_url' => '/assets/banner/banner2.png',
                 'video_url' => 'banners/video1.mp4',
             ],
             [
-//                'image_url' => '/assets/banner/banner2.png',
+                //                'image_url' => '/assets/banner/banner2.png',
                 'video_url' => 'banners/video2.mp4',
             ],
         ];
