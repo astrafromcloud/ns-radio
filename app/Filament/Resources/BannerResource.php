@@ -70,8 +70,8 @@ class BannerResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->label('')->color('grey'),
+                Tables\Actions\DeleteAction::make()->label(''),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -113,5 +113,11 @@ class BannerResource extends Resource
     {
         return __('banner.navigation_label');
     }
+
+    public static function getNavigationGroup(): string
+    {
+        return __('banner.navigation_group_label');
+    }
+
 
 }

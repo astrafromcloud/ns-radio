@@ -22,7 +22,7 @@ class GuestResource extends ResourceCollection
                 'id' => $item->id,
                 'name' => $item->name,
                 'program' => $item->program,
-                'image_url' => asset($item->image_url),
+                'image_url' => asset('/storage/'.$item->image_url),
                 'views' => $item->views,
                 'hashtag' => $item->hashtag,
                 'video_url' => $item->video_url,

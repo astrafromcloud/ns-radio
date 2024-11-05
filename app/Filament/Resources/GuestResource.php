@@ -90,12 +90,8 @@ class GuestResource extends Resource
                 // Add filters if needed
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\Action::make('increment_views')
-                    ->label('Add View')
-                    ->icon('heroicon-o-eye')
-                    ->action(fn (Guest $record) => $record->increment('views')),
+                Tables\Actions\EditAction::make()->label('')->color('grey'),
+                Tables\Actions\DeleteAction::make()->label(''),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

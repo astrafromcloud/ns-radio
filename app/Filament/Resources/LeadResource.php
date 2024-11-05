@@ -4,7 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\LeadResource\Pages;
 use App\Models\Lead;
+use Filament\Actions\ViewAction;
 use Filament\Forms;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,16 +27,20 @@ class LeadResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->label(self::getNameLabel())
                     ->required()
                     ->maxLength(255),
                 TextInput::make('phone')
+                    ->label(self::getPhoneLabel())
                     ->required()
                     ->tel()
                     ->maxLength(255),
                 TextInput::make('email')
+                    ->label(self::getEmailLabel())
                     ->email()
                     ->maxLength(255),
                 Textarea::make('message')
+                    ->label(self::getMessageLabel())
                     ->maxLength(65535)
                     ->columnSpan('full'),
             ]);
@@ -44,12 +51,15 @@ class LeadResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label(self::getNameLabel())
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('phone')
+                    ->label(self::getPhoneLabel())
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('email')
+                    ->label(self::getEmailLabel())
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('created_at')
@@ -60,8 +70,30 @@ class LeadResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()->label(''),
+                Tables\Actions\Action::make('View Lead')
+                    ->icon('heroicon-o-eye')
+                    ->color('$5e6477')
+                    ->infolist(
+                        [
+                            Section::make(self::getLeadSectionInformationLabel())
+                                ->schema(([
+                                    TextEntry::make('name')->label(self::getNameLabel()),
+                                    TextEntry::make('email')->label(self::getEmailLabel()),
+                                    TextEntry::make('phone')->label(self::getPhoneLabel()),
+                                ])
+                                )->columns(),
+                            Section::make(self::getMessageSectionLabel())
+                                ->schema(([
+                                    TextEntry::make('message')->label(''),
+                                ])
+                                )
+                                ->columnSpan('full'),
+                        ]
+                    )
+                    ->label('')
+                    ->modalSubmitAction('')
+                    ->modalCancelAction('')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -86,4 +118,46 @@ class LeadResource extends Resource
             'view' => Pages\ViewLead::route('/{record}')
         ];
     }
+
+    public static function getLeadSectionInformationLabel() : string
+    {
+        return __('lead.information_label');
+    }
+
+    public static function getMessageSectionLabel() : string
+    {
+        return __('lead.message_section_label');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('lead.model_label');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('lead.navigation_label');
+    }
+
+    public static function getEmailLabel(): string
+    {
+        return __('lead.email_label');
+    }
+
+    public static function getPhoneLabel(): string
+    {
+        return __('lead.phone_label');
+    }
+
+    public static function getMessageLabel(): string
+    {
+        return __('lead.message_label');
+    }
+
+    public static function getNameLabel(): string
+    {
+        return __('lead.name_label');
+    }
+
+
 }
