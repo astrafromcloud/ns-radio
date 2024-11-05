@@ -14,7 +14,7 @@ class GuestSeeder extends Seeder
                 'name' => 'Полина Гагарина',
                 'program' => 'Утреннее шоу «Твоё утро!»',
                 'views' => 625,
-                'image_url' => 'https://ns-radio.init.kz/_next/image?url=%2Fassets%2Fimg%2Fprogram%2Fprogram1.jpg&w=2048&q=75',
+                'image_url' => 'guests/program1.webp',
                 'hashtag' => '#RadioNS',
                 'video_url' => '<iframe src="https://vk.com/video_ext.php?oid=-21723674&id=456239074&hd=1" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" allowFullScreen></iframe>',
                 'created_at' => now(),
@@ -24,7 +24,7 @@ class GuestSeeder extends Seeder
                 'name' => 'Алена Малышева',
                 'program' => 'Утреннее шоу «Твоё утро!»',
                 'views' => 625,
-                'image_url' => 'https://ns-radio.init.kz/_next/image?url=%2Fassets%2Fimg%2Fprogram%2Fprogram2.png&w=2048&q=75',
+                'image_url' => 'guests/program2.webp',
                 'hashtag' => '#RadioNS',
                 'video_url' => '<iframe src="https://vk.com/video_ext.php?oid=-21723674&id=456239074&hd=1" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" allowFullScreen></iframe>'
             ],
@@ -32,7 +32,7 @@ class GuestSeeder extends Seeder
                 'name' => 'Павел Смелов',
                 'program' => 'Утреннее шоу «Твоё утро!»',
                 'views' => 625,
-                'image_url' => 'https://ns-radio.init.kz/_next/image?url=%2Fassets%2Fimg%2Fprogram%2Fprogram3.jpeg&w=2048&q=75',
+                'image_url' => 'guests/program3.webp',
                 'hashtag' => '#RadioNS',
                 'video_url' => '<iframe src="https://vk.com/video_ext.php?oid=-21723674&id=456239074&hd=1" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" allowFullScreen></iframe>'
             ],
@@ -40,7 +40,7 @@ class GuestSeeder extends Seeder
                 'name' => 'Павел Смелов',
                 'program' => 'Утреннее шоу «Твоё утро!»',
                 'views' => 625,
-                'image_url' => 'https://ns-radio.init.kz/_next/image?url=%2Fassets%2Fimg%2Fprogram%2Fprogram4.jpg&w=2048&q=75',
+                'image_url' => 'guests/program4.webp',
                 'hashtag' => '#RadioNS',
                 'video_url' => '<iframe src="https://vk.com/video_ext.php?oid=-21723674&id=456239074&hd=1" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" allowFullScreen></iframe>'
             ],
@@ -48,7 +48,7 @@ class GuestSeeder extends Seeder
                 'name' => 'Павел Смелов',
                 'program' => 'Утреннее шоу «Твоё утро!»',
                 'views' => 625,
-                'image_url' => 'https://ns-radio.init.kz/_next/image?url=%2Fassets%2Fimg%2Fprogram%2Fprogram5.png&w=2048&q=75',
+                'image_url' => 'guests/program5.webp',
                 'hashtag' => '#RadioNS',
                 'video_url' => '<iframe src="https://vk.com/video_ext.php?oid=-21723674&id=456239074&hd=1" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" allowFullScreen></iframe>'
             ],
