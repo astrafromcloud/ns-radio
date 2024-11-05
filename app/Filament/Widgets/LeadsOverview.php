@@ -11,20 +11,51 @@ class LeadsOverview extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Total Leads', Lead::count())
-                ->description('Total number of leads')
+            Stat::make($this->getDescriptionLabel(), Lead::count())
+                ->description($this->getDescriptionStatLabel())
                 ->descriptionIcon('heroicon-m-user-group')
                 ->color('success'),
 
-            Stat::make('Today\'s Leads', Lead::whereDate('created_at', today())->count())
-                ->description('Leads received today')
+            Stat::make($this->getDescriptionTodayLabel(), Lead::whereDate('created_at', today())->count())
+                ->description($this->getDescriptionTodayStatLabel())
                 ->descriptionIcon('heroicon-m-calendar')
                 ->color('primary'),
 
-            Stat::make('This Month\'s Leads', Lead::whereMonth('created_at', now()->month)->count())
-                ->description('Leads received this month')
+            Stat::make($this->getDescriptionMonthLabel(), Lead::whereMonth('created_at', now()->month)->count())
+                ->description($this->getDescriptionMonthStatLabel())
                 ->descriptionIcon('heroicon-m-chart-bar')
                 ->color('info'),
         ];
     }
+
+    public function getDescriptionLabel()
+    {
+        return __('lead.description_label');
+    }
+
+    public function getDescriptionTodayLabel()
+    {
+        return __('lead.description_today_label');
+    }
+
+    public function getDescriptionMonthLabel()
+    {
+        return __('lead.description_month_label');
+    }
+
+    public function getDescriptionStatLabel()
+    {
+        return __('lead.description_stat_label');
+    }
+
+    public function getDescriptionTodayStatLabel()
+    {
+        return __('lead.description_today_stat_label');
+    }
+
+    public function getDescriptionMonthStatLabel()
+    {
+        return __('lead.description_month_stat_label');
+    }
+
 }

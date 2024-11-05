@@ -109,6 +109,11 @@ class LeadResource extends Resource
         ];
     }
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function getPages(): array
     {
         return [
@@ -122,6 +127,11 @@ class LeadResource extends Resource
     public static function getLeadSectionInformationLabel() : string
     {
         return __('lead.information_label');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('lead.plural_label');
     }
 
     public static function getMessageSectionLabel() : string

@@ -6,7 +6,7 @@ return [
     'name_label' => 'Имя',
     'bio_label_russian' => 'Информация на русском',
     'bio_label_kazakh' => 'Информация на казахском',
-    'image_path_label' => 'Ссылка картинки',
+    'image_path_label' => 'Картинка',
     'instagram_url_label' => 'Ссылка Instagram',
     'youtube_url_label' => 'Ссылка Youtube',
     'whatsapp_url_label' => 'Ссылка Whatsapp',

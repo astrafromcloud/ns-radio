@@ -9,4 +9,10 @@ return [
     'email_label' => 'Почта',
     'phone_label' => 'Телефон',
     'message_label' => 'Сообщение',
+    'description_label' => 'Всего лидов',
+    'description_today_label' => 'Сегодняшние лиды',
+    'description_month_label' => 'Лиды этого месяца',
+    'description_stat_label' => 'Общее количество лидов',
+    'description_today_stat_label' => 'Лиды получены сегодня',
+    'description_month_stat_label' => 'Лиды, полученные в этом месяце',
 ];
