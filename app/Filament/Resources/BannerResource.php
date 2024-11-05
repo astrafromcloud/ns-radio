@@ -14,7 +14,6 @@ class BannerResource extends Resource
 {
     protected static ?string $model = Banner::class;
     protected static ?string $navigationIcon = 'heroicon-o-photo';
-    protected static ?string $navigationLabel = 'Banners';
     protected static ?string $modelLabel = 'Banner';
     protected static ?string $navigationGroup = 'Content';
     protected static ?int $navigationSort = 1;
@@ -26,21 +25,19 @@ class BannerResource extends Resource
                 Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\FileUpload::make('image_url')
-                            ->label('Banner Image')
+                            ->label(self::getImageLabel())
                             ->image()
                             ->imageEditor()
                             ->directory('banners')
                             ->visibility('public')
                             ->columnSpanFull()
-                            ->required(fn ($get) => empty($get('video_url')))
-                            ->helperText('Upload an image or provide a video URL below'),
+                            ->required(fn ($get) => empty($get('video_url'))),
 
                         Forms\Components\TextInput::make('video_url')
-                            ->label('Video URL')
+                            ->label(self::getVideoLabel())
                             ->url()
                             ->columnSpanFull()
                             ->required(fn ($get) => empty($get('image_url')))
-                            ->helperText('Provide a video URL or upload an image above'),
                     ])
             ]);
     }
@@ -50,12 +47,12 @@ class BannerResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image_url')
-                    ->label('Banner Image')
+                    ->label(self::getImageLabel())
                     ->square()
                     ->defaultImageUrl(url('/images/placeholder.png')),
 
                 Tables\Columns\TextColumn::make('video_url')
-                    ->label('Video URL')
+                    ->label(self::getVideoLabel())
                     ->searchable()
                     ->toggleable(),
 
@@ -91,4 +88,30 @@ class BannerResource extends Resource
             'edit' => Pages\EditBanner::route('/{record}/edit'),
         ];
     }
+
+    public static function getPluralLabel() : string
+    {
+        return __('banner.plural_label');
+    }
+
+    public static function getModelLabel() : string
+    {
+        return __('banner.model_label');
+    }
+
+    public static function getImageLabel() : string
+    {
+        return __('banner.image_label');
+    }
+
+    public static function getVideoLabel() : string
+    {
+        return __('banner.video_label');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('banner.navigation_label');
+    }
+
 }
