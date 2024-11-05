@@ -25,4 +25,9 @@ class Broadcaster extends Model
         return $this->belongsToMany(Program::class, 'broadcaster_program')
             ->withTimestamps();
     }
+
+    public function getBioAttribute($value)
+    {
+        return $value ? $value : '';
+    }
 }

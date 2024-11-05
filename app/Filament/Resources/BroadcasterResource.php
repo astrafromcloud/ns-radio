@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Filament\Resources;
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BroadcasterResource\Pages;
@@ -28,7 +29,7 @@ class BroadcasterResource extends Resource
                     ->label(__('broadcaster.image_path_label'))
                     ->image()
                     ->required(),
-                Forms\Components\RichEditor::make('bio')
+                Forms\Components\RichEditor::make('bio.ru')
                     ->label(__('broadcaster.bio_label'))
                     ->required()
                     ->toolbarButtons([
@@ -40,7 +41,22 @@ class BroadcasterResource extends Resource
                         'redo',
                         'undo',
                     ])
+                    ->default(fn($record) => $record ? $record->getTranslation('name', 'ru') : '')
                     ->columnSpanFull(),
+                Forms\Components\RichEditor::make('bio.kk')
+                    ->label(__('broadcaster.bio_label'))
+                    ->required()
+                    ->toolbarButtons([
+                        'bold',
+                        'italic',
+                        'link',
+                        'bulletList',
+                        'orderedList',
+                        'redo',
+                        'undo',
+                    ])
+                    ->columnSpanFull()
+                    ->default(fn($record) => $record ? $record->getTranslation('name', 'kk') : ''),
                 Forms\Components\TextInput::make('whatsapp_url')
                     ->label(__('broadcaster.whatsapp_url_label'))
                     ->url()
@@ -147,9 +163,14 @@ class BroadcasterResource extends Resource
         return trans('broadcaster.name_label');
     }
 
-    public static function getBioLabel(): ?string
+    public static function getBioLabelRussian(): ?string
     {
-        return trans('broadcaster.bio_label');
+        return trans('broadcaster.bio_label_russian');
+    }
+
+    public static function getBioLabelKazakh(): ?string
+    {
+        return trans('broadcaster.bio_label_russian');
     }
 
     public static function getImagePathLabel(): ?string

@@ -19,6 +19,7 @@ class GuestResource extends ResourceCollection
         return $this->collection->transform(function ($item) {
 
             return [
+                'id' => $item->id,
                 'name' => $item->name,
                 'program' => $item->program,
                 'image_url' => $item->image_url,
