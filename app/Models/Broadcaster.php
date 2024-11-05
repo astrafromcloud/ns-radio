@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Translatable\HasTranslations;
 
 class Broadcaster extends Model
@@ -15,8 +16,13 @@ class Broadcaster extends Model
 
     public $translatable = ['bio'];
 
-    public function programs()
+    protected $casts = [
+        'bio' => 'array'
+    ];
+
+    public function programs(): BelongsToMany
     {
-        return $this->belongsToMany(Program::class);
+        return $this->belongsToMany(Program::class, 'broadcaster_program')
+            ->withTimestamps();
     }
 }

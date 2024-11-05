@@ -10,12 +10,10 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class BroadcasterResource extends Resource
 {
     protected static ?string $model = Broadcaster::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-radio';
 
     public static function form(Form $form): Form
@@ -26,9 +24,6 @@ class BroadcasterResource extends Resource
                     ->label(__('broadcaster.name_label'))
                     ->required()
                     ->maxLength(255),
-//                Forms\Components\TextInput::make('description')
-//                    ->required()
-//                    ->maxLength(255),
                 Forms\Components\FileUpload::make('image_path')
                     ->label(__('broadcaster.image_path_label'))
                     ->image()
@@ -89,12 +84,13 @@ class BroadcasterResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image_path')
+                    ->label(__('broadcaster.image_path_label'))
                     ->circular(),
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('description')
+                    ->label(__('broadcaster.name_label'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('programs.name')
+                    ->label(__('broadcaster.programs_label'))
                     ->badge()
                     ->separator(','),
                 Tables\Columns\TextColumn::make('created_at')
@@ -184,6 +180,11 @@ class BroadcasterResource extends Resource
     public static function getProgramsLabel(): ?string
     {
         return trans('broadcaster.programs_label');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('broadcaster.model_label');
     }
 
 }

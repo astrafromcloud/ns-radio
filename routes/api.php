@@ -36,6 +36,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout']);
 Route::post('/getUserByToken', [AuthController::class, 'getUserByToken']);
 
+Route::get('/guests/{id}', [GuestController::class, 'show']);
 
 Route::get('/guests', function (Request $request) {
     return new \App\Http\Resources\GuestResource(Guest::all());

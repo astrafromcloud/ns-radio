@@ -3,7 +3,6 @@ return [
     'navigation_label' => 'Жүргізушілер',
     'plural_label' => 'Жүргізушілер',
     'name_label' => 'Аты-жөні',
-//    'description_label' => 'Есімі',
     'bio_label' => 'Ақпарат',
     'image_path_label' => 'Суретке жол',
     'instagram_url_label' => 'Instagram-ға сілтеме',

@@ -17,7 +17,6 @@ class BroadcasterResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'description' => $this->description,
             'image_path' => asset('storage/' . $this->image_path),
             'bio' => $this->bio,
             'instagram_url' => $this->instagram_url,
