@@ -52,6 +52,15 @@ class CityController extends Controller
     {
         $city = City::findOrFail($id);
 
+//        $locale = app()->getLocale();
+//
+//        $data = $city->map(function ($city) use ($locale) {
+//            return [
+//                'name' => $city->getTranslation('name', $locale),
+//                'frequency' => $city->frequency
+//            ];
+//        });
+
         $weather = Cache::remember("city_weather_" . $city->name, now()->addDay(), function() use($city) {
             return $this->weatherService->getWeather($city->name);
         }); // Fetch weather for the city
@@ -109,12 +118,21 @@ class CityController extends Controller
         $russianCity = $this->decodeUnicode($translateKazakhResponse['translated-text']);
         $kazakhCity = $this->decodeUnicode($translateRussianResponse['translated-text']);
 
-        return response()->json([
-            'ru' => $russianCity,
-            'kk' => $kazakhCity,
-            'weather' => $weather,
-            'frequency' => $frequency
-        ]);
+        $locale = app()->getLocale();
+
+        if ($locale == 'ru') {
+            return response()->json([
+                'ru' => $russianCity,
+                'weather' => $weather,
+                'frequency' => $frequency
+            ]);
+        } else {
+            return response()->json([
+                'kk' => $kazakhCity,
+                'weather' => $weather,
+                'frequency' => $frequency
+            ]);
+        }
     }
 
     function decodeUnicode($string)
