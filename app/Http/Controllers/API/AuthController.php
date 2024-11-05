@@ -7,6 +7,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class AuthController extends Controller
@@ -40,11 +41,41 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+//    public function logout()
+//    {
+//        auth()->guard('sanctum')->user()->tokens()->delete();
+//        return response()->json(['message' => 'Logged out successfully'], ResponseAlias::HTTP_OK);
+//    }
+
     public function logout()
     {
-        auth()->guard('sanctum')->user()->tokens()->delete();
-        return response()->json(['message' => 'Logged out successfully'], ResponseAlias::HTTP_OK);
+        try {
+            $user = auth('sanctum')->user();
+
+            if (!$user) {
+                return response()->json([
+                    'message' => 'No authenticated user found'
+                ], ResponseAlias::HTTP_UNAUTHORIZED);
+            }
+
+            // Revoke all tokens for the user
+            $user->tokens()->delete();
+
+            return response()->json([
+                'message' => 'Logged out successfully'
+            ], ResponseAlias::HTTP_OK);
+
+        } catch (\Exception $e) {
+            // Log the exception for debugging
+            Log::error('Logout Error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+
+            return response()->json([
+                'message' => 'An error occurred during logout. Please try again later.'
+            ], ResponseAlias::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
+
+
 
     public function register(RegisterRequest $request)
     {

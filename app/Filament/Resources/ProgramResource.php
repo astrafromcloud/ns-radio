@@ -25,16 +25,21 @@ class ProgramResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label(self::getNameLabel())
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('from')
+                    ->label(self::getFromLabel())
                     ->nullable(),
                 Forms\Components\TextInput::make('to')
+                    ->label(self::getToLabel())
                     ->nullable(),
                 Forms\Components\FileUpload::make('image')
+                    ->label(self::getImageLabel())
                     ->image()
                     ->nullable(),
                 Forms\Components\Select::make('broadcasters')
+                    ->label(self::getBroadcastersLabel())
                     ->multiple()
                     ->relationship('broadcasters', 'name', function (Builder $query) {
                         return $query->select('broadcasters.id', 'broadcasters.name')->distinct();
@@ -73,16 +78,21 @@ class ProgramResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
+                    ->label(self::getImageLabel())
                     ->circular(),
                 Tables\Columns\TextColumn::make('name')
+                    ->label(self::getNameLabel())
                     ->searchable(),
                 Tables\Columns\TextColumn::make('from')
+                    ->label(self::getFromLabel())
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('to')
+                    ->label(self::getToLabel())
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('broadcasters.name')
+                    ->label(self::getBroadcastersLabel())
                     ->badge()
                     ->separator(','),
                 Tables\Columns\TextColumn::make('created_at')
@@ -138,4 +148,29 @@ class ProgramResource extends Resource
     {
         return __('program.plural_model');
     }
+
+    public static function getNameLabel(): ?string
+    {
+        return trans('program.name_label');
+    }
+
+    public static function getImageLabel(): ?string
+    {
+        return trans('program.image_label');
+    }
+
+    public static function getFromLabel(): ?string
+    {
+        return trans('program.from_label');
+    }
+
+    public static function getToLabel(): ?string
+    {
+        return trans('program.to_label');
+    }
+    public static function getBroadcastersLabel(): ?string
+    {
+        return trans('program.broadcasters_label');
+    }
+
 }

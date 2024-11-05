@@ -33,7 +33,8 @@ class CityResource extends Resource
                             ->label(self::getEnterCityKazakhLabel())
                             ->required()
                             ->default(fn ($record) => $record ? $record->getTranslation('name', 'kk') : ''),
-                        Forms\Components\TextInput::make(self::getFrequencyLabel())
+                        Forms\Components\TextInput::make('frequency')
+                            ->label(self::getFrequencyLabel())
                             ->required()
                             ->maxLength(255)
                             ->placeholder(self::getEnterRadioFrequencyLabel()),
@@ -47,9 +48,11 @@ class CityResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label(self::getNameLabel())
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('frequency')
+                    ->label(self::getFrequencyLabel())
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -101,6 +104,16 @@ class CityResource extends Resource
         return __('city.plural_label');
     }
 
+    public static function getNameLabel(): string
+    {
+        return __('city.name_label');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('city.model_label');
+    }
+
     public static function getEnterRadioFrequencyLabel(): ?string {
         return __('city.enter_radio_frequency');
     }
@@ -117,7 +130,7 @@ class CityResource extends Resource
 
     public static function getFrequencyLabel(): ?string
     {
-        return __('city.frequency');
+        return __('city.frequency_label');
     }
 
 }

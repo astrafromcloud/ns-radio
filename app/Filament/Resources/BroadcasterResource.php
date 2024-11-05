@@ -30,7 +30,7 @@ class BroadcasterResource extends Resource
                     ->image()
                     ->required(),
                 Forms\Components\RichEditor::make('bio.ru')
-                    ->label(__('broadcaster.bio_label'))
+                    ->label(__('broadcaster.bio_label_russian'))
                     ->required()
                     ->toolbarButtons([
                         'bold',
@@ -44,7 +44,7 @@ class BroadcasterResource extends Resource
                     ->default(fn($record) => $record ? $record->getTranslation('name', 'ru') : '')
                     ->columnSpanFull(),
                 Forms\Components\RichEditor::make('bio.kk')
-                    ->label(__('broadcaster.bio_label'))
+                    ->label(__('broadcaster.bio_label_kazakh'))
                     ->required()
                     ->toolbarButtons([
                         'bold',

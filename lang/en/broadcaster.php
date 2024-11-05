@@ -2,6 +2,7 @@
 return [
     'navigation_label' => 'Broadcaster',
     'plural_label' => 'Broadcasters',
+    'model_label' => 'Broadcaster',
     'name_label' => 'Name',
     'bio_label_russian' => 'Bio in Russian',
     'bio_label_kazakh' => 'Bio in Kazakh',

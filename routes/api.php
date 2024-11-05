@@ -33,7 +33,11 @@ Route::apiResource('songs', SongController::class);
 Route::apiResource('users', AuthController::class);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/logout', [AuthController::class, 'logout']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
+
 Route::post('/getUserByToken', [AuthController::class, 'getUserByToken']);
 
 Route::get('/guests/{id}', [GuestController::class, 'show']);

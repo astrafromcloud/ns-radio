@@ -2,9 +2,10 @@
 return [
     'navigation_label' => 'Жүргізушілер',
     'plural_label' => 'Жүргізушілер',
+    'model_label' => 'Жүргізушілер',
     'name_label' => 'Аты-жөні',
-    'bio_label_russian' => 'Bio in Russian',
-    'bio_label_kazakh' => 'Bio in Kazakh',
+    'bio_label_russian' => 'Ақпарат - Орысша',
+    'bio_label_kazakh' => 'Ақпарат - Қазақша',
     'image_path_label' => 'Суретке жол',
     'instagram_url_label' => 'Instagram-ға сілтеме',
     'youtube_url_label' => 'Youtube-ке сілтеме',
