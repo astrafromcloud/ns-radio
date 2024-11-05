@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProgramResource\Pages;
 use App\Models\Program;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,6 +16,8 @@ class ProgramResource extends Resource
 {
     protected static ?string $model = Program::class;
 
+    protected static ?string $navigationLabel = 'Programs';
+
     protected static ?string $navigationIcon = 'heroicon-o-play';
 
     public static function form(Form $form): Form
@@ -25,10 +28,8 @@ class ProgramResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('from')
-                    ->numeric()
                     ->nullable(),
                 Forms\Components\TextInput::make('to')
-                    ->numeric()
                     ->nullable(),
                 Forms\Components\FileUpload::make('image')
                     ->image()
@@ -63,7 +64,7 @@ class ProgramResource extends Resource
                         Forms\Components\TextInput::make('telegram_url')
                             ->url()
                             ->maxLength(255),
-                    ]),
+                    ])
             ]);
     }
 
@@ -123,13 +124,18 @@ class ProgramResource extends Resource
         ];
     }
 
+    public static function getModelLabel(): string
+    {
+        return __('program.model_label');
+    }
+
     public static function getNavigationLabel(): string
     {
         return __('program.navigation_label');
     }
 
-    public static function getPluralLabel() : string
+    public static function getPluralLabel() : ?string
     {
-        return __('program.plural_label');
+        return __('program.plural_model');
     }
 }

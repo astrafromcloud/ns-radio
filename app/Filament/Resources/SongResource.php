@@ -26,9 +26,10 @@ class SongResource extends Resource
                 Forms\Components\TextInput::make('artist')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('rank')
-                    ->numeric(),
+//                Forms\Components\TextInput::make('rank')
+//                    ->numeric(),
                 Forms\Components\FileUpload::make('image_url')
+                    ->label('Image')
                     ->image(),
                 Forms\Components\TextInput::make('likes')
                     ->required()
@@ -45,10 +46,11 @@ class SongResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('artist')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('rank')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\ImageColumn::make('image_url'),
+//                Tables\Columns\TextColumn::make('rank')
+//                    ->numeric()
+//                    ->sortable(),
+                Tables\Columns\ImageColumn::make('image_url')
+                ->label('Image'),
                 Tables\Columns\TextColumn::make('likes')
                     ->numeric()
                     ->sortable(),

@@ -2,5 +2,6 @@
 
 return [
     'navigation_label' => 'Программы',
-    'plural_model' => 'Программы'
+    'plural_model' => 'Программы',
+    'model_label' => 'asd',
 ];

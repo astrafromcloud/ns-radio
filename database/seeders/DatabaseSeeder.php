@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
             BroadcasterProgramSeeder::class,
             GuestSeeder::class,
             ContactSeeder::class,
-            BannerSeeder::class
+            BannerSeeder::class,
+            LiveTranslationSeeder::class
         ]);
     }
 }

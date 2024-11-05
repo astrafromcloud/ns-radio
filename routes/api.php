@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\BannerController;
 use App\Http\Controllers\API\BroadcasterController;
 use App\Http\Controllers\API\CityController;
 use App\Http\Controllers\API\GuestController;
 use App\Http\Controllers\API\SongController;
-use App\Http\Controllers\API\AuthController;
 use App\Models\Contact;
+use App\Models\Guest;
 use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -36,7 +37,9 @@ Route::post('/logout', [AuthController::class, 'logout']);
 Route::post('/getUserByToken', [AuthController::class, 'getUserByToken']);
 
 
-Route::apiResource('guests', GuestController::class);
+Route::get('/guests', function (Request $request) {
+    return new \App\Http\Resources\GuestResource(Guest::all());
+});
 
 Route::get('/getCity', [CityController::class, 'getCity']);
 Route::get('/getWeather', [CityController::class, 'getWeather']);
@@ -48,4 +51,6 @@ Route::get('/programs', function (Request $request) {
 Route::get('/banners', function (Request $request) {
     return new \App\Http\Resources\BannerResource(\App\Models\Banner::all());
 });
+
+Route::apiResource('liveTranslations', \App\Http\Controllers\API\LiveTranslationController::class);
 

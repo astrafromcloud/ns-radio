@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('broadcasters', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
             $table->string('image_path');
             $table->json('bio');
             $table->string('instagram_url')->nullable();

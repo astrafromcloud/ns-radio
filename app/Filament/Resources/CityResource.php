@@ -24,22 +24,19 @@ class CityResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->maxLength(255)
-                            ->placeholder('Enter city name')
-                            ->autofocus()
-                            ->default(fn ($record) => json_decode($record->name, JSON_PRETTY_PRINT)),
                         TextInput::make('name.ru')
-                            ->label('City Name (Russian)')
-                            ->default(fn ($record) => $record->getTranslation('name', 'ru')),
+                            ->label(self::getEnterCityRussianLabel())
+                            ->required()
+                            ->autofocus()
+                            ->default(fn ($record) => $record ? $record->getTranslation('name', 'ru') : ''),
                         TextInput::make('name.kk')
-                            ->label('City Name (Kazakh)')
-                            ->default(fn ($record) => $record->getTranslation('name', 'kk')),
-                        Forms\Components\TextInput::make('frequency')
+                            ->label(self::getEnterCityKazakhLabel())
+                            ->required()
+                            ->default(fn ($record) => $record ? $record->getTranslation('name', 'kk') : ''),
+                        Forms\Components\TextInput::make(self::getFrequencyLabel())
                             ->required()
                             ->maxLength(255)
-                            ->placeholder('Enter radio frequency'),
+                            ->placeholder(self::getEnterRadioFrequencyLabel()),
                     ])
                     ->columns(1)
             ]);
@@ -102,6 +99,25 @@ class CityResource extends Resource
     public static function getPluralLabel(): ?string
     {
         return __('city.plural_label');
+    }
+
+    public static function getEnterRadioFrequencyLabel(): ?string {
+        return __('city.enter_radio_frequency');
+    }
+
+    public static function getEnterCityKazakhLabel(): ?string
+    {
+        return __('city.city_name_kazakh');
+    }
+
+    public static function getEnterCityRussianLabel(): ?string
+    {
+        return __('city.city_name_russian');
+    }
+
+    public static function getFrequencyLabel(): ?string
+    {
+        return __('city.frequency');
     }
 
 }

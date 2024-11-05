@@ -15,8 +15,8 @@ class CityController extends Controller
 {
     public function __construct(
         private readonly WeatherService $weatherService,
-        private readonly IPToLocationService $ipToLocationService,
-        private  readonly  TrapHerStTranslationService $translationService,
+//        private readonly IPToLocationService $ipToLocationService,
+//        private  readonly  TrapHerStTranslationService $translationService,
     )
     {
     }
@@ -82,40 +82,95 @@ class CityController extends Controller
         return response()->json(null, 204);
     }
 
+    public function getWeather($cityName) : string
+    {
+        $apiKey = '082d24b2afae40eba43210130243110';
+        $response = Http::get("http://api.weatherapi.com/v1/current.json?key={$apiKey}&q={$cityName}");
+
+        if ($response->successful()) {
+            return $response->json()['current']['temp_c'];
+        }
+
+        return $response->json();
+    }
 
     public function getCity()
     {
-        $response = Cache::remember(request()->ip() . "_to_location", now()->addHour(), function () {
-            return $this->ipToLocationService->getLocation(request()->ip());
-        });
 
-        $currentCity = $response['city'] ?? "Almaty";
+        $cities = City::all();
 
-        $weather = Cache::remember("city_weather_" . $currentCity, now()->addDay(), function() use($currentCity) {
-            return $this->weatherService->getWeather($currentCity);
-        });
+        // Тест үшін
+//        $address = "45.86.82.205";
+//        $response = Http::get("https://ipinfo.io/{$address}/json?token=7c784a69a464b4");
 
-        $city = City::where('name', 'like', $currentCity)->first();
-        $frequency = $city?->frequency ?? '106.0 FM';
+        $response = Http::get("https://ipinfo.io/json?token=7c784a69a464b4");
 
-        $translateKazakhResponse = Cache::remember($currentCity . "_trans_kz", now()->addDay(), function() use($currentCity) {
-            return $this->translationService->translate($currentCity);
-        });
+        $currentCity = $response['city'];
 
-        $translateRussianResponse = Cache::remember($currentCity . "_trans_ru", now()->addDay(), function() use($currentCity) {
-            return $this->translationService->translate($currentCity, to: 'ru');
-        });
+        $weather = $this->getWeather($currentCity);
+
+        $data = json_decode($cities->where('name', $currentCity), true);
+        $frequency = reset($data)['frequency'] ?? '106.0 FM';
+
+        $translateKazakhResponse = Http::get("https://trap.her.st/api/translate/", [
+            "engine" => 'google',
+            'from' => 'en',
+            'to' => 'kk',
+            'text' => $currentCity
+        ]);
+
+        $translateRussianResponse = Http::get("https://trap.her.st/api/translate/", [
+            "engine" => 'google',
+            'from' => 'en',
+            'to' => 'ru',
+            'text' => $currentCity
+        ]);
 
         $russianCity = $this->decodeUnicode($translateKazakhResponse['translated-text']);
         $kazakhCity = $this->decodeUnicode($translateRussianResponse['translated-text']);
 
-        return response()->json([
+        return json_encode([
             'ru' => $russianCity,
             'kk' => $kazakhCity,
             'weather' => $weather,
             'frequency' => $frequency
-        ]);
+        ], JSON_UNESCAPED_UNICODE);
     }
+
+
+//    public function getCity()
+//    {
+//        $response = Cache::remember(request()->ip() . "_to_location", now()->addHour(), function () {
+//            return $this->ipToLocationService->getLocation(request()->ip());
+//        });
+//
+//        $currentCity = $response['city'] ?? "Almaty";
+//
+//        $weather = Cache::remember("city_weather_" . $currentCity, now()->addDay(), function() use($currentCity) {
+//            return $this->weatherService->getWeather($currentCity);
+//        });
+//
+//        $city = City::where('name', 'like', $currentCity)->first();
+//        $frequency = $city?->frequency ?? '106.0 FM';
+//
+//        $translateKazakhResponse = Cache::remember($currentCity . "_trans_kz", now()->addDay(), function() use($currentCity) {
+//            return $this->translationService->translate($currentCity);
+//        });
+//
+//        $translateRussianResponse = Cache::remember($currentCity . "_trans_ru", now()->addDay(), function() use($currentCity) {
+//            return $this->translationService->translate($currentCity, to: 'ru');
+//        });
+//
+//        $russianCity = $this->decodeUnicode($translateKazakhResponse['translated-text']);
+//        $kazakhCity = $this->decodeUnicode($translateRussianResponse['translated-text']);
+//
+//        return response()->json([
+//            'ru' => $russianCity,
+//            'kk' => $kazakhCity,
+//            'weather' => $weather,
+//            'frequency' => $frequency
+//        ]);
+//    }
 
     function decodeUnicode($string)
     {
