@@ -122,13 +122,13 @@ class CityController extends Controller
 
         if ($locale == 'ru') {
             return response()->json([
-                'ru' => $russianCity,
+                'name' => $russianCity,
                 'weather' => $weather,
                 'frequency' => $frequency
             ]);
         } else {
             return response()->json([
-                'kk' => $kazakhCity,
+                'name' => $kazakhCity,
                 'weather' => $weather,
                 'frequency' => $frequency
             ]);
