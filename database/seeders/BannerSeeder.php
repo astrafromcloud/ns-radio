@@ -21,7 +21,7 @@ class BannerSeeder extends Seeder
             ],
             [
 //                'image_url' => '/assets/banner/banner2.png',
-                'video_url' => 'banner/video2.mp4',
+                'video_url' => 'banners/video2.mp4',
             ],
         ];
 

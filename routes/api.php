@@ -5,6 +5,7 @@ use App\Http\Controllers\API\BannerController;
 use App\Http\Controllers\API\BroadcasterController;
 use App\Http\Controllers\API\CityController;
 use App\Http\Controllers\API\GuestController;
+use App\Http\Controllers\API\LeadController;
 use App\Http\Controllers\API\SongController;
 use App\Models\Contact;
 use App\Models\Guest;
@@ -59,3 +60,4 @@ Route::get('/banners', function (Request $request) {
 
 Route::apiResource('liveTranslations', \App\Http\Controllers\API\LiveTranslationController::class);
 
+Route::post('/leads', [LeadController::class, 'store']);

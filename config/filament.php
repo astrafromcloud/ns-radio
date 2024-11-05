@@ -128,6 +128,10 @@ return [
             'auth',
             'canAccessFilament'
         ],
+    ],
+
+    'widgets' => [
+        App\Filament\Widgets\LeadsOverview::class,
     ]
 
 
