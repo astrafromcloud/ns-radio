@@ -19,6 +19,16 @@ class UserController extends Controller
         return response()->json(User::all());
     }
 
+    public function getByEmail(Request $request) {
+        $validatedRequest = $request->validate([
+            'email' => 'required|string',
+        ]);
+
+        $user = User::query()->where("email", $validatedRequest['email'])->first();
+
+        return response()->json($user->id);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
