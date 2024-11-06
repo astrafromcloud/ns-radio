@@ -17,4 +17,7 @@ return [
     'description_month_stat_label' => 'Лидтер осы айда алынды',
     'created_at_label' => 'Құрылды',
     'updated_at_label' => 'Жаңартылды',
+    'content_label' => 'Контент',
+    'is_active_label' => 'Белсенді',
+    'content_type_label' => 'Баннер типі'
 ];

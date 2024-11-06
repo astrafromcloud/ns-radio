@@ -13,7 +13,9 @@ class BannerController extends Controller
      */
     public function index()
     {
-        $banners = Banner::all();
+        $banners = Banner::where('is_active', true)
+            ->orderB('order')
+            ->get();
         return response()->json($banners);
     }
 

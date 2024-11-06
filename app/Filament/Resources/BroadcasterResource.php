@@ -23,38 +23,45 @@ class BroadcasterResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->label(__('broadcaster.name_label'))
+                    ->columnSpanFull()
                     ->required()
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('image_path')
                     ->label(__('broadcaster.image_path_label'))
+                    ->columnSpanFull()
                     ->image()
                     ->required(),
-                Forms\Components\RichEditor::make('bio.ru')
-                    ->label(__('broadcaster.bio_label_russian'))
-                    ->required()
-                    ->toolbarButtons([
-                        'bold',
-                        'italic',
-                        'link',
-                        'bulletList',
-                        'orderedList',
-                        'redo',
-                        'undo',
-                    ])
-                    ->default(fn($record) => $record ? $record->getTranslation('name', 'ru') : '')
-                    ->columnSpanFull(),
-                Forms\Components\RichEditor::make('bio.kk')
-                    ->label(__('broadcaster.bio_label_kazakh'))
-                    ->required()
-                    ->toolbarButtons([
-                        'bold',
-                        'italic',
-                        'link',
-                        'bulletList',
-                        'orderedList',
-                        'redo',
-                        'undo',
-                    ])
+                Forms\Components\Grid::make(2) // Creates a grid with 2 columns
+                ->schema([
+                    Forms\Components\RichEditor::make('bio.ru')
+                        ->label(__('broadcaster.bio_label_russian'))
+                        ->required()
+                        ->toolbarButtons([
+                            'bold',
+                            'italic',
+                            'link',
+                            'bulletList',
+                            'orderedList',
+                            'redo',
+                            'undo',
+                        ])
+                        ->default(fn($record) => $record ? $record->getTranslation('name', 'ru') : '')
+                        ->columnSpan(1), // Set column span to 1 for each editor to take half width
+                    Forms\Components\RichEditor::make('bio.kk')
+                        ->label(__('broadcaster.bio_label_kazakh'))
+                        ->required()
+                        ->toolbarButtons([
+                            'bold',
+                            'italic',
+                            'link',
+                            'bulletList',
+                            'orderedList',
+                            'redo',
+                            'undo',
+                        ])
+                        ->columnSpan(1), // Set column span to 1 for each editor to take half width
+                ])
+
                     ->columnSpanFull()
                     ->default(fn($record) => $record ? $record->getTranslation('name', 'kk') : ''),
                 Forms\Components\TextInput::make('whatsapp_url')
@@ -74,6 +81,7 @@ class BroadcasterResource extends Resource
                     ->url()
                     ->maxLength(255),
                 Forms\Components\Select::make('programs')
+                    ->columnSpanFull()
                     ->label(__('broadcaster.programs_label'))
                     ->multiple()
                     ->relationship('programs', 'name')

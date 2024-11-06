@@ -24,7 +24,19 @@ class BannerResource extends Resource
             ->schema([
                 Forms\Components\Section::make()
                     ->schema([
-                        Forms\Components\FileUpload::make('image_url')
+                        Forms\Components\Toggle::make('is_active')
+                            ->label(self::getIsActiveLabel()),
+
+                        Forms\Components\Select::make('content_type')
+                            ->label(self::getContentTypeLabel())
+                            ->options([
+                                'image' => self::getImageLabel(),
+                                'video' => self::getVideoLabel(),
+                            ])
+                            ->required()
+                            ->live(),
+
+                        Forms\Components\FileUpload::make('content')
                             ->label(self::getImageLabel())
                             ->image()
                             ->imageEditor()
@@ -32,30 +44,19 @@ class BannerResource extends Resource
                             ->directory('banners')
                             ->visibility('public')
                             ->columnSpanFull()
-                            ->required(fn ($get) => empty($get('video_url')))
-                            ->disabled(fn ($get) => filled($get('video_url')))
-                            ->dehydrated(fn ($get) => empty($get('video_url')))
-                            ->afterStateUpdated(function ($state, callable $set) {
-                                if (filled($state)) {
-                                    $set('video_url', null);
-                                }
-                            }),
+                            ->required(fn (Forms\Get $get) => $get('content_type') === 'image')
+                            ->visible(fn (Forms\Get $get) => $get('content_type') === 'image'),
 
-                        Forms\Components\FileUpload::make('video_url')
+                        Forms\Components\FileUpload::make('content')
                             ->label(self::getVideoLabel())
                             ->maxSize(10000)
                             ->acceptedFileTypes(['video/mp4', 'video/ogg'])
                             ->directory('banners')
                             ->visibility('public')
                             ->columnSpanFull()
-                            ->required(fn ($get) => empty($get('image_url')))
-                            ->disabled(fn ($get) => filled($get('image_url')))
-                            ->dehydrated(fn ($get) => empty($get('image_url')))
-                            ->afterStateUpdated(function ($state, callable $set) {
-                                if (filled($state)) {
-                                    $set('image_url', null);
-                                }
-                            })
+                            ->visible(fn (Forms\Get $get) => $get('content_type') === 'video')
+                            ->required(fn (Forms\Get $get) => $get('content_type') === 'video')
+
                     ])
             ]);
     }
@@ -65,20 +66,29 @@ class BannerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image_url')
-                    ->label(self::getImageLabel())
-                    ->alignCenter()
-                    ->sortable()
-                    ->defaultImageUrl(url(asset('/storage' . '/images/placeholder.png'))),
+//                Tables\Columns\ImageColumn::make('image_url')
+//                    ->label(self::getImageLabel())
+//                    ->alignCenter()
+//                    ->sortable()
+//                    ->defaultImageUrl(url(asset('/storage' . '/images/placeholder.png'))),
+//
+//                Tables\Columns\IconColumn::make('video_url')
+//                    ->label(self::getVideoLabel())
+//                    ->alignCenter()
+//                    ->boolean()
+//                    ->searchable()
+//                    ->toggleable()
+//                    ->sortable()
+//                    ->getStateUsing(fn($record) => !empty($record->video_url)),
 
-                Tables\Columns\IconColumn::make('video_url')
-                    ->label(self::getVideoLabel())
+                Tables\Columns\ViewColumn::make('content')
+                    ->label(self::getContentLabel())
                     ->alignCenter()
-                    ->boolean()
-                    ->searchable()
-                    ->toggleable()
-                    ->sortable()
-                    ->getStateUsing(fn($record) => !empty($record->video_url)),
+                    ->view('components.media-column'),
+                Tables\Columns\IconColumn::make('is_active')
+                    ->label(self::getIsActiveLabel())
+                    ->alignCenter()
+                    ->boolean(),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(self::getCreatedAtLabel())
@@ -92,6 +102,8 @@ class BannerResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('order')
+            ->reorderable('order')
             ->filters([
                 //
             ])
@@ -155,4 +167,18 @@ class BannerResource extends Resource
         return __('lead.updated_at_label');
     }
 
+    public static function getContentLabel(): string
+    {
+        return __('lead.content_label');
+    }
+
+    public static function getIsActiveLabel(): string
+    {
+        return __('lead.is_active_label');
+    }
+
+    public static function getContentTypeLabel(): string
+    {
+        return __('lead.content_type_label');
+    }
 }

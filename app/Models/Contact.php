@@ -39,4 +39,19 @@ class Contact extends Model
             ))
         );
     }
+
+    public function getFirstPhoneNumberAttribute(): ?string
+    {
+        if (!is_array($this->phones) || empty($this->phones)) {
+            return null;
+        }
+
+        // Get the first phone number and format it
+        $firstPhone = $this->phones[0]['phone'] ?? null;
+
+        return $firstPhone
+            ? preg_replace('/(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})/', '+$1 ($2) $3-$4-$5', $firstPhone)
+            : null;
+    }
+
 }

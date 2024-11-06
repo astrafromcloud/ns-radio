@@ -11,4 +11,9 @@ class Banner extends Model
     use HasFactory;
 
     protected $guarded = false;
+
+    protected $casts = [
+        'is_active' => 'boolean',
+        'order' => 'integer',
+    ];
 }

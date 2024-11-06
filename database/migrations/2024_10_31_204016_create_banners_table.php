@@ -10,8 +10,10 @@ return new class extends Migration
     {
         Schema::create('banners', function (Blueprint $table) {
             $table->id();
-            $table->string('image_url')->nullable();
-            $table->string('video_url')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->unsignedSmallInteger('order');
+            $table->string('content_type')->default('image');
+            $table->string('content');
             $table->timestamps();
         });
     }

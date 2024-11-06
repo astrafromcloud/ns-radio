@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Banner;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -9,6 +10,7 @@ class BannerResource extends ResourceCollection
 {
 
     public static $wrap = null;
+
     /**
      * Transform the resource into an array.
      *
@@ -16,11 +18,11 @@ class BannerResource extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
+
         return $this->collection->transform(function ($item) {
             return [
                 'id' => $item->id,
-                'image_url' => $item->image_url ? asset('storage/'.$item->image_url) : null,
-                'video_url' => $item->video_url ? asset('storage/'.$item->video_url) : null,
+                'content' => asset('storage/' . $item->content),
             ];
         })->toArray();
     }

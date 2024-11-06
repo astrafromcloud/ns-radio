@@ -22,7 +22,7 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::apiResource('/banners', BannerController::class);
 Route::get('/banners', function (Request $request) {
-    return new \App\Http\Resources\BannerResource(\App\Models\Banner::all());
+    return new \App\Http\Resources\BannerResource(\App\Models\Banner::where('is_active', 1)->orderBy('order')->get());
 });
 
 //Route::get('/cities', function (Request $request) {

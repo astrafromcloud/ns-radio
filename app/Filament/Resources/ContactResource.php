@@ -131,7 +131,7 @@ class ContactResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('phone_numbers')
+                Tables\Columns\TextColumn::make('first_phone_number')
                     ->label(self::getPhoneLabel())
                     ->alignCenter(),
 
@@ -262,4 +262,15 @@ class ContactResource extends Resource
             'phones.*.phone' => ['required', 'string', 'regex:/^\+[0-9]-\([0-9]{3}\)-[0-9]{3}-[0-9]{2}-[0-9]{2}$/'],
         ];
     }
+
+    public function getPhoneNumbersAttribute(): ?string
+    {
+        // Check if phones are available and take the first one
+        $firstPhone = $this->phones[0]['phone'] ?? null;
+
+        return $firstPhone
+            ? preg_replace('/(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})/', '+$1 ($2) $3-$4-$5', $firstPhone)
+            : null;
+    }
+
 }

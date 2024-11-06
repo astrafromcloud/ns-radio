@@ -75,7 +75,7 @@ class LeadResource extends Resource
             ])
             ->actions([
                 Tables\Actions\DeleteAction::make()->label(''),
-                Tables\Actions\Action::make('View Lead')
+                Tables\Actions\Action::make('ViewLead')
                     ->icon('heroicon-o-eye')
                     ->color('$5e6477')
                     ->infolist(
@@ -104,7 +104,8 @@ class LeadResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->recordUrl(fn ($record) => null);
+            ->recordUrl(false)
+            ->recordAction('ViewLead');
     }
 
     public static function getRelations(): array
@@ -182,6 +183,11 @@ class LeadResource extends Resource
     public static function getUpdatedAtLabel(): string
     {
         return __('lead.updated_at_label');
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 
 
