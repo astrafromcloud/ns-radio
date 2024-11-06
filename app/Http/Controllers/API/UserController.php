@@ -24,9 +24,9 @@ class UserController extends Controller
             'email' => 'required|string',
         ]);
 
-        $user = User::query()->where("email", $validatedRequest['email'])->first();
-
-        return response()->json($user->id);
+        
+        $user = User::where("email", $validatedRequest['email'])->first();
+        return response()->json(["id" => $user->id]);
     }
 
     /**
