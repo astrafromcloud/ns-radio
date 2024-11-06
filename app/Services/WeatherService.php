@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Http;
 class WeatherService
 {
 
-    public function getWeather($cityName): string
+    public function getWeather($cityName)
     {
         $apiKey = config('services.weather.api_key');
         $response = Http::get("http://api.weatherapi.com/v1/current.json?key={$apiKey}&q={$cityName}");
