@@ -12,4 +12,6 @@ return [
     'whatsapp_url_label' => 'Whatsapp URL',
     'telegram_url_label' => 'Telegram URL',
     'programs_label' => 'Programs',
+    'created_at_label' => 'Created at',
+    'updated_at_label' => 'Updated at',
 ];

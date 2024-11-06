@@ -17,14 +17,24 @@ use Illuminate\Support\Facades\Route;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+Route::apiResource('users', AuthController::class);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
 
 Route::apiResource('/banners', BannerController::class);
+Route::get('/banners', function (Request $request) {
+    return new \App\Http\Resources\BannerResource(\App\Models\Banner::all());
+});
 
 //Route::get('/cities', function (Request $request) {
 Route::apiResource('cities', CityController::class)->middleware([\App\Http\Middleware\SetLocale::class]);
 //});
 
-Route::apiResource('broadcasters', BroadcasterController::class)->middleware([\App\Http\Middleware\SetLocale::class]);
+
+//Route::apiResource('broadcasters', BroadcasterController::class)->middleware([\App\Http\Middleware\SetLocale::class]);
+Route::get('/broadcasters', function (Request $request) {
+    return new \App\Http\Resources\BroadcasterResource(\App\Models\Broadcaster::all());
+});
 //
 Route::get('/contacts', function () {
     return new \App\Http\Resources\ContactResource(Contact::all());
@@ -32,20 +42,13 @@ Route::get('/contacts', function () {
 
 Route::apiResource('songs', SongController::class);
 
-Route::POST('/get-user-by-email', [UserController::class, 'getByEmail']);
-
-Route::apiResource('users', AuthController::class);
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
+Route::POST('/get-user-by-email', [UserController::class, 'getByEmail']);
 Route::post('/getUserByToken', [AuthController::class, 'getUserByToken']);
-
 Route::get('/guests/{id}', [GuestController::class, 'show']);
-
 Route::get('/guests', function (Request $request) {
     return new \App\Http\Resources\GuestResource(Guest::all());
 });
@@ -55,10 +58,6 @@ Route::get('/getWeather', [CityController::class, 'getWeather']);
 
 Route::get('/programs', function (Request $request) {
     return new \App\Http\Resources\ProgramResource(Program::all());
-});
-
-Route::get('/banners', function (Request $request) {
-    return new \App\Http\Resources\BannerResource(\App\Models\Banner::all());
 });
 
 Route::apiResource('liveTranslations', \App\Http\Controllers\API\LiveTranslationController::class);

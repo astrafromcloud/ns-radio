@@ -9,6 +9,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class GuestResource extends ResourceCollection
 {
+    public static $wrap = null;
     /**
      * Transform the resource into an array.
      *

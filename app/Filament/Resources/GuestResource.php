@@ -66,23 +66,26 @@ class GuestResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('image_url')
                     ->label(self::getImageLabel())
-                    ->square()
+                    ->alignCenter()
+                    ->circular()
                     ->size(80),
 
                 Tables\Columns\TextColumn::make('name')
                     ->label(self::getNameLabel())
+                    ->alignCenter()
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('hashtag')
                     ->label(self::getHashtagLabel())
+                    ->alignCenter()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('views')
                     ->label(self::getViewsLabel())
+                    ->alignCenter()
                     ->numeric()
-                    ->sortable()
-                    ->alignRight(),
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -155,5 +158,15 @@ class GuestResource extends Resource
     public static function getVideoLabel() : string
     {
         return __('guest.video_label');
+    }
+
+    public static function getCreatedAtLabel(): string
+    {
+        return __('lead.created_at_label');
+    }
+
+    public static function getUpdatedAtLabel(): string
+    {
+        return __('lead.updated_at_label');
     }
 }

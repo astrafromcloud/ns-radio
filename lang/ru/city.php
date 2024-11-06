@@ -7,5 +7,7 @@ return [
     'city_name_kazakh' => 'Имя города на казахском',
     'city_name_russian' => 'Имя города на русском',
     'frequency_label' => 'Частота',
-    'name_label' => 'Имя'
+    'name_label' => 'Имя',
+    'created_at_label' => 'Создано',
+    'updated_at_label' => 'Обновлено',
 ];

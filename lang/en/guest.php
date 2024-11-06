@@ -7,5 +7,7 @@ return [
     'image_label' => 'Image',
     'hashtag_label' => 'Hashtag',
     'views_label' => 'Views',
-    'video_label' => 'Video URL'
+    'video_label' => 'Video URL',
+    'created_at_label' => 'Created at',
+    'updated_at_label' => 'Updated at',
 ];

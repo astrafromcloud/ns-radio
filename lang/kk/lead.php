@@ -15,4 +15,6 @@ return [
     'description_stat_label' => 'Лидтердің жалпы саны',
     'description_today_stat_label' => 'Лидтер бүгін алынды',
     'description_month_stat_label' => 'Лидтер осы айда алынды',
+    'created_at_label' => 'Құрылды',
+    'updated_at_label' => 'Жаңартылды',
 ];

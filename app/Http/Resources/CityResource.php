@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\App;
 
 class CityResource extends ResourceCollection
 {
+
+    public static $wrap = null;
     public function toArray(Request $request): array
     {
         return $this->collection->transform(function ($item) {

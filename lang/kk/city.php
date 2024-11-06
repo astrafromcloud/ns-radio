@@ -7,5 +7,7 @@ return [
     'city_name_kazakh' => 'Қала аты (қазақша)',
     'city_name_russian' => 'Қала аты (орысша)',
     'frequency_label' => 'Жиілігі',
-    'name_label' => 'Қала атауы'
+    'name_label' => 'Қала атауы',
+    'created_at_label' => 'Құрылды',
+    'updated_at_label' => 'Жаңартылды',
 ];

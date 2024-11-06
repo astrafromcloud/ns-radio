@@ -15,4 +15,6 @@ return [
     'description_stat_label' => 'This Month\'s Leads',
     'description_today_stat_label' => 'Leads received today',
     'description_month_stat_label' => 'Leads received this month',
+    'created_at_label' => 'Created at',
+    'updated_at_label' => 'Updated at',
 ];

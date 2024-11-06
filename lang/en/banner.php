@@ -5,4 +5,6 @@ return [
     'model_label' => 'Banner',
     'image_label' => 'Image',
     'video_label' => 'Video',
+    'created_at_label' => 'Created at',
+    'updated_at_label' => 'Updated at',
 ];

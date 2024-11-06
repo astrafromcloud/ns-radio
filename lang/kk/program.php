@@ -9,4 +9,6 @@ return [
     'to_label' => 'Аяқталуы',
     'image_label' => 'Сурет',
     'broadcasters_label' => 'Жүргізушілер',
+    'created_at_label' => 'Құрылды',
+    'updated_at_label' => 'Жаңартылды',
 ];

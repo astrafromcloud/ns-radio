@@ -79,27 +79,35 @@ class ProgramResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
                     ->label(self::getImageLabel())
-                    ->circular(),
+                    ->alignCenter()
+                    ->circular()
+                    ->size(80),
                 Tables\Columns\TextColumn::make('name')
                     ->label(self::getNameLabel())
+                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('from')
                     ->label(self::getFromLabel())
-                    ->numeric()
-                    ->sortable(),
+                    ->alignCenter()
+                    ->numeric(),
+//                    ->sortable(),
                 Tables\Columns\TextColumn::make('to')
                     ->label(self::getToLabel())
-                    ->numeric()
-                    ->sortable(),
+                    ->alignCenter()
+                    ->numeric(),
+//                    ->sortable(),
                 Tables\Columns\TextColumn::make('broadcasters.name')
                     ->label(self::getBroadcastersLabel())
+                    ->alignCenter()
                     ->badge()
                     ->separator(','),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(self::getCreatedAtLabel())
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(self::getUpdatedAtLabel())
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -171,6 +179,16 @@ class ProgramResource extends Resource
     public static function getBroadcastersLabel(): ?string
     {
         return trans('program.broadcasters_label');
+    }
+
+    public static function getCreatedAtLabel(): string
+    {
+        return __('lead.created_at_label');
+    }
+
+    public static function getUpdatedAtLabel(): string
+    {
+        return __('lead.updated_at_label');
     }
 
 }

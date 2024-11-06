@@ -12,4 +12,6 @@ return [
     'whatsapp_url_label' => 'Ссылка Whatsapp',
     'telegram_url_label' => 'Ссылка Telegram',
     'programs_label' => 'Программы',
+    'created_at_label' => 'Создано',
+    'updated_at_label' => 'Обновлено',
 ];

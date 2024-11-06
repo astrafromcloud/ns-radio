@@ -9,4 +9,6 @@ return [
     'description_kazakh_label' => 'Description (Kazakh language)',
     'address_label_russian' => 'Address in Russian',
     'address_label_kazakh' => 'Address in Kazakh',
+    'created_at_label' => 'Created at',
+    'updated_at_label' => 'Updated at',
 ];

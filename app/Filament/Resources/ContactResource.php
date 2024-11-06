@@ -4,14 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ContactResource\Pages;
 use App\Models\Contact;
-use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\HtmlString;
 
 class ContactResource extends Resource
 {
@@ -25,17 +23,31 @@ class ContactResource extends Resource
             ->schema([
                 Forms\Components\Section::make()
                     ->schema([
-//                        Forms\Components\Repeater::make('phones')
-//                            ->label('Phone Numbers')
-//                            ->addActionLabel('Add Phone Number')
-//                            ->defaultItems(1)
-//                            ->schema([
-//                                Forms\Components\TextInput::make('phone')
-//                                    ->label('Phone Number')
-//                                    ->tel()
-//                                    ->required()
-//                            ])
-//                            ->columns(1),
+                        Forms\Components\Section::make()
+                            ->schema([
+                                Forms\Components\Repeater::make('phones')
+                                    ->label('Phone Numbers')
+                                    ->addActionLabel('Add Phone Number')
+                                    ->defaultItems(1)
+                                    ->columnSpanFull()
+                                    ->reorderable(false)
+                                    ->grid(2)
+                                    ->schema([
+                                        Forms\Components\TextInput::make('phone')
+                                            ->label(false)
+                                            ->tel()
+                                            ->mask('+9 (999)-999-99-99')
+                                            ->placeholder('+7-777-777-77-77')
+                                            ->required()
+                                            ->hiddenLabel()
+                                            ->maxLength(255)
+                                    ])
+                                    ->createItemButtonLabel('Add Phone Number')
+                                    ->deletable(false)
+                                    ->maxItems(4)
+                            ]),
+
+                        // TODO PHONE EDITOR
 
                         Forms\Components\TextInput::make('email')
                             ->label(self::getEmailLabel())
@@ -119,21 +131,24 @@ class ContactResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('phones')
+                Tables\Columns\TextColumn::make('phone_numbers')
                     ->label(self::getPhoneLabel())
-                    ->formatStateUsing(fn($state) => json_decode($state)[0] ?? '-'),
+                    ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('email')
-                ->label(self::getEmailLabel()),
+                    ->alignCenter()
+                    ->label(self::getEmailLabel()),
 
                 Tables\Columns\IconColumn::make('instagram_url')
                     ->label('Instagram')
+                    ->alignCenter()
                     ->boolean()
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle')
                     ->getStateUsing(fn($record) => !empty($record->instagram_url)),
 
                 Tables\Columns\IconColumn::make('youtube_url')
+                    ->alignCenter()
                     ->label('YouTube')
                     ->boolean()
                     ->trueIcon('heroicon-o-check-circle')
@@ -142,6 +157,7 @@ class ContactResource extends Resource
 
                 Tables\Columns\IconColumn::make('whatsapp_url')
                     ->label('WhatsApp')
+                    ->alignCenter()
                     ->boolean()
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle')
@@ -149,6 +165,7 @@ class ContactResource extends Resource
 
                 Tables\Columns\IconColumn::make('telegram_url')
                     ->label('Telegram')
+                    ->alignCenter()
                     ->boolean()
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle')
@@ -227,5 +244,22 @@ class ContactResource extends Resource
     public static function getAddressRussianLabel(): string
     {
         return __('contact.address_label_russian');
+    }
+
+    public static function getCreatedAtLabel(): string
+    {
+        return __('lead.created_at_label');
+    }
+
+    public static function getUpdatedAtLabel(): string
+    {
+        return __('lead.updated_at_label');
+    }
+
+    public static function rules(): array
+    {
+        return [
+            'phones.*.phone' => ['required', 'string', 'regex:/^\+[0-9]-\([0-9]{3}\)-[0-9]{3}-[0-9]{2}-[0-9]{2}$/'],
+        ];
     }
 }

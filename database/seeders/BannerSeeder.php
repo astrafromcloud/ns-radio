@@ -12,7 +12,7 @@ class BannerSeeder extends Seeder
         // Example data extracted from your HTML
         $banners = [
             [
-                'image_url' => 'banners/1.png',
+                'image_url' => 'banners/2.png',
                 //                'video_url' => '/assets/banner/video1.mp4',
             ],
             [

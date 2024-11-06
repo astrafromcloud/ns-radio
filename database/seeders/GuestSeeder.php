@@ -16,7 +16,7 @@ class GuestSeeder extends Seeder
                 'views' => 625,
                 'image_url' => 'guests/program1.webp',
                 'hashtag' => '#RadioNS',
-                'video_url' => '<iframe src="https://vk.com/video_ext.php?oid=-21723674&id=456239074&hd=1" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" allowFullScreen></iframe>',
+                'video_url' => '<iframe src="https://vk.com/video_ext.php?oid=-21723674&id=456239074&hd=2&autoplay=1" width="853" height="480" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen></iframe>',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -26,7 +26,7 @@ class GuestSeeder extends Seeder
                 'views' => 625,
                 'image_url' => 'guests/program2.webp',
                 'hashtag' => '#RadioNS',
-                'video_url' => '<iframe src="https://vk.com/video_ext.php?oid=-21723674&id=456239074&hd=1" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" allowFullScreen></iframe>'
+                'video_url' => '<iframe src="https://vk.com/video_ext.php?oid=-21723674&id=456239074&hd=2&autoplay=1" width="853" height="480" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen></iframe>'
             ],
             [
                 'name' => 'Павел Смелов',
@@ -34,7 +34,7 @@ class GuestSeeder extends Seeder
                 'views' => 625,
                 'image_url' => 'guests/program3.webp',
                 'hashtag' => '#RadioNS',
-                'video_url' => '<iframe src="https://vk.com/video_ext.php?oid=-21723674&id=456239074&hd=1" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" allowFullScreen></iframe>'
+                'video_url' => '<iframe src="https://vk.com/video_ext.php?oid=-21723674&id=456239074&hd=2&autoplay=1" width="853" height="480" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen></iframe>'
             ],
             [
                 'name' => 'Павел Смелов',
@@ -42,7 +42,7 @@ class GuestSeeder extends Seeder
                 'views' => 625,
                 'image_url' => 'guests/program4.webp',
                 'hashtag' => '#RadioNS',
-                'video_url' => '<iframe src="https://vk.com/video_ext.php?oid=-21723674&id=456239074&hd=1" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" allowFullScreen></iframe>'
+                'video_url' => '<iframe src="https://vk.com/video_ext.php?oid=-21723674&id=456239074&hd=2&autoplay=1" width="853" height="480" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen></iframe>'
             ],
             [
                 'name' => 'Павел Смелов',
@@ -50,7 +50,7 @@ class GuestSeeder extends Seeder
                 'views' => 625,
                 'image_url' => 'guests/program5.webp',
                 'hashtag' => '#RadioNS',
-                'video_url' => '<iframe src="https://vk.com/video_ext.php?oid=-21723674&id=456239074&hd=1" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" allowFullScreen></iframe>'
+                'video_url' => '<iframe src="https://vk.com/video_ext.php?oid=-21723674&id=456239074&hd=2&autoplay=1" width="853" height="480" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen></iframe>'
             ],
         ];
 

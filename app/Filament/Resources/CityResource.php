@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use PhpParser\Builder;
 
 class CityResource extends Resource
 {
@@ -50,16 +51,24 @@ class CityResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label(self::getNameLabel())
                     ->searchable()
-                    ->sortable(),
+                    ->sortable(true, function (\Illuminate\Database\Eloquent\Builder $query, string $direction) {
+                        $query->orderByRaw("name->>'kk' $direction");
+                    }),
                 Tables\Columns\TextColumn::make('frequency')
                     ->label(self::getFrequencyLabel())
                     ->searchable()
-                    ->sortable(),
+                    ->sortable(true, function (\Illuminate\Database\Eloquent\Builder $query, string $direction) {
+                        $query->orderByRaw("frequency $direction");
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(self::getCreatedAtLabel())
+                    ->alignCenter()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(self::getUpdatedAtLabel())
+                    ->alignCenter()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -131,6 +140,16 @@ class CityResource extends Resource
     public static function getFrequencyLabel(): ?string
     {
         return __('city.frequency_label');
+    }
+
+    public static function getCreatedAtLabel(): string
+    {
+        return __('lead.created_at_label');
+    }
+
+    public static function getUpdatedAtLabel(): string
+    {
+        return __('lead.updated_at_label');
     }
 
 }
