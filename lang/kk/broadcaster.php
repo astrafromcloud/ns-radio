@@ -6,7 +6,7 @@ return [
     'name_label' => 'Аты-жөні',
     'bio_label_russian' => 'Ақпарат - Орысша',
     'bio_label_kazakh' => 'Ақпарат - Қазақша',
-    'image_path_label' => 'Суретке жол',
+    'image_path_label' => 'Сурет',
     'instagram_url_label' => 'Instagram-ға сілтеме',
     'youtube_url_label' => 'Youtube-ке сілтеме',
     'whatsapp_url_label' => 'Whatsapp-қа сілтеме',
