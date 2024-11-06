@@ -16,7 +16,7 @@ class BroadcasterProgramSeeder extends Seeder
     {
         $broadcaster = Broadcaster::find(1);
         $broadcaster->programs()->attach([1, 2]);
-        $broadcaster2 = Broadcaster::find(1);
+        $broadcaster2 = Broadcaster::find(2);
         $broadcaster2->programs()->attach([2, 3]);
 //        BroadcasterProgram::find(1);
     }

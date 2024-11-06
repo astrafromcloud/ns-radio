@@ -4,15 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ContactResource\Pages;
 use App\Models\Contact;
-use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\HtmlString;
 
 class ContactResource extends Resource
 {
@@ -42,6 +39,7 @@ class ContactResource extends Resource
                                             ->mask('+9-(999)-999-99-99')
                                             ->placeholder('+7-777-777-77-77')
                                             ->required()
+                                            ->hiddenLabel()
                                             ->maxLength(255)
                                     ])
                                     ->createItemButtonLabel('Add Phone Number')
@@ -137,8 +135,8 @@ class ContactResource extends Resource
                     ->label(self::getPhoneLabel())
                     ->alignCenter()
                     ->formatStateUsing(function ($state) {
-                        Log::info(json_decode($state)[0]);
-                        return json_decode($state)[0] ?? '-';
+                        $numbersArray = array_map('trim', explode(',', $state));
+                        return $numbersArray[0];
                     }),
 
                 Tables\Columns\TextColumn::make('email')
