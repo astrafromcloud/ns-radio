@@ -7,6 +7,7 @@ use App\Http\Controllers\API\CityController;
 use App\Http\Controllers\API\GuestController;
 use App\Http\Controllers\API\LeadController;
 use App\Http\Controllers\API\SongController;
+use App\Http\Controllers\API\UserController;
 use App\Models\Contact;
 use App\Models\Guest;
 use App\Models\Program;
@@ -45,6 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
+Route::POST('/get-user-by-email', [UserController::class, 'getByEmail']);
 Route::post('/getUserByToken', [AuthController::class, 'getUserByToken']);
 Route::get('/guests/{id}', [GuestController::class, 'show']);
 Route::get('/guests', function (Request $request) {

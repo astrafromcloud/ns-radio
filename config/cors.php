@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:3009', 'https://ns-radio.init.kz'],
+    'allowed_origins' => ['http://localhost:3009', 'https://ns-radio.init.kz', "http://ns-radio.lc", "http://localhost:8000"],
 
     'allowed_origins_patterns' => [],
 
