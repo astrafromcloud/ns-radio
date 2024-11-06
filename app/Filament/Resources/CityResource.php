@@ -62,11 +62,13 @@ class CityResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(self::getCreatedAtLabel())
+                    ->alignCenter()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label(self::getUpdatedAtLabel())
+                    ->alignCenter()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

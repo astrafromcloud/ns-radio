@@ -13,5 +13,10 @@ class Contact extends Model
 
     protected $guarded = false;
 
+    protected $casts = [
+        'phones' => 'array',
+        'description' => 'array',
+        'address' => 'array',
+    ];
     public $translatable = ['description', 'address'];
 }

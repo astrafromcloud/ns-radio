@@ -8,6 +8,7 @@ use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Log;
@@ -25,19 +26,30 @@ class ContactResource extends Resource
             ->schema([
                 Forms\Components\Section::make()
                     ->schema([
-//                        Forms\Components\Repeater::make('phones')
-//                            ->label('Phone Numbers')
-//                            ->addActionLabel('Add Phone Number')
-//                            ->defaultItems(1)
-//                            ->schema([
-//                                Forms\Components\TextInput::make('phone')
-//                                    ->label('Phone Number')
-//                                    ->tel()
-//                                    ->required()
-//                            ])
-//                            ->columns(1),
+                        Forms\Components\Section::make()
+                            ->schema([
+                                Forms\Components\Repeater::make('phones')
+                                    ->label('Phone Numbers')
+                                    ->addActionLabel('Add Phone Number')
+                                    ->defaultItems(1)
+                                    ->columnSpanFull()
+                                    ->reorderable(false)
+                                    ->grid(2)
+                                    ->schema([
+                                        Forms\Components\TextInput::make('phone')
+                                            ->label(false)
+                                            ->tel()
+                                            ->mask('+9-(999)-999-99-99')
+                                            ->placeholder('+7-777-777-77-77')
+                                            ->required()
+                                            ->maxLength(255)
+                                    ])
+                                    ->createItemButtonLabel('Add Phone Number')
+                                    ->deletable(false)
+                                    ->maxItems(4)
+                            ]),
 
-                    //
+                        // TODO PHONE EDITOR
 
                         Forms\Components\TextInput::make('email')
                             ->label(self::getEmailLabel())
@@ -124,7 +136,10 @@ class ContactResource extends Resource
                 Tables\Columns\TextColumn::make('phones')
                     ->label(self::getPhoneLabel())
                     ->alignCenter()
-                    ->formatStateUsing(fn($state) => json_decode($state)[0] ?? '-'),
+                    ->formatStateUsing(function ($state) {
+                        Log::info(json_decode($state)[0]);
+                        return json_decode($state)[0] ?? '-';
+                    }),
 
                 Tables\Columns\TextColumn::make('email')
                     ->alignCenter()
@@ -245,5 +260,12 @@ class ContactResource extends Resource
     public static function getUpdatedAtLabel(): string
     {
         return __('lead.updated_at_label');
+    }
+
+    public static function rules(): array
+    {
+        return [
+            'phones.*.phone' => ['required', 'string', 'regex:/^\+[0-9]-\([0-9]{3}\)-[0-9]{3}-[0-9]{2}-[0-9]{2}$/'],
+        ];
     }
 }

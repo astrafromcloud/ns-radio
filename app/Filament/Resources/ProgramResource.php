@@ -102,10 +102,12 @@ class ProgramResource extends Resource
                     ->badge()
                     ->separator(','),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(self::getCreatedAtLabel())
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(self::getUpdatedAtLabel())
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

@@ -65,6 +65,7 @@ class LeadResource extends Resource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('created_at')
+                    ->label(self::getCreatedAtLabel())
                     ->alignCenter()
                     ->dateTime()
                     ->sortable(),

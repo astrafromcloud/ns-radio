@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ProgramResource extends ResourceCollection
 {
+    public static $wrap = null;
     /**
      * Transform the resource collection into an array.
      *
