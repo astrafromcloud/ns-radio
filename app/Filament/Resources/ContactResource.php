@@ -36,7 +36,7 @@ class ContactResource extends Resource
                                         Forms\Components\TextInput::make('phone')
                                             ->label(false)
                                             ->tel()
-                                            ->mask('+9-(999)-999-99-99')
+                                            ->mask('+9 (999)-999-99-99')
                                             ->placeholder('+7-777-777-77-77')
                                             ->required()
                                             ->hiddenLabel()
@@ -131,13 +131,9 @@ class ContactResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('phones')
+                Tables\Columns\TextColumn::make('phone_numbers')
                     ->label(self::getPhoneLabel())
-                    ->alignCenter()
-                    ->formatStateUsing(function ($state) {
-                        $numbersArray = array_map('trim', explode(',', $state));
-                        return $numbersArray[0];
-                    }),
+                    ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('email')
                     ->alignCenter()
