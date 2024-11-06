@@ -15,7 +15,6 @@ class BannerResource extends Resource
 {
     protected static ?string $model = Banner::class;
     protected static ?string $navigationIcon = 'heroicon-o-photo';
-    protected static ?string $modelLabel = 'Banner';
     protected static ?string $navigationGroup = 'Content';
     protected static ?int $navigationSort = 1;
 
@@ -82,12 +81,13 @@ class BannerResource extends Resource
                     ->getStateUsing(fn($record) => !empty($record->video_url)),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    // TODO LOCALE
+                    ->label(self::getCreatedAtLabel())
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(self::getUpdatedAtLabel())
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -125,6 +125,11 @@ class BannerResource extends Resource
         return __('banner.model_label');
     }
 
+    public static function getNavigationLabel(): string
+    {
+        return __('banner.navigation_label');
+    }
+
     public static function getImageLabel(): string
     {
         return __('banner.image_label');
@@ -135,15 +140,19 @@ class BannerResource extends Resource
         return __('banner.video_label');
     }
 
-    public static function getNavigationLabel(): string
-    {
-        return __('banner.navigation_label');
-    }
-
     public static function getNavigationGroup(): string
     {
         return __('banner.navigation_group_label');
     }
 
+    public static function getCreatedAtLabel(): string
+    {
+        return __('lead.created_at_label');
+    }
+
+    public static function getUpdatedAtLabel(): string
+    {
+        return __('lead.updated_at_label');
+    }
 
 }

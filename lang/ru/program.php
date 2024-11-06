@@ -9,4 +9,6 @@ return [
     'to_label' => 'До',
     'image_label' => 'Картинка',
     'broadcasters_label' => 'Ведущие',
+    'created_at_label' => 'Создано',
+    'updated_at_label' => 'Обновлено',
 ];

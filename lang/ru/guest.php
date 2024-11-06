@@ -7,5 +7,7 @@ return [
     'image_label' => 'Картинка',
     'hashtag_label' => 'Хэштег',
     'views_label' => 'Просмотры',
-    'video_label' => 'Ссылка видео'
+    'video_label' => 'Ссылка видео',
+    'created_at_label' => 'Создано',
+    'updated_at_label' => 'Обновлено',
 ];

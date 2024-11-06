@@ -37,6 +37,8 @@ class ContactResource extends Resource
 //                            ])
 //                            ->columns(1),
 
+                    //
+
                         Forms\Components\TextInput::make('email')
                             ->label(self::getEmailLabel())
                             ->email()
@@ -233,5 +235,15 @@ class ContactResource extends Resource
     public static function getAddressRussianLabel(): string
     {
         return __('contact.address_label_russian');
+    }
+
+    public static function getCreatedAtLabel(): string
+    {
+        return __('lead.created_at_label');
+    }
+
+    public static function getUpdatedAtLabel(): string
+    {
+        return __('lead.updated_at_label');
     }
 }

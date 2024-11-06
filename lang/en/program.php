@@ -9,4 +9,6 @@ return [
     'to_label' => 'To',
     'image_label' => 'Image',
     'broadcasters_label' => 'Broadcasters',
+    'created_at_label' => 'Created at',
+    'updated_at_label' => 'Updated at',
 ];

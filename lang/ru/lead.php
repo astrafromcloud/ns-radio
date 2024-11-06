@@ -15,4 +15,6 @@ return [
     'description_stat_label' => 'Общее количество лидов',
     'description_today_stat_label' => 'Лиды получены сегодня',
     'description_month_stat_label' => 'Лиды, полученные в этом месяце',
+    'created_at_label' => 'Создано',
+    'updated_at_label' => 'Обновлено',
 ];

@@ -8,4 +8,6 @@ return [
     'enter_radio_frequency' => 'Enter frequency',
     'city_name_kazakh' => 'City name in Kazakh',
     'city_name_russian' => 'City name in Russian',
+    'created_at_label' => 'Created at',
+    'updated_at_label' => 'Updated at',
 ];

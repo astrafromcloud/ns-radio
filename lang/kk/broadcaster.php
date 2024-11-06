@@ -12,4 +12,6 @@ return [
     'whatsapp_url_label' => 'Whatsapp-қа сілтеме',
     'telegram_url_label' => 'Telegram-ға сілтеме',
     'programs_label' => 'Бағдарламалар',
+    'created_at_label' => 'Құрылды',
+    'updated_at_label' => 'Жаңартылды',
 ];

@@ -7,6 +7,8 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class BroadcasterResource extends ResourceCollection
 {
+
+    public static $wrap = null;
     /**
      * Transform the resource into an array.
      *

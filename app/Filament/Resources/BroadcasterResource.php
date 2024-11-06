@@ -114,10 +114,12 @@ class BroadcasterResource extends Resource
                     ->badge()
                     ->separator(','),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(self::getCreatedAtLabel())
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(self::getUpdatedAtLabel())
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -212,4 +214,13 @@ class BroadcasterResource extends Resource
         return __('broadcaster.model_label');
     }
 
+    public static function getCreatedAtLabel(): string
+    {
+        return __('lead.created_at_label');
+    }
+
+    public static function getUpdatedAtLabel(): string
+    {
+        return __('lead.updated_at_label');
+    }
 }

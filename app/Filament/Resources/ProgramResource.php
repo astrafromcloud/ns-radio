@@ -179,4 +179,14 @@ class ProgramResource extends Resource
         return trans('program.broadcasters_label');
     }
 
+    public static function getCreatedAtLabel(): string
+    {
+        return __('lead.created_at_label');
+    }
+
+    public static function getUpdatedAtLabel(): string
+    {
+        return __('lead.updated_at_label');
+    }
+
 }
