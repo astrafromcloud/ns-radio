@@ -52,17 +52,20 @@ class LeadResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label(self::getNameLabel())
+                    ->alignCenter()
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('phone')
                     ->label(self::getPhoneLabel())
-                    ->searchable()
-                    ->sortable(),
+                    ->alignCenter()
+                    ->searchable(),
                 TextColumn::make('email')
                     ->label(self::getEmailLabel())
+                    ->alignCenter()
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('created_at')
+                    ->alignCenter()
                     ->dateTime()
                     ->sortable(),
             ])
@@ -99,7 +102,8 @@ class LeadResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->recordUrl(fn ($record) => null);
     }
 
     public static function getRelations(): array
@@ -167,6 +171,16 @@ class LeadResource extends Resource
     public static function getNameLabel(): string
     {
         return __('lead.name_label');
+    }
+
+    public static function getCreatedAtLabel(): string
+    {
+        return __('lead.created_at_label');
+    }
+
+    public static function getUpdatedAtLabel(): string
+    {
+        return __('lead.updated_at_label');
     }
 
 

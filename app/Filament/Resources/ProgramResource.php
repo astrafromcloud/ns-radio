@@ -79,20 +79,26 @@ class ProgramResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
                     ->label(self::getImageLabel())
-                    ->circular(),
+                    ->alignCenter()
+                    ->circular()
+                    ->size(80),
                 Tables\Columns\TextColumn::make('name')
                     ->label(self::getNameLabel())
+                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('from')
                     ->label(self::getFromLabel())
-                    ->numeric()
-                    ->sortable(),
+                    ->alignCenter()
+                    ->numeric(),
+//                    ->sortable(),
                 Tables\Columns\TextColumn::make('to')
                     ->label(self::getToLabel())
-                    ->numeric()
-                    ->sortable(),
+                    ->alignCenter()
+                    ->numeric(),
+//                    ->sortable(),
                 Tables\Columns\TextColumn::make('broadcasters.name')
                     ->label(self::getBroadcastersLabel())
+                    ->alignCenter()
                     ->badge()
                     ->separator(','),
                 Tables\Columns\TextColumn::make('created_at')

@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use PhpParser\Builder;
 
 class CityResource extends Resource
 {
@@ -50,11 +51,15 @@ class CityResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label(self::getNameLabel())
                     ->searchable()
-                    ->sortable(),
+                    ->sortable(true, function (\Illuminate\Database\Eloquent\Builder $query, string $direction) {
+                        $query->orderByRaw("name->>'kk' $direction");
+                    }),
                 Tables\Columns\TextColumn::make('frequency')
                     ->label(self::getFrequencyLabel())
                     ->searchable()
-                    ->sortable(),
+                    ->sortable(true, function (\Illuminate\Database\Eloquent\Builder $query, string $direction) {
+                        $query->orderByRaw("frequency $direction");
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

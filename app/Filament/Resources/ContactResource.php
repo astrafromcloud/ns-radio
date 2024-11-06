@@ -121,19 +121,23 @@ class ContactResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('phones')
                     ->label(self::getPhoneLabel())
+                    ->alignCenter()
                     ->formatStateUsing(fn($state) => json_decode($state)[0] ?? '-'),
 
                 Tables\Columns\TextColumn::make('email')
-                ->label(self::getEmailLabel()),
+                    ->alignCenter()
+                    ->label(self::getEmailLabel()),
 
                 Tables\Columns\IconColumn::make('instagram_url')
                     ->label('Instagram')
+                    ->alignCenter()
                     ->boolean()
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle')
                     ->getStateUsing(fn($record) => !empty($record->instagram_url)),
 
                 Tables\Columns\IconColumn::make('youtube_url')
+                    ->alignCenter()
                     ->label('YouTube')
                     ->boolean()
                     ->trueIcon('heroicon-o-check-circle')
@@ -142,6 +146,7 @@ class ContactResource extends Resource
 
                 Tables\Columns\IconColumn::make('whatsapp_url')
                     ->label('WhatsApp')
+                    ->alignCenter()
                     ->boolean()
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle')
@@ -149,6 +154,7 @@ class ContactResource extends Resource
 
                 Tables\Columns\IconColumn::make('telegram_url')
                     ->label('Telegram')
+                    ->alignCenter()
                     ->boolean()
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle')

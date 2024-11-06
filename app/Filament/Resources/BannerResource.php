@@ -6,6 +6,7 @@ use App\Filament\Resources\BannerResource\Pages;
 use App\Models\Banner;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -28,19 +29,38 @@ class BannerResource extends Resource
                             ->label(self::getImageLabel())
                             ->image()
                             ->imageEditor()
+                            ->maxSize(5000)
                             ->directory('banners')
                             ->visibility('public')
                             ->columnSpanFull()
-                            ->required(fn ($get) => empty($get('video_url'))),
+                            ->required(fn ($get) => empty($get('video_url')))
+                            ->disabled(fn ($get) => filled($get('video_url')))
+                            ->dehydrated(fn ($get) => empty($get('video_url')))
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                if (filled($state)) {
+                                    $set('video_url', null);
+                                }
+                            }),
 
-                        Forms\Components\TextInput::make('video_url')
+                        Forms\Components\FileUpload::make('video_url')
                             ->label(self::getVideoLabel())
-                            ->url()
+                            ->maxSize(10000)
+                            ->acceptedFileTypes(['video/mp4', 'video/ogg'])
+                            ->directory('banners')
+                            ->visibility('public')
                             ->columnSpanFull()
                             ->required(fn ($get) => empty($get('image_url')))
+                            ->disabled(fn ($get) => filled($get('image_url')))
+                            ->dehydrated(fn ($get) => empty($get('image_url')))
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                if (filled($state)) {
+                                    $set('image_url', null);
+                                }
+                            })
                     ])
             ]);
     }
+
 
     public static function table(Table $table): Table
     {
@@ -48,15 +68,21 @@ class BannerResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('image_url')
                     ->label(self::getImageLabel())
-                    ->square()
-                    ->defaultImageUrl(url('/images/placeholder.png')),
+                    ->alignCenter()
+                    ->sortable()
+                    ->defaultImageUrl(url(asset('/storage' . '/images/placeholder.png'))),
 
-                Tables\Columns\TextColumn::make('video_url')
+                Tables\Columns\IconColumn::make('video_url')
                     ->label(self::getVideoLabel())
+                    ->alignCenter()
+                    ->boolean()
                     ->searchable()
-                    ->toggleable(),
+                    ->toggleable()
+                    ->sortable()
+                    ->getStateUsing(fn($record) => !empty($record->video_url)),
 
                 Tables\Columns\TextColumn::make('created_at')
+                    // TODO LOCALE
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -89,22 +115,22 @@ class BannerResource extends Resource
         ];
     }
 
-    public static function getPluralLabel() : string
+    public static function getPluralLabel(): string
     {
         return __('banner.plural_label');
     }
 
-    public static function getModelLabel() : string
+    public static function getModelLabel(): string
     {
         return __('banner.model_label');
     }
 
-    public static function getImageLabel() : string
+    public static function getImageLabel(): string
     {
         return __('banner.image_label');
     }
 
-    public static function getVideoLabel() : string
+    public static function getVideoLabel(): string
     {
         return __('banner.video_label');
     }

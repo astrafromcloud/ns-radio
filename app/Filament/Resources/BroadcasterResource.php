@@ -101,12 +101,16 @@ class BroadcasterResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('image_path')
                     ->label(__('broadcaster.image_path_label'))
-                    ->circular(),
+                    ->alignCenter()
+                    ->circular()
+                    ->size(80),
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('broadcaster.name_label'))
+                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('programs.name')
                     ->label(__('broadcaster.programs_label'))
+                    ->alignCenter()
                     ->badge()
                     ->separator(','),
                 Tables\Columns\TextColumn::make('created_at')
