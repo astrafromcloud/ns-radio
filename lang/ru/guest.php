@@ -8,6 +8,7 @@ return [
     'hashtag_label' => 'Хэштег',
     'views_label' => 'Просмотры',
     'video_label' => 'Ссылка видео',
+    'video_type_label' => 'Вид видео',
     'created_at_label' => 'Создано',
     'updated_at_label' => 'Обновлено',
 ];

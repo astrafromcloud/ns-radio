@@ -26,47 +26,47 @@ return [
     'fields' => [
 
         'bulk_select_page' => [
-            'label' => 'Выбрать/снять все элементы для массовых действий.',
+            'label' => 'Барлық элементтерді жаппай әрекеттерге таңдау/алып тастау.',
         ],
 
         'bulk_select_record' => [
-            'label' => 'Выбрать/отменить :key для массовых действий.',
+            'label' => ':key жаппай әрекеттерге таңдау/алып тастау.',
         ],
 
         'bulk_select_group' => [
-            'label' => 'Выбрать/отменить сводку :title для массовых действий.',
+            'label' => ':title топтамасын жаппай әрекеттерге таңдау/алып тастау.',
         ],
 
         'search' => [
-            'label' => 'Поиск',
-            'placeholder' => 'Поиск',
-            'indicator' => 'Поиск',
+            'label' => 'Іздеу',
+            'placeholder' => 'Іздеу',
+            'indicator' => 'Іздеу',
         ],
 
     ],
 
     'summary' => [
 
-        'heading' => 'Сводка',
+        'heading' => 'Қысқаша мазмұны',
 
         'subheadings' => [
-            'all' => 'Все :label',
-            'group' => 'Cводка :group',
-            'page' => 'Эта страница',
+            'all' => 'Барлық :label',
+            'group' => ':group топтамасы',
+            'page' => 'Осы бет',
         ],
 
         'summarizers' => [
 
             'average' => [
-                'label' => 'Среднее',
+                'label' => 'Орташа',
             ],
 
             'count' => [
-                'label' => 'Кол.',
+                'label' => 'Саны',
             ],
 
             'sum' => [
-                'label' => 'Сумма',
+                'label' => 'Сомасы',
             ],
 
         ],
@@ -76,11 +76,11 @@ return [
     'actions' => [
 
         'disable_reordering' => [
-            'label' => 'Сохранить порядок',
+            'label' => 'Тәртіпті сақтау',
         ],
 
         'enable_reordering' => [
-            'label' => 'Изменить порядок',
+            'label' => 'Тәртіпті өзгерту',
         ],
 
         'filter' => [
@@ -88,24 +88,24 @@ return [
         ],
 
         'group' => [
-            'label' => 'Группировать',
+            'label' => 'Топтау',
         ],
 
         'open_bulk_actions' => [
-            'label' => 'Открыть действия',
+            'label' => 'Әрекеттерді ашу',
         ],
 
         'toggle_columns' => [
-            'label' => 'Переключить столбцы',
+            'label' => 'Бағандарды ауыстыру',
         ],
 
     ],
 
     'empty' => [
 
-        'heading' => 'Не найдено :model',
+        'heading' => 'Құрамында :model табылмады',
 
-        'description' => 'Создать :model для старта.',
+        'description' => 'Бастау үшін :model құрыңыз.',
 
     ],
 
@@ -114,45 +114,45 @@ return [
         'actions' => [
 
             'apply' => [
-                'label' => 'Применить фильтры',
+                'label' => 'Фильтрлерді қолдану',
             ],
 
             'remove' => [
-                'label' => 'Удалить фильтр',
+                'label' => 'Фильтрді жою',
             ],
 
             'remove_all' => [
-                'label' => 'Очистить фильтры',
-                'tooltip' => 'Очистить фильтры',
+                'label' => 'Фильтрлерді тазалау',
+                'tooltip' => 'Фильтрлерді тазалау',
             ],
 
             'reset' => [
-                'label' => 'Сбросить',
+                'label' => 'Қалпына келтіру',
             ],
 
         ],
 
-        'heading' => 'Фильтры',
+        'heading' => 'Фильтрлер',
 
-        'indicator' => 'Активные фильтры',
+        'indicator' => 'Белсенді фильтрлер',
 
         'multi_select' => [
-            'placeholder' => 'Все',
+            'placeholder' => 'Барлығы',
         ],
 
         'select' => [
-            'placeholder' => 'Все',
+            'placeholder' => 'Барлығы',
         ],
 
         'trashed' => [
 
-            'label' => 'Удаленные записи',
+            'label' => 'Жойылған жазбалар',
 
-            'only_trashed' => 'Только удаленные записи',
+            'only_trashed' => 'Тек жойылған жазбалар',
 
-            'with_trashed' => 'С удаленными записями',
+            'with_trashed' => 'Жойылған жазбалармен бірге',
 
-            'without_trashed' => 'Без удаленных записей',
+            'without_trashed' => 'Жойылған жазбаларсыз',
 
         ],
 
@@ -186,7 +186,7 @@ return [
 
     'selection_indicator' => [
 
-        'selected_count' => '1 жазба таңдалынды|:count жазба таңдалынды',
+        'selected_count' => '1 жазба таңдалды|:count жазба таңдалды',
 
         'actions' => [
 

@@ -17,7 +17,4 @@ return [
     'description_month_stat_label' => 'Лиды, полученные в этом месяце',
     'created_at_label' => 'Создано',
     'updated_at_label' => 'Обновлено',
-    'content_label' => 'Контент',
-    'is_active_label' => 'Активно',
-    'content_type_label' => 'Тип баннера'
 ];

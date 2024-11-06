@@ -16,4 +16,15 @@ class Banner extends Model
         'is_active' => 'boolean',
         'order' => 'integer',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($banner) {
+            if (!$banner->order) {
+                $banner->order = static::max('order') + 1;
+            }
+        });
+    }
 }

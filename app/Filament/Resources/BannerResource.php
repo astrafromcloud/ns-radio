@@ -66,24 +66,13 @@ class BannerResource extends Resource
     {
         return $table
             ->columns([
-//                Tables\Columns\ImageColumn::make('image_url')
-//                    ->label(self::getImageLabel())
-//                    ->alignCenter()
-//                    ->sortable()
-//                    ->defaultImageUrl(url(asset('/storage' . '/images/placeholder.png'))),
-//
-//                Tables\Columns\IconColumn::make('video_url')
-//                    ->label(self::getVideoLabel())
-//                    ->alignCenter()
-//                    ->boolean()
-//                    ->searchable()
-//                    ->toggleable()
-//                    ->sortable()
-//                    ->getStateUsing(fn($record) => !empty($record->video_url)),
-
-                Tables\Columns\ViewColumn::make('content')
-                    ->label(self::getContentLabel())
+                Tables\Columns\TextColumn::make('order')
+                    ->label(self::getOrderLabel())
                     ->alignCenter()
+                    ->sortable(),
+                Tables\Columns\ViewColumn::make('content')
+                    ->alignCenter()
+                    ->label(self::getContentLabel())
                     ->view('components.media-column'),
                 Tables\Columns\IconColumn::make('is_active')
                     ->label(self::getIsActiveLabel())
@@ -169,16 +158,23 @@ class BannerResource extends Resource
 
     public static function getContentLabel(): string
     {
-        return __('lead.content_label');
+        return __('banner.content_label');
     }
 
     public static function getIsActiveLabel(): string
     {
-        return __('lead.is_active_label');
+        return __('banner.is_active_label');
     }
 
     public static function getContentTypeLabel(): string
     {
-        return __('lead.content_type_label');
+        return __('banner.content_type_label');
     }
+
+    public static function getOrderLabel(): string
+    {
+        return __('banner.order_label');
+    }
+
+
 }

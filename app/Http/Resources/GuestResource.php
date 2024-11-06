@@ -27,6 +27,7 @@ class GuestResource extends ResourceCollection
                 'views' => $item->views,
                 'hashtag' => $item->hashtag,
                 'video_url' => $item->video_url,
+                'video_type' => $item->video_type,
                 'created_at' => Carbon::parse($item->created_at)->toDateTimeString(),
                 'updated_at' => Carbon::parse($item->updated_at)->toDateTimeString(),
             ];

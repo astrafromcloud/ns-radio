@@ -4,6 +4,7 @@ return [
     'plural_label' => 'Contact informations',
     'model_label' => 'Contact information',
     'phone_label' => 'Phone number',
+    'phone_add_button' => 'Add phone',
     'email_label' => 'Email address',
     'description_russian_label' => 'Description (Russian language)',
     'description_kazakh_label' => 'Description (Kazakh language)',

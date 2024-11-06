@@ -2,7 +2,7 @@
 
 return [
 
-    'label' => 'Конструктор запросов',
+    'label' => 'Сұрау құрастырушы',
 
     'form' => [
 
@@ -12,32 +12,32 @@ return [
 
         'or_groups' => [
 
-            'label' => 'Группы',
+            'label' => 'Топтар',
 
             'block' => [
-                'label' => 'Дизъюнкция (ИЛИ)',
-                'or' => 'ИЛИ',
+                'label' => 'Дизъюнкция (НЕМЕСЕ)',
+                'or' => 'НЕМЕСЕ',
             ],
 
         ],
 
         'rules' => [
 
-            'label' => 'Правила',
+            'label' => 'Ережелер',
 
             'item' => [
-                'and' => 'И',
+                'and' => 'ЖӘНЕ',
             ],
 
         ],
 
     ],
 
-    'no_rules' => '(Нет правил)',
+    'no_rules' => '(Ереже жоқ)',
 
     'item_separators' => [
-        'and' => 'И',
-        'or' => 'ИЛИ',
+        'and' => 'ЖӘНЕ',
+        'or' => 'НЕМЕСЕ',
     ],
 
     'operators' => [
@@ -45,13 +45,13 @@ return [
         'is_filled' => [
 
             'label' => [
-                'direct' => 'Заполнено',
-                'inverse' => 'Пусто',
+                'direct' => 'Толтырылған',
+                'inverse' => 'Бос',
             ],
 
             'summary' => [
-                'direct' => ':attribute заполнено',
-                'inverse' => ':attribute пусто',
+                'direct' => ':attribute толтырылған',
+                'inverse' => ':attribute бос',
             ],
 
         ],
@@ -61,13 +61,13 @@ return [
             'is_true' => [
 
                 'label' => [
-                    'direct' => 'Истина',
-                    'inverse' => 'Ложь',
+                    'direct' => 'Шын',
+                    'inverse' => 'Жалған',
                 ],
 
                 'summary' => [
-                    'direct' => ':attribute истинно',
-                    'inverse' => ':attribute ложно',
+                    'direct' => ':attribute шын',
+                    'inverse' => ':attribute жалған',
                 ],
 
             ],
@@ -79,13 +79,13 @@ return [
             'is_after' => [
 
                 'label' => [
-                    'direct' => 'После',
-                    'inverse' => 'Не после',
+                    'direct' => 'Кейін',
+                    'inverse' => 'Кейін емес',
                 ],
 
                 'summary' => [
-                    'direct' => ':attribute после :date',
-                    'inverse' => ':attribute не после :date',
+                    'direct' => ':attribute :date кейін',
+                    'inverse' => ':attribute :date кейін емес',
                 ],
 
             ],
@@ -93,13 +93,13 @@ return [
             'is_before' => [
 
                 'label' => [
-                    'direct' => 'До',
-                    'inverse' => 'Не до',
+                    'direct' => 'Бұрын',
+                    'inverse' => 'Бұрын емес',
                 ],
 
                 'summary' => [
-                    'direct' => ':attribute до :date',
-                    'inverse' => ':attribute не до :date',
+                    'direct' => ':attribute :date бұрын',
+                    'inverse' => ':attribute :date бұрын емес',
                 ],
 
             ],
@@ -107,13 +107,13 @@ return [
             'is_date' => [
 
                 'label' => [
-                    'direct' => 'Дата',
-                    'inverse' => 'Не дата',
+                    'direct' => 'Күні',
+                    'inverse' => 'Күні емес',
                 ],
 
                 'summary' => [
-                    'direct' => ':attribute это :date',
-                    'inverse' => ':attribute не это :date',
+                    'direct' => ':attribute бұл :date',
+                    'inverse' => ':attribute бұл емес :date',
                 ],
 
             ],
@@ -121,13 +121,13 @@ return [
             'is_month' => [
 
                 'label' => [
-                    'direct' => 'Месяц',
-                    'inverse' => 'Не месяц',
+                    'direct' => 'Ай',
+                    'inverse' => 'Ай емес',
                 ],
 
                 'summary' => [
-                    'direct' => ':attribute это :month',
-                    'inverse' => ':attribute не это :month',
+                    'direct' => ':attribute бұл :month',
+                    'inverse' => ':attribute бұл емес :month',
                 ],
 
             ],
@@ -135,13 +135,13 @@ return [
             'is_year' => [
 
                 'label' => [
-                    'direct' => 'Год',
-                    'inverse' => 'Не год',
+                    'direct' => 'Жыл',
+                    'inverse' => 'Жыл емес',
                 ],
 
                 'summary' => [
-                    'direct' => ':attribute это :year',
-                    'inverse' => ':attribute не это :year',
+                    'direct' => ':attribute бұл :year',
+                    'inverse' => ':attribute бұл емес :year',
                 ],
 
             ],
@@ -149,15 +149,15 @@ return [
             'form' => [
 
                 'date' => [
-                    'label' => 'Дата',
+                    'label' => 'Күні',
                 ],
 
                 'month' => [
-                    'label' => 'Месяц',
+                    'label' => 'Ай',
                 ],
 
                 'year' => [
-                    'label' => 'Год',
+                    'label' => 'Жыл',
                 ],
 
             ],
@@ -169,13 +169,13 @@ return [
             'equals' => [
 
                 'label' => [
-                    'direct' => 'Равно',
-                    'inverse' => 'Не равно',
+                    'direct' => 'Тең',
+                    'inverse' => 'Тең емес',
                 ],
 
                 'summary' => [
-                    'direct' => ':attribute равно :number',
-                    'inverse' => ':attribute не равно :number',
+                    'direct' => ':attribute тең :number',
+                    'inverse' => ':attribute тең емес :number',
                 ],
 
             ],
@@ -184,12 +184,12 @@ return [
 
                 'label' => [
                     'direct' => 'Максимум',
-                    'inverse' => 'Больше чем',
+                    'inverse' => 'Көбірек',
                 ],
 
                 'summary' => [
                     'direct' => ':attribute максимум :number',
-                    'inverse' => ':attribute больше чем :number',
+                    'inverse' => ':attribute көбірек :number',
                 ],
 
             ],
@@ -198,12 +198,12 @@ return [
 
                 'label' => [
                     'direct' => 'Минимум',
-                    'inverse' => 'Меньше чем',
+                    'inverse' => 'Аздау',
                 ],
 
                 'summary' => [
                     'direct' => ':attribute минимум :number',
-                    'inverse' => ':attribute меньше чем :number',
+                    'inverse' => ':attribute аздау :number',
                 ],
 
             ],
@@ -211,8 +211,8 @@ return [
             'aggregates' => [
 
                 'average' => [
-                    'label' => 'Среднее',
-                    'summary' => 'Среднее :attribute',
+                    'label' => 'Орташа',
+                    'summary' => 'Орташа :attribute',
                 ],
 
                 'max' => [
@@ -226,8 +226,8 @@ return [
                 ],
 
                 'sum' => [
-                    'label' => 'Сумма',
-                    'summary' => 'Сумма :attribute',
+                    'label' => 'Жиын',
+                    'summary' => 'Жиын :attribute',
                 ],
 
             ],
@@ -239,7 +239,7 @@ return [
                 ],
 
                 'number' => [
-                    'label' => 'Число',
+                    'label' => 'Сан',
                 ],
 
             ],
@@ -251,13 +251,13 @@ return [
             'equals' => [
 
                 'label' => [
-                    'direct' => 'Имеет',
-                    'inverse' => 'Не имеет',
+                    'direct' => 'Ие',
+                    'inverse' => 'Ие емес',
                 ],
 
                 'summary' => [
-                    'direct' => 'Имеет :count :relationship',
-                    'inverse' => 'Не имеет :count :relationship',
+                    'direct' => ':count :relationship ие',
+                    'inverse' => ':count :relationship ие емес',
                 ],
 
             ],
@@ -265,13 +265,13 @@ return [
             'has_max' => [
 
                 'label' => [
-                    'direct' => 'Имеет максимум',
-                    'inverse' => 'Имеет больше чем',
+                    'direct' => 'Максимум ие',
+                    'inverse' => 'Көбірек ие',
                 ],
 
                 'summary' => [
-                    'direct' => 'Имеет максимум :count :relationship',
-                    'inverse' => 'Имеет больше чем :count :relationship',
+                    'direct' => 'Максимум :count :relationship ие',
+                    'inverse' => 'Көбірек :count :relationship ие',
                 ],
 
             ],
@@ -279,13 +279,13 @@ return [
             'has_min' => [
 
                 'label' => [
-                    'direct' => 'Имеет минимум',
-                    'inverse' => 'Имеет меньше чем',
+                    'direct' => 'Минимум ие',
+                    'inverse' => 'Аздау ие',
                 ],
 
                 'summary' => [
-                    'direct' => 'Имеет минимум :count :relationship',
-                    'inverse' => 'Имеет меньше чем :count :relationship',
+                    'direct' => 'Минимум :count :relationship ие',
+                    'inverse' => 'Аздау :count :relationship ие',
                 ],
 
             ],
@@ -293,13 +293,13 @@ return [
             'is_empty' => [
 
                 'label' => [
-                    'direct' => 'Пусто',
-                    'inverse' => 'Не пусто',
+                    'direct' => 'Бос',
+                    'inverse' => 'Бос емес',
                 ],
 
                 'summary' => [
-                    'direct' => ':relationship пусто',
-                    'inverse' => ':relationship не пусто',
+                    'direct' => ':relationship бос',
+                    'inverse' => ':relationship бос емес',
                 ],
 
             ],
@@ -309,13 +309,13 @@ return [
                 'label' => [
 
                     'single' => [
-                        'direct' => 'Является',
-                        'inverse' => 'Не является',
+                        'direct' => 'Байланысты',
+                        'inverse' => 'Байланысты емес',
                     ],
 
                     'multiple' => [
-                        'direct' => 'Содержит',
-                        'inverse' => 'Не содержит',
+                        'direct' => 'Қамтиды',
+                        'inverse' => 'Қамтымайды',
                     ],
 
                 ],
@@ -323,18 +323,18 @@ return [
                 'summary' => [
 
                     'single' => [
-                        'direct' => ':relationship это :values',
-                        'inverse' => ':relationship не это :values',
+                        'direct' => ':relationship бұл :values',
+                        'inverse' => ':relationship бұл емес :values',
                     ],
 
                     'multiple' => [
-                        'direct' => ':relationship содержит :values',
-                        'inverse' => ':relationship не содержит :values',
+                        'direct' => ':relationship қамтиды :values',
+                        'inverse' => ':relationship қамтымайды :values',
                     ],
 
                     'values_glue' => [
                         0 => ', ',
-                        'final' => ' или ',
+                        'final' => ' немесе ',
                     ],
 
                 ],
@@ -342,11 +342,11 @@ return [
                 'form' => [
 
                     'value' => [
-                        'label' => 'Значение',
+                        'label' => 'Мән',
                     ],
 
                     'values' => [
-                        'label' => 'Значения',
+                        'label' => 'Мәндер',
                     ],
 
                 ],
@@ -356,7 +356,7 @@ return [
             'form' => [
 
                 'count' => [
-                    'label' => 'Количество',
+                    'label' => 'Саны',
                 ],
 
             ],
@@ -368,27 +368,27 @@ return [
             'is' => [
 
                 'label' => [
-                    'direct' => 'Является',
-                    'inverse' => 'Не является',
+                    'direct' => 'Болып табылады',
+                    'inverse' => 'Болып табылмайды',
                 ],
 
                 'summary' => [
-                    'direct' => ':attribute это :values',
-                    'inverse' => ':attribute не это :values',
+                    'direct' => ':attribute бұл :values',
+                    'inverse' => ':attribute бұл емес :values',
                     'values_glue' => [
                         ', ',
-                        'final' => ' или ',
+                        'final' => ' немесе ',
                     ],
                 ],
 
                 'form' => [
 
                     'value' => [
-                        'label' => 'Значение',
+                        'label' => 'Мән',
                     ],
 
                     'values' => [
-                        'label' => 'Значения',
+                        'label' => 'Мәндер',
                     ],
 
                 ],
@@ -402,13 +402,13 @@ return [
             'contains' => [
 
                 'label' => [
-                    'direct' => 'Содержит',
-                    'inverse' => 'Не содержит',
+                    'direct' => 'Қамтиды',
+                    'inverse' => 'Қамтымайды',
                 ],
 
                 'summary' => [
-                    'direct' => ':attribute содержит :text',
-                    'inverse' => ':attribute не содержит :text',
+                    'direct' => ':attribute қамтиды :text',
+                    'inverse' => ':attribute қамтымайды :text',
                 ],
 
             ],
@@ -416,13 +416,13 @@ return [
             'ends_with' => [
 
                 'label' => [
-                    'direct' => 'Заканчивается на',
-                    'inverse' => 'Не заканчивается на',
+                    'direct' => 'Аяқталады',
+                    'inverse' => 'Аяқталмайды',
                 ],
 
                 'summary' => [
-                    'direct' => ':attribute заканчивается на :text',
-                    'inverse' => ':attribute не заканчивается на :text',
+                    'direct' => ':attribute аяқталады :text',
+                    'inverse' => ':attribute аяқталмайды :text',
                 ],
 
             ],
@@ -430,13 +430,13 @@ return [
             'equals' => [
 
                 'label' => [
-                    'direct' => 'Равно',
-                    'inverse' => 'Не равно',
+                    'direct' => 'Тең',
+                    'inverse' => 'Тең емес',
                 ],
 
                 'summary' => [
-                    'direct' => ':attribute равно :text',
-                    'inverse' => ':attribute не равно :text',
+                    'direct' => ':attribute тең :text',
+                    'inverse' => ':attribute тең емес :text',
                 ],
 
             ],
@@ -444,13 +444,13 @@ return [
             'starts_with' => [
 
                 'label' => [
-                    'direct' => 'Начинается с',
-                    'inverse' => 'Не начинается с',
+                    'direct' => 'Басталады',
+                    'inverse' => 'Басталмайды',
                 ],
 
                 'summary' => [
-                    'direct' => ':attribute начинается с :text',
-                    'inverse' => ':attribute не начинается с :text',
+                    'direct' => ':attribute басталады :text',
+                    'inverse' => ':attribute басталмайды :text',
                 ],
 
             ],
@@ -458,23 +458,11 @@ return [
             'form' => [
 
                 'text' => [
-                    'label' => 'Текст',
+                    'label' => 'Мәтін',
                 ],
 
             ],
 
-        ],
-
-    ],
-
-    'actions' => [
-
-        'add_rule' => [
-            'label' => 'Добавить правило',
-        ],
-
-        'add_rule_group' => [
-            'label' => 'Добавить группу правил',
         ],
 
     ],

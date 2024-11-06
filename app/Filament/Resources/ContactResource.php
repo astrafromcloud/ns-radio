@@ -9,7 +9,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Log;
 
 class ContactResource extends Resource
 {
@@ -26,23 +25,22 @@ class ContactResource extends Resource
                         Forms\Components\Section::make()
                             ->schema([
                                 Forms\Components\Repeater::make('phones')
-                                    ->label('Phone Numbers')
-                                    ->addActionLabel('Add Phone Number')
+                                    ->label(__('contact.phone_label'))
+                                    ->addActionLabel(__('contact.phone_add_button'))
                                     ->defaultItems(1)
                                     ->columnSpanFull()
                                     ->reorderable(false)
-                                    ->grid(2)
                                     ->schema([
                                         Forms\Components\TextInput::make('phone')
                                             ->label(false)
-                                            ->tel()
+                                            ->columnSpanFull()
                                             ->mask('+9 (999)-999-99-99')
                                             ->placeholder('+7-777-777-77-77')
                                             ->required()
                                             ->hiddenLabel()
                                             ->maxLength(255)
                                     ])
-                                    ->createItemButtonLabel('Add Phone Number')
+                                    ->createItemButtonLabel(__('contact.phone_add_button'))
                                     ->deletable(false)
                                     ->maxItems(4)
                             ]),
@@ -51,17 +49,20 @@ class ContactResource extends Resource
 
                         Forms\Components\TextInput::make('email')
                             ->label(self::getEmailLabel())
+                            ->columnSpanFull()
                             ->email()
                             ->required(),
 
                         Forms\Components\Textarea::make('description.ru')
                             ->label(self::getDescriptionRussianLabel())
-                            ->columnSpanFull()
+                            ->rows(6)
+                            ->columns(['md' => 2, 'xl' => 4])
                             ->default(fn($record) => $record ? $record->getTranslation('name', 'ru') : ''),
 
                         Forms\Components\Textarea::make('description.kk')
                             ->label(self::getDescriptionKazakhLabel())
-                            ->columnSpanFull()
+                            ->rows(6)
+                            ->columns(['md' => 2, 'xl' => 4])
                             ->default(fn($record) => $record ? $record->getTranslation('name', 'kk') : ''),
 
                         Forms\Components\Textarea::make('address.ru')
@@ -74,19 +75,11 @@ class ContactResource extends Resource
                             ->columns(['md' => 2, 'xl' => 4])
                             ->default(fn($record) => $record ? $record->getTranslation('name', 'kk') : ''),
 
-//                        Forms\Components\KeyValue::make('address')
-//                            ->label(self::getAddresLabel())
-//                            ->required()
-//                            ->keyLabel('ROme')
-//                            ->valueLabel('Znachenie')
-//                            ->editableKeys(false)
-//                            ->deletable(false)
-//                            ->addable(false),
-
                         Forms\Components\TextInput::make('instagram_url')
-                            ->label('Instagram URL')
-                            ->url()
-                            ->prefix('https://instagram.com/')
+                            ->label(__('broadcaster.instagram_url_label'))
+                            ->placeholder('https://www.instagram.com/')
+                            ->prefixIcon('icon-instagram')
+                            ->prefixIconColor('#84000e')
                             ->suffixAction(
                                 Forms\Components\Actions\Action::make('visit')
                                     ->icon('heroicon-m-arrow-top-right-on-square')
@@ -94,9 +87,9 @@ class ContactResource extends Resource
                             ),
 
                         Forms\Components\TextInput::make('youtube_url')
-                            ->label('YouTube URL')
-                            ->url()
-                            ->prefix('https://youtube.com/')
+                            ->label(__('broadcaster.youtube_url_label'))
+                            ->placeholder('https://www.youtube.com/')
+                            ->prefixIcon('icon-youtube')
                             ->suffixAction(
                                 Forms\Components\Actions\Action::make('visit')
                                     ->icon('heroicon-m-arrow-top-right-on-square')
@@ -104,9 +97,9 @@ class ContactResource extends Resource
                             ),
 
                         Forms\Components\TextInput::make('whatsapp_url')
-                            ->label('WhatsApp URL')
-                            ->url()
-                            ->prefix('https://wa.me/')
+                            ->label(__('broadcaster.whatsapp_url_label'))
+                            ->placeholder('https://wa.me/')
+                            ->prefixIcon('icon-whatsapp')
                             ->suffixAction(
                                 Forms\Components\Actions\Action::make('visit')
                                     ->icon('heroicon-m-arrow-top-right-on-square')
@@ -114,9 +107,9 @@ class ContactResource extends Resource
                             ),
 
                         Forms\Components\TextInput::make('telegram_url')
-                            ->label('Telegram URL')
-                            ->url()
-                            ->prefix('https://t.me/')
+                            ->label(__('broadcaster.telegram_url_label'))
+                            ->placeholder('https://t.me/')
+                            ->prefixIcon('icon-telegram')
                             ->suffixAction(
                                 Forms\Components\Actions\Action::make('visit')
                                     ->icon('heroicon-m-arrow-top-right-on-square')
@@ -196,7 +189,6 @@ class ContactResource extends Resource
     {
         return [
             'index' => Pages\ListContacts::route('/'),
-            'create' => Pages\CreateContact::route('/create'),
             'edit' => Pages\EditContact::route('/{record}/edit'),
         ];
     }
@@ -259,18 +251,9 @@ class ContactResource extends Resource
     public static function rules(): array
     {
         return [
-            'phones.*.phone' => ['required', 'string', 'regex:/^\+[0-9]-\([0-9]{3}\)-[0-9]{3}-[0-9]{2}-[0-9]{2}$/'],
+            'phones.*.phone' => ['required', 'string'],
         ];
     }
 
-    public function getPhoneNumbersAttribute(): ?string
-    {
-        // Check if phones are available and take the first one
-        $firstPhone = $this->phones[0]['phone'] ?? null;
-
-        return $firstPhone
-            ? preg_replace('/(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})/', '+$1 ($2) $3-$4-$5', $firstPhone)
-            : null;
-    }
 
 }

@@ -17,7 +17,4 @@ return [
     'description_month_stat_label' => 'Leads received this month',
     'created_at_label' => 'Created at',
     'updated_at_label' => 'Updated at',
-    'content_label' => 'Content',
-    'is_active_label' => 'Active',
-    'content_type_label' => 'Type of banner'
 ];

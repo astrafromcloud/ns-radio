@@ -7,4 +7,7 @@ return [
     'video_label' => 'Видео',
     'created_at_label' => 'Құрылды',
     'updated_at_label' => 'Жаңартылды',
-];
+    'order_label' => 'Реті',
+    'content_label' => 'Контент',
+    'is_active_label' => 'Белсенді',
+    'content_type_label' => 'Баннер типі'];

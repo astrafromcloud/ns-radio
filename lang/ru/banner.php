@@ -8,4 +8,8 @@ return [
     'navigation_group_label' => 'Контент',
     'created_at_label' => 'Создано',
     'updated_at_label' => 'Обновлено',
+    'order_label' => 'Порядок',
+    'content_label' => 'Контент',
+    'is_active_label' => 'Активно',
+    'content_type_label' => 'Тип баннера'
 ];

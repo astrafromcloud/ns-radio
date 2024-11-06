@@ -8,6 +8,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Table;
 
 class GuestResource extends Resource
@@ -42,20 +43,36 @@ class GuestResource extends Resource
                             ->prefix('#')
                             ->maxLength(255),
 
-                        Forms\Components\TextInput::make('video_url')
-                            ->label(self::getVideoLabel())
+                        Forms\Components\Select::make('video_type')
+                            ->label(self::getVideoTypeLabel())
+                            ->options([
+                                'vk' => 'VK',
+                                'youtube' => 'YouTube',
+                            ])
                             ->required()
-                            ->maxLength(255)
-                            ->prefix('https://')
-                            ->placeholder('youtube.com/watch?v=...'),
+                            ->live(),
 
-                        Forms\Components\TextInput::make('views')
-                            ->label(self::getViewsLabel())
-                            ->numeric()
-                            ->default(0)
-                            ->disabled()
-                            ->dehydrated(false)
-                            ->hint('Views are automatically tracked'),
+                        Forms\Components\TextInput::make('video_url')
+                            ->label(__('broadcaster.youtube_url_label'))
+                            ->placeholder('https://www.youtube.com/')
+                            ->prefixIcon('icon-youtube')
+                            ->visible(fn(Forms\Get $get) => $get('video_type') === 'youtube')
+                            ->suffixAction(
+                                Forms\Components\Actions\Action::make('visit')
+                                    ->icon('heroicon-m-arrow-top-right-on-square')
+                                    ->url(fn($record) => $record?->youtube_url, true)
+                            ),
+
+                        Forms\Components\TextInput::make('video_url')
+                            ->label(__('broadcaster.youtube_url_label'))
+                            ->placeholder('https://www.vk.com/')
+                            ->prefixIcon('icon-vk')
+                            ->visible(fn(Forms\Get $get) => $get('video_type') === 'vk')
+                            ->suffixAction(
+                                Forms\Components\Actions\Action::make('visit')
+                                    ->icon('heroicon-m-arrow-top-right-on-square')
+                                    ->url(fn($record) => $record?->youtube_url, true)
+                            ),
                     ]),
             ]);
     }
@@ -87,6 +104,14 @@ class GuestResource extends Resource
                     ->numeric()
                     ->sortable(),
 
+                IconColumn::make('video_type')
+                    ->label(self::getVideoTypeLabel())
+                    ->alignCenter()
+                    ->icon(fn (string $state): string => match ($state) {
+                        'vk' => 'icon-vk',
+                        'youtube' => 'icon-youtube',
+                    }),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -94,7 +119,6 @@ class GuestResource extends Resource
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
-                // Add filters if needed
             ])
             ->actions([
                 Tables\Actions\EditAction::make()->label('')->color('grey'),
@@ -133,29 +157,37 @@ class GuestResource extends Resource
         return __('guest.plural_label');
     }
 
-    public static function getModelLabel() : string
+    public static function getModelLabel(): string
     {
         return __('guest.model_label');
     }
 
-    public static function getNameLabel() : string
+    public static function getNameLabel(): string
     {
         return __('guest.name_label');
     }
-    public static function getImageLabel() : string
+
+    public static function getImageLabel(): string
     {
         return __('guest.image_label');
     }
-    public static function getHashtagLabel() : string
+
+    public static function getHashtagLabel(): string
     {
         return __('guest.hashtag_label');
     }
-    public static function getViewsLabel() : string
+
+    public static function getViewsLabel(): string
     {
         return __('guest.views_label');
     }
 
-    public static function getVideoLabel() : string
+    public static function getVideoTypeLabel(): string
+    {
+        return __('guest.video_type_label');
+    }
+
+    public static function getVideoLabel(): string
     {
         return __('guest.video_label');
     }

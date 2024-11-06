@@ -26,20 +26,31 @@ class ProgramResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->label(self::getNameLabel())
+                    ->columnSpanFull()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('from')
+Forms\Components\Grid::make('Time')
+    ->columns(2)
+            ->schema([
+                Forms\Components\TimePicker::make('from')
                     ->label(self::getFromLabel())
+                    ->withoutSeconds()
+                    ->time()
                     ->nullable(),
-                Forms\Components\TextInput::make('to')
+                Forms\Components\TimePicker::make('to')
                     ->label(self::getToLabel())
+                    ->withoutSeconds()
+                    ->time()
                     ->nullable(),
+            ]),
                 Forms\Components\FileUpload::make('image')
                     ->label(self::getImageLabel())
+                    ->columnSpanFull()
                     ->image()
                     ->nullable(),
                 Forms\Components\Select::make('broadcasters')
                     ->label(self::getBroadcastersLabel())
+                    ->columnSpanFull()
                     ->multiple()
                     ->relationship('broadcasters', 'name', function (Builder $query) {
                         return $query->select('broadcasters.id', 'broadcasters.name')->distinct();

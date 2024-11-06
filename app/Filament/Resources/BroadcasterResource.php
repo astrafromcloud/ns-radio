@@ -59,27 +59,48 @@ class BroadcasterResource extends Resource
                             'redo',
                             'undo',
                         ])
+                        ->default(fn($record) => $record ? $record->getTranslation('name', 'kk') : '')
                         ->columnSpan(1), // Set column span to 1 for each editor to take half width
-                ])
+                ]),
 
-                    ->columnSpanFull()
-                    ->default(fn($record) => $record ? $record->getTranslation('name', 'kk') : ''),
-                Forms\Components\TextInput::make('whatsapp_url')
-                    ->label(__('broadcaster.whatsapp_url_label'))
-                    ->url()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('youtube_url')
-                    ->label(__('broadcaster.youtube_url_label'))
-                    ->url()
-                    ->maxLength(255),
                 Forms\Components\TextInput::make('instagram_url')
                     ->label(__('broadcaster.instagram_url_label'))
-                    ->url()
-                    ->maxLength(255),
+                    ->placeholder('https://www.instagram.com/')
+                    ->prefixIcon('icon-instagram')
+                    ->prefixIconColor('#84000e')
+                    ->suffixAction(
+                        Forms\Components\Actions\Action::make('visit')
+                            ->icon('heroicon-m-arrow-top-right-on-square')
+                            ->url(fn($record) => $record?->instagram_url, true)
+                    ),
+                Forms\Components\TextInput::make('youtube_url')
+                    ->label(__('broadcaster.youtube_url_label'))
+                    ->placeholder('https://www.youtube.com/')
+                    ->prefixIcon('icon-youtube')
+                    ->suffixAction(
+                        Forms\Components\Actions\Action::make('visit')
+                            ->icon('heroicon-m-arrow-top-right-on-square')
+                            ->url(fn($record) => $record?->youtube_url, true)
+                    ),
+                Forms\Components\TextInput::make('whatsapp_url')
+                    ->label(__('broadcaster.whatsapp_url_label'))
+                    ->placeholder('https://wa.me/')
+                    ->prefixIcon('icon-whatsapp')
+                    ->suffixAction(
+                        Forms\Components\Actions\Action::make('visit')
+                            ->icon('heroicon-m-arrow-top-right-on-square')
+                            ->url(fn($record) => $record?->whatsapp_url, true)
+                    ),
                 Forms\Components\TextInput::make('telegram_url')
                     ->label(__('broadcaster.telegram_url_label'))
-                    ->url()
-                    ->maxLength(255),
+                    ->placeholder('https://t.me/')
+                    ->prefixIcon('icon-telegram')
+                    ->suffixAction(
+                        Forms\Components\Actions\Action::make('visit')
+                            ->icon('heroicon-m-arrow-top-right-on-square')
+                            ->url(fn($record) => $record?->telegram_url, true)
+                    ),
+
                 Forms\Components\Select::make('programs')
                     ->columnSpanFull()
                     ->label(__('broadcaster.programs_label'))

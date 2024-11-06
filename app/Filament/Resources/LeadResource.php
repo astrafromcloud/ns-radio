@@ -78,6 +78,7 @@ class LeadResource extends Resource
                 Tables\Actions\Action::make('ViewLead')
                     ->icon('heroicon-o-eye')
                     ->color('$5e6477')
+                    ->icon(false)
                     ->infolist(
                         [
                             Section::make(self::getLeadSectionInformationLabel())
