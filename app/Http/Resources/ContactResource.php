@@ -17,7 +17,7 @@ class ContactResource extends ResourceCollection
     {
         return $this->collection->transform(function ($contact) {
             return [
-                'phones' => json_decode($contact->phones),
+                'phones' => $contact->phones,
                 'description' => $contact->description,
                 'address' => $contact->address,
                 'email' => $contact->email,
