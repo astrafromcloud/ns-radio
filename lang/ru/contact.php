@@ -1,7 +1,7 @@
 <?php
 return [
-    'navigation_label' => 'Контактные информации',
-    'plural_label' => 'Контактные информации',
+    'navigation_label' => 'Контактная информация',
+    'plural_label' => 'Контактная информация',
     'model_label' => 'Контактная информация',
     'phone_label' => 'Номер телефона',
     'phone_add_button' => 'Добавить номер телефона',

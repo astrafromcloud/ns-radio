@@ -1,7 +1,7 @@
 <?php
 return [
     'navigation_label' => 'Contact information',
-    'plural_label' => 'Contact informations',
+    'plural_label' => 'Contact information',
     'model_label' => 'Contact information',
     'phone_label' => 'Phone number',
     'phone_add_button' => 'Add phone',

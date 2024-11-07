@@ -98,12 +98,6 @@ class GuestResource extends Resource
                     ->alignCenter()
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('views')
-                    ->label(self::getViewsLabel())
-                    ->alignCenter()
-                    ->numeric()
-                    ->sortable(),
-
                 IconColumn::make('video_type')
                     ->label(self::getVideoTypeLabel())
                     ->alignCenter()

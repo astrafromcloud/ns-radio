@@ -41,11 +41,8 @@ class ContactResource extends Resource
                                             ->maxLength(255)
                                     ])
                                     ->createItemButtonLabel(__('contact.phone_add_button'))
-                                    ->deletable(false)
                                     ->maxItems(4)
                             ]),
-
-                        // TODO PHONE EDITOR
 
                         Forms\Components\TextInput::make('email')
                             ->label(self::getEmailLabel())
