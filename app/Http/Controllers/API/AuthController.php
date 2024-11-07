@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -41,11 +42,11 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-//    public function logout()
-//    {
-//        auth()->guard('sanctum')->user()->tokens()->delete();
-//        return response()->json(['message' => 'Logged out successfully'], ResponseAlias::HTTP_OK);
-//    }
+    //    public function logout()
+    //    {
+    //        auth()->guard('sanctum')->user()->tokens()->delete();
+    //        return response()->json(['message' => 'Logged out successfully'], ResponseAlias::HTTP_OK);
+    //    }
 
     public function logout()
     {
@@ -64,7 +65,6 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Logged out successfully'
             ], ResponseAlias::HTTP_OK);
-
         } catch (\Exception $e) {
             // Log the exception for debugging
             Log::error('Logout Error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
@@ -79,16 +79,25 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $user = $this->createUser($request->validated());
+        try {
+            $user = $this->createUser($request->validated());
 
-        $token = $user->createToken('Auth')->plainTextToken;
+            $token = $user->createToken('Auth')->plainTextToken;
 
-        return response()->json([
-            'success' => true,
-            'message' => 'User registered successfully.',
-            'user' => $user,
-            'token' => $token,
-        ], ResponseAlias::HTTP_CREATED);
+            return response()->json([
+                'success' => true,
+                'message' => 'User registered successfully.',
+                'user' => $user,
+                'token' => $token,
+            ], ResponseAlias::HTTP_CREATED);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Happened error: ' . $e,
+                // 'user' => $user,
+                // 'token' => $token,
+            ], ResponseAlias::HTTP_BAD_GATEWAY);
+        }
     }
 
 
