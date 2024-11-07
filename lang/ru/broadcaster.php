@@ -9,6 +9,7 @@ return [
     'image_path_label' => 'Картинка',
     'instagram_url_label' => 'Ссылка Instagram',
     'youtube_url_label' => 'Ссылка Youtube',
+    'vk_url_label' => 'Ссылка ВКонтакте',
     'whatsapp_url_label' => 'Ссылка Whatsapp',
     'telegram_url_label' => 'Ссылка Telegram',
     'programs_label' => 'Программы',

@@ -64,7 +64,7 @@ class GuestResource extends Resource
                             ),
 
                         Forms\Components\TextInput::make('video_url')
-                            ->label(__('broadcaster.youtube_url_label'))
+                            ->label(__('broadcaster.vk_url_label'))
                             ->placeholder('https://www.vk.com/')
                             ->prefixIcon('icon-vk')
                             ->visible(fn(Forms\Get $get) => $get('video_type') === 'vk')

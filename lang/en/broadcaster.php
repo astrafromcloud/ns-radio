@@ -9,6 +9,7 @@ return [
     'image_path_label' => 'Image',
     'instagram_url_label' => 'Instagram URL',
     'youtube_url_label' => 'Youtube URL',
+    'vk_url_label' => 'VK URL',
     'whatsapp_url_label' => 'Whatsapp URL',
     'telegram_url_label' => 'Telegram URL',
     'programs_label' => 'Programs',
