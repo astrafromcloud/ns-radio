@@ -26,5 +26,12 @@ class Banner extends Model
                 $banner->order = static::max('order') + 1;
             }
         });
+
+        static::deleting(function ($banner) {
+            $deletedOrder = $banner->order;
+
+            Banner::where('order', '>', $deletedOrder)
+                ->decrement('order');
+        });
     }
 }
