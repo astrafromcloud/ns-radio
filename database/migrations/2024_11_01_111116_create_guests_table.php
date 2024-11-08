@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('views')->default(0);
             $table->string('hashtag')->nullable();
             $table->string('video_type')->default('youtube');
-            $table->string('video_url');
+            $table->text('video_url');
             $table->timestamps();
         });
     }
