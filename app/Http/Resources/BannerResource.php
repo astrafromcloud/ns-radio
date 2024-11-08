@@ -22,6 +22,7 @@ class BannerResource extends ResourceCollection
         return $this->collection->transform(function ($item) {
             return [
                 'id' => $item->id,
+                'order' => $item->order,
                 'content' => asset('storage/' . $item->content),
             ];
         })->toArray();
