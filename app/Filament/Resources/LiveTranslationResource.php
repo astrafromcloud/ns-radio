@@ -38,11 +38,15 @@ class LiveTranslationResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\IconColumn::make('video_url')
+                    ->label(__('broadcaster.vk_url_label'))
+                    ->alignCenter()
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('banner.created_at_label'))
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('banner.updated_at_label'))
                     ->dateTime()
                     ->sortable(),
             ])
@@ -73,5 +77,20 @@ class LiveTranslationResource extends Resource
             'create' => Pages\CreateLiveTranslation::route('/create'),
             'edit' => Pages\EditLiveTranslation::route('/{record}/edit'),
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('translation.model_label');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('translation.navigation_label');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('translation.plural_label');
     }
 }

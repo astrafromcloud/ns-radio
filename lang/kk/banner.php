@@ -10,4 +10,5 @@ return [
     'order_label' => 'Реті',
     'content_label' => 'Контент',
     'is_active_label' => 'Белсенді',
-    'content_type_label' => 'Баннер типі'];
+    'content_type_label' => 'Баннер типі',
+];
