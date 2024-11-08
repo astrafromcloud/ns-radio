@@ -38,7 +38,7 @@ class ContactResource extends Resource
                                             ->placeholder('+7-777-777-77-77')
                                             ->required()
                                             ->hiddenLabel()
-                                            ->maxLength(255)
+                                            ->maxLength(255),
                                     ])
                                     ->createItemButtonLabel(__('contact.phone_add_button'))
                                     ->maxItems(4)
