@@ -35,12 +35,16 @@ class Banner extends Model
         });
 
         static::updating(function ($banner) {
-            if ($banner->isDirty('is_active') && $banner->is_active == false) {
-                $deactivatedOrder = $banner->order;
+            if ($banner->isDirty('is_active')) {
+                if ($banner->is_active == false) {
+                    $deactivatedOrder = $banner->order;
 
-                Banner::where('order', '>', $deactivatedOrder)
-                    ->where('is_active', true)
-                    ->decrement('order');
+                    Banner::where('order', '>', $deactivatedOrder)
+                        ->where('is_active', true)
+                        ->decrement('order');
+                } else {
+                    $banner->order = Banner::where('is_active', true)->max('order') + 1;
+                }
             }
         });
     }
