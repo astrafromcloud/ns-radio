@@ -14,6 +14,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('order');
             $table->string('content_type')->default('image');
             $table->string('content');
+            $table->index(['is_active', 'order']);
             $table->timestamps();
         });
     }
