@@ -33,5 +33,15 @@ class Banner extends Model
             Banner::where('order', '>', $deletedOrder)
                 ->decrement('order');
         });
+
+        static::updating(function ($banner) {
+            if ($banner->isDirty('is_active') && $banner->is_active == false) {
+                $deactivatedOrder = $banner->order;
+
+                Banner::where('order', '>', $deactivatedOrder)
+                    ->where('is_active', true)
+                    ->decrement('order');
+            }
+        });
     }
 }
