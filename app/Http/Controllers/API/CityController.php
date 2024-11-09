@@ -22,7 +22,7 @@ class CityController extends Controller
     public function __construct(
         private readonly WeatherService      $weatherService,
         private readonly IPToLocationService $ipToLocationService,
-        private readonly TranslationService  $translationService,
+//        private readonly TranslationService  $translationService,
         private readonly CityService         $cityService,
     )
     {
@@ -98,69 +98,142 @@ class CityController extends Controller
     }
 
 
-    public function getWeather($cityName) : array
+    public function getWeather(string $cityName): array
     {
-        $apiKey = '082d24b2afae40eba43210130243110';
-        $response = Http::get("http://api.weatherapi.com/v1/current.json?key={$apiKey}&q={$cityName}");
+        try {
+            $apiKey = '082d24b2afae40eba43210130243110';
+            $response = Http::get("http://api.weatherapi.com/v1/current.json", [
+                'key' => $apiKey,
+                'q' => $cityName
+            ]);
 
-        if ($response->successful()) {
-            return [$response->json()['current']['temp_c'], $response->json()['current']['condition']];
+            if ($response->successful()) {
+                $data = $response->json();
+
+                // Check if the required data exists
+                if (isset($data['current']['temp_c'], $data['current']['condition'])) {
+                    return [
+                        'temperature' => $data['current']['temp_c'],
+                        'condition' => $data['current']['condition']
+                    ];
+                }
+
+                // Log the actual response for debugging
+                \Illuminate\Support\Facades\Log::error('Weather API response structure unexpected', [
+                    'city' => $cityName,
+                    'response' => $data
+                ]);
+
+                return ['error' => 'Invalid response structure'];
+            }
+
+            // Log failed response
+            \Illuminate\Support\Facades\Log::error('Weather API request failed', [
+                'city' => $cityName,
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+
+            return ['error' => 'API request failed'];
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Weather API exception', [
+                'city' => $cityName,
+                'message' => $e->getMessage()
+            ]);
+
+            return ['error' => 'Weather service unavailable'];
         }
-
-        return $response->json();
     }
 
     public function getCity(Request $request)
     {
+        try {
+            $userIp = $request->ip();
+            $cities = City::all();
 
-        $userIp = $request->ip();
+            // Get city from IP
+            $response = Http::get("https://ipinfo.io/{$userIp}/json", [
+                'token' => '7c784a69a464b4'
+            ]);
 
-        $cities = City::all();
+            if (!$response->successful()) {
+                throw new \Exception('Failed to get city from IP');
+            }
 
-        // Тест үшін
-//        $address = "45.86.82.205";
-//        $response = Http::get("https://ipinfo.io/{$address}/json?token=7c784a69a464b4");
+            $currentCity = $response['city'];
+            if (empty($currentCity)) {
+                throw new \Exception('City not found for IP');
+            }
 
-        $response = Http::get("https://ipinfo.io/{$userIp}/json?token=7c784a69a464b4");
+            // Get weather data
+            $weather = $this->getWeather($currentCity);
+            if (isset($weather['error'])) {
+                \Illuminate\Support\Facades\Log::warning('Weather data unavailable', ['city' => $currentCity]);
+            }
 
-        $currentCity = $response['city'];
+            // Get frequency data
+            $cityData = $cities->where('name', $currentCity)->first();
+            $frequency = $cityData['frequency'] ?? '106.0 FM';
 
-        $weather = $this->getWeather($currentCity);
+            // Translate city name
+            $translations = $this->translateCity($currentCity);
 
-        $data = json_decode($cities->where('name', $currentCity), true);
-        $frequency = reset($data)['frequency'] ?? '106.0 FM';
+            // Prepare response based on locale
+            $locale = app()->getLocale();
+            $cityName = $locale == 'kk' ? $translations['kk'] : $translations['ru'];
 
-        $translateKazakhResponse = Http::get("https://trap.her.st/api/translate/", [
-            "engine" => 'google',
-            'from' => 'en',
-            'to' => 'kk',
-            'text' => $currentCity
-        ]);
-
-        $translateRussianResponse = Http::get("https://trap.her.st/api/translate/", [
-            "engine" => 'google',
-            'from' => 'en',
-            'to' => 'ru',
-            'text' => $currentCity
-        ]);
-
-        $russianCity = $this->decodeUnicode($translateKazakhResponse['translated-text']);
-        $kazakhCity = $this->decodeUnicode($translateRussianResponse['translated-text']);
-
-        $locale = app()->getLocale();
-
-        if ($locale == 'kk') {
             return response()->json([
-                'name' => $kazakhCity,
+                'name' => $cityName,
                 'weather' => $weather,
                 'frequency' => $frequency
-            ], JSON_UNESCAPED_UNICODE);
-        } else {
+            ], 200, [], JSON_UNESCAPED_UNICODE);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('City data fetch failed', [
+                'message' => $e->getMessage()
+            ]);
+
             return response()->json([
-                'name' => $russianCity,
-                'weather' => $weather,
-                'frequency' => $frequency
-            ], JSON_UNESCAPED_UNICODE);
+                'error' => 'Unable to fetch city data'
+            ], 500);
+        }
+    }
+
+    private function translateCity(string $cityName): array
+    {
+        try {
+            $baseUrl = "https://trap.her.st/api/translate/";
+            $params = [
+                "engine" => 'google',
+                'from' => 'en',
+            ];
+
+            // Kazakh translation
+            $kkResponse = Http::get($baseUrl, array_merge($params, [
+                'to' => 'kk',
+                'text' => $cityName
+            ]));
+
+            // Russian translation
+            $ruResponse = Http::get($baseUrl, array_merge($params, [
+                'to' => 'ru',
+                'text' => $cityName
+            ]));
+
+            return [
+                'kk' => $this->decodeUnicode($kkResponse['translated-text']),
+                'ru' => $this->decodeUnicode($ruResponse['translated-text'])
+            ];
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Translation failed', [
+                'city' => $cityName,
+                'message' => $e->getMessage()
+            ]);
+
+            // Fallback to original city name
+            return [
+                'kk' => $cityName,
+                'ru' => $cityName
+            ];
         }
     }
 
@@ -227,16 +300,16 @@ class CityController extends Controller
         );
     }
 
-    private function translateCity(string $city, string $locale): string
-    {
-        $translation = $this->translationService->translate(
-            text: $city,
-            from: 'en',
-            to: $locale,
-        );
-
-        return $this->decodeUnicode($translation['translated-text'] ?? $city);
-    }
+//    private function translateCity(string $city, string $locale): string
+//    {
+//        $translation = $this->translationService->translate(
+//            text: $city,
+//            from: 'en',
+//            to: $locale,
+//        );
+//
+//        return $this->decodeUnicode($translation['translated-text'] ?? $city);
+//    }
 
     private function getCityFrequency(string $cityName): string
     {
