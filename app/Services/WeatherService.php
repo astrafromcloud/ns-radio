@@ -94,11 +94,20 @@ class CityService
 {
     public function getFrequency(string $cityName): string
     {
+//        return Cache::remember(
+//            "city_frequency_{$cityName}",
+//            now()->addWeek(),
+//            function() use ($cityName) {
+//                return City::where('name', 'like', $cityName)
+//                    ->value('frequency') ?? '106.0 FM';
+//            }
+//        );
+
         return Cache::remember(
             "city_frequency_{$cityName}",
             now()->addWeek(),
             function () use ($cityName) {
-                    City::whereLocale('name', 'en')->value('frequency') ?? "106.0 FM";
+                return City::whereLocale('name', 'en')->value('frequency') ?? "106.0 FM";
             }
         );
     }
