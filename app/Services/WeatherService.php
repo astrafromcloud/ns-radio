@@ -94,13 +94,12 @@ class CityService
 {
     public function getFrequency(string $cityName): string
     {
-        return Cache::remember(
-            "city_frequency_{$cityName}",
-            now()->addWeek(),
-            function () use ($cityName) {
-                Log::info("ROME:" . $cityName);
+//        return Cache::remember(
+//            "city_frequency_{$cityName}",
+//            now()->addWeek(),
+//            function () use ($cityName) {
                 return City::where('name->en', $cityName)->value('frequency');
-            }
-        );
+//            }
+//        );
     }
 }
