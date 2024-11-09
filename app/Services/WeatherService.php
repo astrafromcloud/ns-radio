@@ -70,8 +70,7 @@ class TranslationService
         string $from = "en",
         string $to = "kk",
         string $engine = "google"
-    ): array
-    {
+    ): array {
         try {
             $response = Http::timeout(3)
                 ->retry(2, 100)
@@ -94,12 +93,12 @@ class CityService
 {
     public function getFrequency(string $cityName): string
     {
-//        return Cache::remember(
-//            "city_frequency_{$cityName}",
-//            now()->addWeek(),
-//            function () use ($cityName) {
-                return City::where('name->en', $cityName)->value('frequency');
-//            }
-//        );
+        //        return Cache::remember(
+        //            "city_frequency_{$cityName}",
+        //            now()->addWeek(),
+        //            function () use ($cityName) {
+        return City::where('name->en', $cityName)->value('frequency') ?? "106";
+        //            }
+        //        );
     }
 }
