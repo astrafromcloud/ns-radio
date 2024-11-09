@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\City;
+use Illuminate\Container\Attributes\Log;
 use Illuminate\Http\Request;
 use App\Services\{
     WeatherService,
@@ -115,6 +116,9 @@ class CityController extends Controller
     private function getCityData(string $clientIp): array
     {
         $location = $this->getCachedLocation($clientIp);
+
+        \Illuminate\Support\Facades\Log::info(json_encode($location));
+
         $currentCity = $location['city'] ?? "Almaty";
 
         return [

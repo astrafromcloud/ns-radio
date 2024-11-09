@@ -70,7 +70,8 @@ class TranslationService
         string $from = "en",
         string $to = "kk",
         string $engine = "google"
-    ): array {
+    ): array
+    {
         try {
             $response = Http::timeout(3)
                 ->retry(2, 100)
@@ -96,9 +97,8 @@ class CityService
         return Cache::remember(
             "city_frequency_{$cityName}",
             now()->addWeek(),
-            function() use ($cityName) {
-                return City::where('name', 'like', $cityName)
-                    ->value('frequency') ?? '106.0 FM';
+            function () use ($cityName) {
+                    City::whereLocale('name', 'en')->value('frequency') ?? "106.0 FM";
             }
         );
     }

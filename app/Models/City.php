@@ -13,5 +13,9 @@ class City extends Model
 
     protected $guarded = false;
 
+    protected $casts = [
+        'name' => 'array',
+    ];
+
     public $translatable = ['name'];
 }
