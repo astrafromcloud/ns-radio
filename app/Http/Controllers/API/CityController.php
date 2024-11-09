@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\City;
 use Illuminate\Container\Attributes\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use App\Services\{
     WeatherService,
     IPToLocationService,
@@ -97,14 +98,82 @@ class CityController extends Controller
     }
 
 
-    public function getCity(): JsonResponse
+    public function getWeather($cityName) : array
     {
-        $clientIp = $this->getClientIp();
-        $cityData = $this->getCityData($clientIp);
+        $apiKey = '082d24b2afae40eba43210130243110';
+        $response = Http::get("http://api.weatherapi.com/v1/current.json?key={$apiKey}&q={$cityName}");
 
-        return response()->json(
-            CityResource::make($cityData)->resolve()
-        );
+        if ($response->successful()) {
+            return [$response->json()['current']['temp_c'], $response->json()['current']['condition']];
+        }
+
+        return $response->json();
+    }
+
+    public function getCity(Request $request)
+    {
+
+        $userIp = $request->ip();
+
+        $cities = City::all();
+
+        // Тест үшін
+//        $address = "45.86.82.205";
+//        $response = Http::get("https://ipinfo.io/{$address}/json?token=7c784a69a464b4");
+
+        $response = Http::get("https://ipinfo.io/{$userIp}/json?token=7c784a69a464b4");
+
+        $currentCity = $response['city'];
+
+        $weather = $this->getWeather($currentCity);
+
+        $data = json_decode($cities->where('name', $currentCity), true);
+        $frequency = reset($data)['frequency'] ?? '106.0 FM';
+
+        $translateKazakhResponse = Http::get("https://trap.her.st/api/translate/", [
+            "engine" => 'google',
+            'from' => 'en',
+            'to' => 'kk',
+            'text' => $currentCity
+        ]);
+
+        $translateRussianResponse = Http::get("https://trap.her.st/api/translate/", [
+            "engine" => 'google',
+            'from' => 'en',
+            'to' => 'ru',
+            'text' => $currentCity
+        ]);
+
+        $russianCity = $this->decodeUnicode($translateKazakhResponse['translated-text']);
+        $kazakhCity = $this->decodeUnicode($translateRussianResponse['translated-text']);
+
+        $locale = app()->getLocale();
+
+        if ($locale == 'kk') {
+            return response()->json([
+                'name' => $kazakhCity,
+                'weather' => $weather,
+                'frequency' => $frequency
+            ], JSON_UNESCAPED_UNICODE);
+        } else {
+            return response()->json([
+                'name' => $russianCity,
+                'weather' => $weather,
+                'frequency' => $frequency
+            ], JSON_UNESCAPED_UNICODE);
+        }
+    }
+
+    function decodeUnicode($string) {
+        return json_decode('"' . $string . '"');
+
+
+//        $clientIp = $this->getClientIp();
+//        $cityData = $this->getCityData($clientIp);
+//
+//        return response()->json(
+//            CityResource::make($cityData)->resolve()
+//        );
     }
 
     private function getClientIp(): string
@@ -174,8 +243,8 @@ class CityController extends Controller
         return $this->cityService->getFrequency($cityName);
     }
 
-    private function decodeUnicode(string $string): string
-    {
-        return json_decode('"' . $string . '"') ?? $string;
-    }
+//    private function decodeUnicode(string $string): string
+//    {
+//        return json_decode('"' . $string . '"') ?? $string;
+//    }
 }
