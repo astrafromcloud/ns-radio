@@ -15,4 +15,9 @@ return [
     'programs_label' => 'Программы',
     'created_at_label' => 'Создано',
     'updated_at_label' => 'Обновлено',
+
+    'type_label' => 'Тип',
+    'type_button_label' => 'Изменить вид',
+    'type_label_slider' => 'Слайдер',
+    'type_label_list' => 'Список'
 ];

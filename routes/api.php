@@ -30,12 +30,8 @@ Route::get('/banners', function (Request $request) {
 Route::apiResource('cities', CityController::class)->middleware([\App\Http\Middleware\SetLocale::class]);
 //});
 
+Route::get('/broadcasters', [BroadcasterController::class, 'index']);
 
-//Route::apiResource('broadcasters', BroadcasterController::class)->middleware([\App\Http\Middleware\SetLocale::class]);
-Route::get('/broadcasters', function (Request $request) {
-    return new \App\Http\Resources\BroadcasterResource(\App\Models\Broadcaster::all());
-});
-//
 Route::get('/contacts', function () {
     return new \App\Http\Resources\ContactResource(Contact::all());
 });

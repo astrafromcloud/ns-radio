@@ -15,4 +15,9 @@ return [
     'programs_label' => 'Programs',
     'created_at_label' => 'Created at',
     'updated_at_label' => 'Updated at',
+
+    'type_label' => 'Type',
+    'type_button_label' => 'Change view',
+    'type_label_slider' => 'Slider',
+    'type_label_list' => 'List'
 ];

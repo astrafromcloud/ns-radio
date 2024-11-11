@@ -15,4 +15,9 @@ return [
     'programs_label' => 'Бағдарламалар',
     'created_at_label' => 'Құрылды',
     'updated_at_label' => 'Жаңартылды',
+
+    'type_label' => 'Типі',
+    'type_button_label' => 'Көріністі өзгерту',
+    'type_label_slider' => 'Слайдер',
+    'type_label_list' => 'Тізім'
 ];

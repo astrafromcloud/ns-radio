@@ -30,4 +30,9 @@ class Broadcaster extends Model
     {
         return $value ? $value : '';
     }
+
+    public function broadcasterViewType()
+    {
+        return $this->belongsTo(BroadcasterViewType::class);
+    }
 }

@@ -27,8 +27,8 @@ class ContactSeeder extends Seeder
             'email' => 'info@nsradio.kz',
             'instagram_url' => 'https://www.instagram.com/radio_ns/',
             'youtube_url' => 'https://www.youtube.com/@radions5722/videos',
-            'whatsapp_url' => 'https://wa.me/77712345678',
-            'telegram_url' => 'https://t.me/nsradio'
+            'whatsapp_url' => 'https://wa.me/77751060011',
+            'telegram_url' => 'https://t.me/AlmatyRadioNS'
         ];
 
         Contact::create($contact);

@@ -14,7 +14,11 @@ class BroadcasterController extends Controller
     public function index()
     {
         $broadcasters = Broadcaster::all();
-        return response()->json(BroadcasterResource::collection(Broadcaster::all()));
+        $type = \App\Models\BroadcasterViewType::first();
+        return response()->json([
+            'type' => $type->type,
+            'broadcasters' => new BroadcasterResource($broadcasters)
+        ]);
     }
 
     public function store(Request $request)

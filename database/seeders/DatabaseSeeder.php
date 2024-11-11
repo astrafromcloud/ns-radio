@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\BroadcasterViewType;
 use App\Models\User;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -27,7 +28,8 @@ class DatabaseSeeder extends Seeder
             ContactSeeder::class,
             BannerSeeder::class,
             LiveTranslationSeeder::class,
-            LeadSeeder::class
+            LeadSeeder::class,
+            BroadcasterViewTypeSeeder::class
         ]);
     }
 }

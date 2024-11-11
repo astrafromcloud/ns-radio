@@ -14,6 +14,8 @@ class SongResource extends Resource
 {
     protected static ?string $model = Song::class;
 
+    protected static ?string $navigationGroup = 'Content';
+
     protected static ?string $navigationIcon = 'heroicon-o-musical-note';
 
     public static function form(Form $form): Form
@@ -97,8 +99,18 @@ class SongResource extends Resource
         return __('song.navigation_label');
     }
 
+    public static function getNavigationGroup(): string
+    {
+        return __('banner.navigation_group_label');
+    }
+
     public static function getPluralLabel(): ?string
     {
         return __('song.plural_label');
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 }

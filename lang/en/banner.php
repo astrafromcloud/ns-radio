@@ -1,6 +1,7 @@
 <?php
 return [
     'navigation_label' => 'Banner',
+    'navigation_group_label' => 'Content',
     'plural_label' => 'Banners',
     'model_label' => 'Banner',
     'image_label' => 'Image',
