@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use Filament\Actions\DeleteAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -23,26 +24,12 @@ class UserResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('last_name')
-                    ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('phone')
-                    ->tel()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DateTimePicker::make('last_renew_password_at'),
-                Forms\Components\Toggle::make('force_renew_password')
-                    ->required(),
-                Forms\Components\TextInput::make('custom_fields'),
-                Forms\Components\TextInput::make('avatar_url')
                     ->maxLength(255),
             ]);
     }
@@ -52,32 +39,43 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label(self::getNameLabel())
+                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('last_name')
+                    ->label(self::getLastNameLabel())
+                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->label(self::getEmailLabel())
+                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
+                    ->label(self::getPhoneLabel())
+                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
+                    ->alignCenter()
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->alignCenter()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->alignCenter()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('avatar_url')
-                    ->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->label('')->color('grey'),
+                Tables\Actions\DeleteAction::make()->label('')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -125,5 +123,25 @@ class UserResource extends Resource
     public static function canCreate(): bool
     {
         return false;
+    }
+
+    public static function getNameLabel(): ?string
+    {
+        return __('user.name_label');
+    }
+
+    public static function getEmailLabel(): ?string
+    {
+        return __('user.email_label');
+    }
+
+    public static function getPhoneLabel(): ?string
+    {
+        return __('user.phone_label');
+    }
+
+    public static function getLastNameLabel(): ?string
+    {
+        return __('user.last_name_label');
     }
 }

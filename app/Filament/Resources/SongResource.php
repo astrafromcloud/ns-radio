@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class SongResource extends Resource
 {
@@ -44,23 +45,29 @@ class SongResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('image_url')
+                    ->label(self::getImageLabel())
+                    ->circular()
+                    ->alignCenter(),
                 Tables\Columns\TextColumn::make('title')
+                    ->label(self::getTitleLabel())
+                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('artist')
+                    ->label(self::getArtistLabel())
+                    ->alignCenter()
                     ->searchable(),
-//                Tables\Columns\TextColumn::make('rank')
-//                    ->numeric()
-//                    ->sortable(),
-                Tables\Columns\ImageColumn::make('image_url')
-                ->label('Image'),
                 Tables\Columns\TextColumn::make('likes')
-                    ->numeric()
-                    ->sortable(),
+                    ->label(self::getLikesLabel())
+                    ->alignCenter()
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(self::getCreatedAtLabel())
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(self::getUpdatedAtLabel())
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -69,7 +76,8 @@ class SongResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                ->label(''),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -101,7 +109,7 @@ class SongResource extends Resource
 
     public static function getNavigationGroup(): string
     {
-        return __('banner.navigation_group_label');
+        return __('song.navigation_group_label');
     }
 
     public static function getPluralLabel(): ?string
@@ -112,5 +120,40 @@ class SongResource extends Resource
     public static function canCreate(): bool
     {
         return false;
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return false;
+    }
+
+    public static function getImageLabel(): ?string
+    {
+        return __('song.image_label');
+    }
+
+    public static function getTitleLabel(): ?string
+    {
+        return __('song.title_label');
+    }
+
+    public static function getLikesLabel(): ?string
+    {
+        return __('song.likes_label');
+    }
+
+    public static function getArtistLabel(): ?string
+    {
+        return __('song.artist_label');
+    }
+
+    public static function getCreatedAtLabel(): ?string
+    {
+        return __('song.created_at_label');
+    }
+
+    public static function getUpdatedAtLabel(): ?string
+    {
+        return __('song.updated_at_label');
     }
 }
