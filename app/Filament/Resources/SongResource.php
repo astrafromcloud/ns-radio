@@ -7,6 +7,7 @@ use App\Models\Song;
 use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -69,19 +70,47 @@ class SongResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\Action::make('delete') // Custom action for delete
-                ->label('')
+                Tables\Actions\Action::make('delete')
+                    ->label('')
                     ->icon('heroicon-o-trash')
                     ->action(function ($record) {
-                        $response = Http::delete('http://localhost:8001/bc/top-chart/' . $record->id);
+                        try {
+                            $response = Http::delete('http://localhost:8001/bc/top-chart/' . $record->id);
 
-                        Log::info('Record info: ' . $record->id);
+                            if ($response->successful()) {
+                                Log::info("Song deleted successfully", ['song_id' => $record->id]);
 
-                        if ($response->successful()) {
-                            Log::info("Song deleted successfully", ['song_id' => $record->id]);
+                                // Force refresh the model
+                                $record->refresh();
+
+                                // Clear the Sushi cache
+                                Song::clearBootedModels();
+
+                                // Show success notification
+                                Notification::make()
+                                    ->title('Song deleted successfully')
+                                    ->success()
+                                    ->send();
+                            } else {
+                                Notification::make()
+                                    ->title('Error deleting song')
+                                    ->danger()
+                                    ->send();
+                            }
+                        } catch (\Exception $e) {
+                            Log::error("Error deleting song", [
+                                'song_id' => $record->id,
+                                'error' => $e->getMessage()
+                            ]);
+
+                            Notification::make()
+                                ->title('Error deleting song')
+                                ->danger()
+                                ->send();
                         }
-                        return null;
-                    }),
+                        return false;
+                    }
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

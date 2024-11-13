@@ -61,4 +61,4 @@ Route::apiResource('liveTranslations', \App\Http\Controllers\API\LiveTranslation
 Route::post('/leads', [LeadController::class, 'store']);
 
 
-Route::get('/service-login', [AuthController::class, 'externalAuthorization']);
+Route::get('/service-login', [AuthController::class, 'authenticate']);

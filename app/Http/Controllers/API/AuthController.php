@@ -108,7 +108,7 @@ class AuthController extends Controller
 
     public function externalAuthorization(Request $request) {
         $data = $request->validate([
-            'token' => 'required|string|min:10',
+            'provider_access_token' => 'required|string|min:10',
         ]);
 
 //        dd(data: $data);
@@ -131,7 +131,6 @@ class AuthController extends Controller
             'token' => 'required|string',
         ]);
 
-        // Determine the authorization provider
         $provider = $request->input('authorization_type');
 
         switch ($provider) {
@@ -149,24 +148,26 @@ class AuthController extends Controller
     private function handleGoogleAuth($token)
     {
         try {
-            // Get Google user info via Socialite
             $googleUser = Socialite::driver('google')->userFromToken($token);
 
-            // Find or create a user
+            $googleURL = "https://www.googleapis.com/oauth2/v3/userinfo?access_token=";
+
+            $googleData = Http::get($googleURL . $token)->json();
+
+            Log::info($googleData);
+
             $user = User::firstOrCreate(
-                ['email' => $googleUser->getEmail()],
+                ['email' => $googleData['email']],
                 [
                     'name' => $googleUser->getName(),
-                    'google_id' => $googleUser->getId(),
-                    'avatar' => $googleUser->getAvatar(),
+                    'last_name' => $googleUser->getLastName(),
+                    'phone' => $googleUser->getPhone()
                 ]
             );
 
-            // Login the user
             Auth::login($user);
 
-            // Respond with user data or token
-            return response()->json(['user' => $user, 'token' => $user->createToken('YourApp')->plainTextToken]);
+            return response()->json(['user' => $user, 'token' => $user->createToken('NS-Radio')->plainTextToken]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Google authentication failed'], 400);
         }

@@ -37,7 +37,6 @@ class ListSongs extends ListRecords
 
                             return collect($results['tracks']['items'] ?? [])
                                 ->map(function ($track) {
-                                    Log::info(json_encode($track));
                                     return [
                                         'id' => $track['id'],
                                         'label' => "{$track['name']} - {$track['artists'][0]['name']}",
@@ -64,38 +63,78 @@ class ListSongs extends ListRecords
                         return;
                     }
 
-                    // Check if song already exists
-                    $existingSong = Song::where('title', $songDetails['name'])
-                        ->where('artist', $songDetails['artists'][0]['name'])
-                        ->first();
+                    try {
+                        // Check if song exists in tracks
+                        $existingTracks = Http::get('http://localhost:8001/bc/tracks');
 
-                    if ($existingSong) {
+                        if ($existingTracks->successful()) {
+                            $tracks = $existingTracks->json();
+
+                            $existingSong = collect($tracks)->first(function ($track) use ($songDetails) {
+
+                                Log::info('EXISTING SONG: ' . json_encode($songDetails['artists'][0]['name'], JSON_PRETTY_PRINT) . '  EXISTING TRACK: ' . json_encode($track['author'], JSON_PRETTY_PRINT));
+
+//                                $temp =
+
+                                return strtolower($track['name']) === strtolower($songDetails['name']) &&
+                                    strtolower($track['author']) === strtolower($songDetails['artists'][0]['name']);
+                            });
+
+                            if ($existingSong) {
+                                // If song exists, add it directly to top chart
+                                $addToChartTracks = Http::patch('http://localhost:8001/bc/top-chart', [
+                                    'id' => $existingSong['id'],
+                                ]);
+
+
+                                if ($addToChartTracks->successful()) {
+                                    Notification::make()
+                                        ->title('Song added to chart successfully')
+                                        ->success()
+                                        ->send();
+                                    return;
+                                } else {
+                                    dd('Something went wrong 2');
+                                }
+                            } else {
+                                dd('Something went wrong 1');
+                            }
+                        }
+
+                        // If song doesn't exist, create new one
+                        $addToTracks = Http::attach(
+                            'image',
+                            file_get_contents($songDetails['album']['images'][0]['url'] ?? ''),
+                            'logo_circle.png'
+                        )
+                            ->post('http://localhost:8001/bc/tracks', [
+                                'name' => $songDetails['name'],
+                                'author_name' => $songDetails['artists'][0]['name'],
+                                'has_in_chart' => true
+                            ]);
+
+                        if ($addToTracks->successful()) {
+                            $trackId = $addToTracks->json()['id'];
+
+                            $addToChartTracks = Http::post('http://localhost:8001/bc/top-chart', [
+                                'id' => $trackId,
+                            ]);
+
+                            if ($addToChartTracks->successful()) {
+                                Notification::make()
+                                    ->title('New song added successfully')
+                                    ->success()
+                                    ->send();
+                            }
+                        }
+
+                    } catch (\Exception $e) {
+                        Log::error('Error adding song: ' . $e->getMessage());
                         Notification::make()
-                            ->title('Song already exists in the database')
-                            ->warning()
+                            ->title('Error adding song')
+                            ->danger()
                             ->send();
-                        return;
                     }
-
-                    $addToTracks = Http::attach('image', file_get_contents($songDetails['album']['images'][0]['url'] ?? ''), 'logo_circle.png')
-                        ->post('http://localhost:8001/bc/tracks', [
-                            'name' => $songDetails['name'],
-                            'author_name' => $songDetails['artists'][0]['name'],
-                            'has_in_chart' => true
-                        ]);
-
-                    Log::info($addToTracks);
-                    Log::info($addToTracks['id']);
-
-                    $addToChartTracks = Http::post('http://localhost:8001/bc/top-chart', [
-                        'id' => $addToTracks['id'],
-                    ]);
-
-
-                    Notification::make()
-                        ->title('Song added successfully')
-                        ->success()
-                        ->send();
                 }) : Action::make('Hidden')->hidden()
         ];
     }

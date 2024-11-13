@@ -7,6 +7,7 @@ use App\Observers\UserObserver;
 use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentColor;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -36,6 +37,10 @@ class AppServiceProvider extends ServiceProvider
                -> locales([
                    'en', 'ru', 'kk'
                ]);
+        });
+
+        Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
+            $event->extendSocialite('google', \SocialiteProviders\Google\Provider::class);
         });
     }
 }
