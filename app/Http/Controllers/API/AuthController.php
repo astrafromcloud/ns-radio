@@ -7,19 +7,31 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Exception;
+use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Laravel\Socialite\Facades\Socialite;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class AuthController extends Controller
 {
+    protected GuzzleClient $http;
+
+    public function __construct()
+    {
+        $this->http = new GuzzleClient([
+            'http_errors' => true
+        ]);
+    }
+
     public function index()
     {
         return response()->json(User::all());
     }
+
     public function login(LoginRequest $request)
     {
 
@@ -102,26 +114,8 @@ class AuthController extends Controller
             'phone' => $data['phone'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-//            'registered_with' => $data['registered_with'],
+            //            'registered_with' => $data['registered_with'],
         ]);
-    }
-
-    public function externalAuthorization(Request $request) {
-        $data = $request->validate([
-            'provider_access_token' => 'required|string|min:10',
-        ]);
-
-//        dd(data: $data);
-
-        $token = $data['token'];
-
-        $googleURL = "https://www.googleapis.com/oauth2/v3/userinfo?access_token=";
-
-//      $vkURL = "https://api.vk.com/method/";
-
-        $googleData = Http::get($googleURL . $token)->json();
-
-        Log::info($googleData);
     }
 
     public function authenticate(Request $request)
@@ -148,20 +142,17 @@ class AuthController extends Controller
     private function handleGoogleAuth($token)
     {
         try {
-            $googleUser = Socialite::driver('google')->userFromToken($token);
+            $userData = $this->getGoogleUserByToken($token);
 
-            $googleURL = "https://www.googleapis.com/oauth2/v3/userinfo?access_token=";
-
-            $googleData = Http::get($googleURL . $token)->json();
-
-            Log::info($googleData);
+            if (!$userData['email_verified']) throw new Exception("Email is not verified!");
 
             $user = User::firstOrCreate(
-                ['email' => $googleData['email']],
+                ['email' => $userData['email']],
                 [
-                    'name' => $googleUser->getName(),
-                    'last_name' => $googleUser->getLastName(),
-                    'phone' => $googleUser->getPhone()
+                    'name' => $userData['given_name'],
+                    'last_name' => $userData['family_name'],
+                    'phone' => null,
+                    'email_verified_at' => now()
                 ]
             );
 
@@ -173,11 +164,26 @@ class AuthController extends Controller
         }
     }
 
+    private function getGoogleUserByToken($token)
+    {
+        $response = $this->http->get(
+            'https://www.googleapis.com/oauth2/v3/userinfo',
+            [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $token,
+                ],
+            ]
+        );
+
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
     private function handleVkAuth($token)
     {
         try {
             // Get VK user info via the VK API
-            $vkUser = Socialite::driver('vkontakte')->userFromToken($token);
+            $vkUser = $this->getVKUserByToken($token);
+            dd($vkUser);
 
             // Find or create a user
             $user = User::firstOrCreate(
@@ -195,7 +201,42 @@ class AuthController extends Controller
             // Respond with user data or token
             return response()->json(['user' => $user, 'token' => $user->createToken('YourApp')->plainTextToken]);
         } catch (\Exception $e) {
+
+            dd($e);
             return response()->json(['error' => 'VK authentication failed'], 400);
         }
+    }
+
+    protected function getVKUserByToken($token)
+    {
+        $formToken = [];
+
+        if (is_array($token)) {
+            $formToken['email'] = $token['email'] ?? null;
+
+            $token = $token['access_token'];
+        }
+
+        $params = http_build_query([
+            'access_token' => $token,
+            'fields'       => implode(',', ['id', 'email', 'first_name', 'last_name', 'screen_name', 'photo_200', 'verified', 'phone_number']),
+            'lang'         => config("app.locale"),
+            'v'            => "5.131",
+        ]);
+
+        $response = $this->http->get('https://api.vk.com/method/users.get?' . $params);
+
+        $contents = (string) $response->getBody();
+
+        $response = json_decode($contents, true);
+
+        if (!is_array($response) || !isset($response['response'][0])) {
+            throw new RuntimeException(sprintf(
+                'Invalid JSON response from VK: %s',
+                $contents
+            ));
+        }
+
+        return array_merge($formToken, $response['response'][0]);
     }
 }

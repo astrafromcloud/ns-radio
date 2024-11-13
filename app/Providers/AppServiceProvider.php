@@ -9,6 +9,8 @@ use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentColor;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use SocialiteProviders\Google\Provider;
+use SocialiteProviders\Manager\SocialiteWasCalled;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,14 +35,16 @@ class AppServiceProvider extends ServiceProvider
         User::observe(UserObserver::class);
 
         LanguageSwitch::configureUsing(function (LanguageSwitch $languageSwitch) {
-           $languageSwitch
-               -> locales([
-                   'en', 'ru', 'kk'
-               ]);
+            $languageSwitch
+                ->locales([
+                    'en',
+                    'ru',
+                    'kk'
+                ]);
         });
 
-        Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
-            $event->extendSocialite('google', \SocialiteProviders\Google\Provider::class);
+        Event::listen(function (SocialiteWasCalled $event) {
+            $event->extendSocialite('google', Provider::class);
         });
     }
 }
