@@ -73,17 +73,14 @@ class SongResource extends Resource
                 ->label('')
                     ->icon('heroicon-o-trash')
                     ->action(function ($record) {
-                        // Perform the HTTP DELETE request
                         $response = Http::delete('http://localhost:8001/bc/top-chart/' . $record->id);
 
-                        // Check if the response is successful and take action
+                        Log::info('Record info: ' . $record->id);
+
                         if ($response->successful()) {
-                            // You can log the successful deletion or notify the user
                             Log::info("Song deleted successfully", ['song_id' => $record->id]);
-                        } else {
-                            // Handle failure
-                            Log::error("Failed to delete song", ['song_id' => $record->id]);
                         }
+                        return null;
                     }),
             ])
             ->bulkActions([

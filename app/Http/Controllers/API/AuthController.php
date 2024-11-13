@@ -102,7 +102,7 @@ class AuthController extends Controller
             'phone' => $data['phone'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'registered_with' => $data['registered_with'],
+//            'registered_with' => $data['registered_with'],
         ]);
     }
 

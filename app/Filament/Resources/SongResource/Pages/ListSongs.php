@@ -4,15 +4,12 @@ namespace App\Filament\Resources\SongResource\Pages;
 
 use App\Filament\Resources\SongResource;
 use App\Models\Song;
-use App\Services\MariaDbSongService;
 use App\Services\SpotifyService;
+use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
-use Filament\Actions;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -40,7 +37,7 @@ class ListSongs extends ListRecords
 
                             return collect($results['tracks']['items'] ?? [])
                                 ->map(function ($track) {
-                                    // Store full track data in the options array
+                                    Log::info(json_encode($track));
                                     return [
                                         'id' => $track['id'],
                                         'label' => "{$track['name']} - {$track['artists'][0]['name']}",
@@ -80,12 +77,19 @@ class ListSongs extends ListRecords
                         return;
                     }
 
-                    $response = Http::attach('image', file_get_contents($songDetails['album']['images'][0]['url'] ?? ''), 'logo_circle.png')
+                    $addToTracks = Http::attach('image', file_get_contents($songDetails['album']['images'][0]['url'] ?? ''), 'logo_circle.png')
                         ->post('http://localhost:8001/bc/tracks', [
                             'name' => $songDetails['name'],
                             'author_name' => $songDetails['artists'][0]['name'],
                             'has_in_chart' => true
                         ]);
+
+                    Log::info($addToTracks);
+                    Log::info($addToTracks['id']);
+
+                    $addToChartTracks = Http::post('http://localhost:8001/bc/top-chart', [
+                        'id' => $addToTracks['id'],
+                    ]);
 
 
                     Notification::make()

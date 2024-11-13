@@ -29,7 +29,7 @@ class RegisterRequest extends FormRequest
             'phone' => 'nullable|string|max:15|unique:users',
             'email' => 'required|string|email:dns|max:255|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
-            'registered_with' => ['required', Rule::enum(RegisteredWithEnum::class)]
+//            'registered_with' => ['required', Rule::enum(RegisteredWithEnum::class)]
         ];
     }
 }
