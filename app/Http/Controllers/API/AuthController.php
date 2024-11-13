@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -152,7 +153,8 @@ class AuthController extends Controller
                     'name' => $userData['given_name'],
                     'last_name' => $userData['family_name'],
                     'phone' => null,
-                    'email_verified_at' => now()
+                    'email_verified_at' => now(),
+                    'password' => bcrypt(Str::random(20))
                 ]
             );
 
@@ -160,6 +162,7 @@ class AuthController extends Controller
 
             return response()->json(['user' => $user, 'token' => $user->createToken('NS-Radio')->plainTextToken]);
         } catch (\Exception $e) {
+            Log::error("HERE", [$e]);
             return response()->json(['error' => 'Google authentication failed'], 400);
         }
     }
