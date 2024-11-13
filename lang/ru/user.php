@@ -9,4 +9,5 @@ return [
     'last_name_label' => 'Фамилия',
     'email_label' => 'Почта',
     'phone_label' => 'Телефон',
+    'registered_with_label' => 'Зарегистрирован с'
 ];

@@ -59,3 +59,6 @@ Route::get('/programs', function (Request $request) {
 Route::apiResource('liveTranslations', \App\Http\Controllers\API\LiveTranslationController::class);
 
 Route::post('/leads', [LeadController::class, 'store']);
+
+
+Route::get('/service-login', [AuthController::class, 'externalAuthorization']);

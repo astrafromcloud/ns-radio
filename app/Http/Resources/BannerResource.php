@@ -24,6 +24,7 @@ class BannerResource extends ResourceCollection
                 'id' => $item->id,
                 'order' => $item->order,
                 'content' => asset('storage/' . $item->content),
+                'content_type' => $item->content_type,
             ];
         })->toArray();
     }

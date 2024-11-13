@@ -9,4 +9,6 @@ return [
     'last_name_label' => 'Тегі',
     'email_label' => 'Пошта',
     'phone_label' => 'Телефон',
+    'registered_with_label' => 'Тіркелген'
+
 ];

@@ -4,18 +4,19 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SongResource\Pages;
 use App\Models\Song;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class SongResource extends Resource
 {
     protected static ?string $model = Song::class;
-
-    protected static ?string $navigationGroup = 'Content';
 
     protected static ?string $navigationIcon = 'heroicon-o-musical-note';
 
@@ -29,8 +30,6 @@ class SongResource extends Resource
                 Forms\Components\TextInput::make('artist')
                     ->required()
                     ->maxLength(255),
-//                Forms\Components\TextInput::make('rank')
-//                    ->numeric(),
                 Forms\Components\FileUpload::make('image_url')
                     ->label('Image')
                     ->image(),
@@ -45,15 +44,17 @@ class SongResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image_url')
+                Tables\Columns\ImageColumn::make('image')
                     ->label(self::getImageLabel())
+                    ->default('/storage/logo/logo_circle.png')
                     ->circular()
+                    ->size(80)
                     ->alignCenter(),
-                Tables\Columns\TextColumn::make('title')
+                Tables\Columns\TextColumn::make('name')
                     ->label(self::getTitleLabel())
                     ->alignCenter()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('artist')
+                Tables\Columns\TextColumn::make('author_name')
                     ->label(self::getArtistLabel())
                     ->alignCenter()
                     ->searchable(),
@@ -61,23 +62,29 @@ class SongResource extends Resource
                     ->label(self::getLikesLabel())
                     ->alignCenter()
                     ->numeric(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label(self::getCreatedAtLabel())
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->label(self::getUpdatedAtLabel())
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->paginated(false)
+            ->searchable(false)
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\DeleteAction::make()
-                ->label(''),
+                Tables\Actions\Action::make('delete') // Custom action for delete
+                ->label('')
+                    ->icon('heroicon-o-trash')
+                    ->action(function ($record) {
+                        // Perform the HTTP DELETE request
+                        $response = Http::delete('http://localhost:8001/bc/top-chart/' . $record->id);
+
+                        // Check if the response is successful and take action
+                        if ($response->successful()) {
+                            // You can log the successful deletion or notify the user
+                            Log::info("Song deleted successfully", ['song_id' => $record->id]);
+                        } else {
+                            // Handle failure
+                            Log::error("Failed to delete song", ['song_id' => $record->id]);
+                        }
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -100,6 +107,11 @@ class SongResource extends Resource
             'create' => Pages\CreateSong::route('/create'),
             'edit' => Pages\EditSong::route('/{record}/edit'),
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('song.model_label');
     }
 
     public static function getNavigationLabel(): string

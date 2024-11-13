@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Services\{
     WeatherService,
     IPToLocationService,
@@ -28,6 +29,7 @@ class CityController extends Controller
 
     public function index()
     {
+
         $cities = City::all();
         $locale = app()->getLocale();
 
@@ -98,8 +100,14 @@ class CityController extends Controller
 
     public function getCity(): JsonResponse
     {
+
+        Log::info('ROME!!!!');
+
         $clientIp = $this->getClientIp();
         $cityData = $this->getCityData($clientIp);
+
+        Log::info($clientIp);
+        Log::info(response()->json($this->decodeUnicode(json_encode($cityData['name'])), 200, [], JSON_PRETTY_PRINT));
 
         return response()->json(
             CityResource::make($cityData)->resolve()

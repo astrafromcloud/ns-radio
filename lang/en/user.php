@@ -9,4 +9,5 @@ return [
     'last_name_label' => 'Last name',
     'email_label' => 'Email',
     'phone_label' => 'Phone',
+    'registered_with_label' => 'Registered with',
 ];

@@ -12,7 +12,7 @@ use Filament\Tables\Table;
 
 class UserResource extends Resource
 {
-    protected static ?string $navigationGroup  = 'CRM';
+    protected static ?string $navigationGroup = 'CRM';
 
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
@@ -54,6 +54,15 @@ class UserResource extends Resource
                     ->label(self::getPhoneLabel())
                     ->alignCenter()
                     ->searchable(),
+                Tables\Columns\IconColumn::make('registered_with')
+                    ->label(self::getRegisteredWithLabel())
+                    ->alignCenter()
+                    ->icon(fn(string $state): string => match ($state) {
+                        'ns-radio' => 'icon-ns-radio',
+                        'google' => 'icon-google',
+                        'vk' => 'icon-vk',
+                    })
+                    ->default('ns-radio'),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->alignCenter()
                     ->dateTime()
@@ -143,5 +152,10 @@ class UserResource extends Resource
     public static function getLastNameLabel(): ?string
     {
         return __('user.last_name_label');
+    }
+
+    public static function getRegisteredWithLabel(): ?string
+    {
+        return __('user.registered_with_label');
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\RegisteredWithEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class RegisterRequest extends FormRequest
 {
@@ -27,6 +29,7 @@ class RegisterRequest extends FormRequest
             'phone' => 'nullable|string|max:15|unique:users',
             'email' => 'required|string|email:dns|max:255|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
+            'registered_with' => ['required', Rule::enum(RegisteredWithEnum::class)]
         ];
     }
 }
