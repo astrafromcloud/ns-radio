@@ -2,11 +2,9 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use App\Models\City;
 use Illuminate\Http\JsonResponse;
-use InvalidArgumentException;
 
 class CityLocationService
 {
@@ -38,9 +36,10 @@ class CityLocationService
         }
     }
 
-    private function getClientIp(): string
+    public function getClientIp(): string
     {
         $ip = request()->header('X-Forwarded-For');
+
         if (!$ip) {
             $ip = request()->ip();
         }
@@ -48,7 +47,7 @@ class CityLocationService
         return $ip;
     }
 
-    private function getCurrentCity(string $ip): string
+    public function getCurrentCity(string $ip): string
     {
         $cacheKey = "{$ip}_to_location";
 
@@ -61,13 +60,13 @@ class CityLocationService
         return $locationData['city'] ?? self::DEFAULT_CITY;
     }
 
-    private function getCityFrequency(string $cityName): string
+    public function getCityFrequency(string $cityName): string
     {
-        $city = City::where('name', 'like', $cityName)->first();
+        $city = City::where('name->en', 'like', $cityName)->first();
         return $city?->frequency ?? '106.0 FM';
     }
 
-    private function getTranslatedCityNames(string $cityName): array
+    public function getTranslatedCityNames(string $cityName): array
     {
         $russianName = Cache::remember(
             "{$cityName}_trans_ru",
@@ -91,7 +90,7 @@ class CityLocationService
         ];
     }
 
-    private function formatResponse(array $translatedNames, array $weather, string $frequency): JsonResponse
+    public function formatResponse(array $translatedNames, array $weather, string $frequency): JsonResponse
     {
         $locale = app()->getLocale();
 
@@ -103,7 +102,7 @@ class CityLocationService
         ]);
     }
 
-    private function decodeUnicode(string $string): string
+    public function decodeUnicode(string $string): string
     {
         return json_decode('"' . $string . '"') ?? $string;
     }

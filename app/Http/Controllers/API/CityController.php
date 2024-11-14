@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Log;
 use App\Services\{
     WeatherService,
     IPToLocationService,
-    TranslationService,
-    CityService
+    TrapHerStTranslationService,
+    CityLocationService
 };
 use App\Http\Resources\CityResource;
 use Illuminate\Support\Facades\Cache;
@@ -19,10 +19,10 @@ use Illuminate\Http\JsonResponse;
 class CityController extends Controller
 {
     public function __construct(
-        private readonly WeatherService      $weatherService,
-        private readonly IPToLocationService $ipToLocationService,
-        private readonly TranslationService  $translationService,
-        private readonly CityService         $cityService,
+        private readonly WeatherService                 $weatherService,
+        private readonly IPToLocationService            $ipToLocationService,
+        private readonly TrapHerStTranslationService    $translationService,
+        private readonly CityLocationService            $cityService,
     )
     {
     }
@@ -175,7 +175,7 @@ class CityController extends Controller
 
     private function getCityFrequency(string $cityName): string
     {
-        return $this->cityService->getFrequency($cityName);
+        return $this->cityService->getCityFrequency($cityName);
     }
 
     private function decodeUnicode(string $string): string

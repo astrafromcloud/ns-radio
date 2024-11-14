@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\City;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Exceptions\Custom;
@@ -37,63 +35,5 @@ class WeatherService
             Log::error('Weather API connection error', ['error' => $e->getMessage()]);
             return [null, null];
         }
-    }
-}
-
-class IPToLocationService
-{
-    private const API_ENDPOINT = "https://ipinfo.io";
-
-    public function getLocation(string $ip): array
-    {
-        try {
-            $response = Http::timeout(3)
-                ->retry(2, 100)
-                ->get(self::API_ENDPOINT . "/{$ip}/json", [
-                    'token' => config('services.ip2location.api_key')
-                ]);
-
-            return $response->json();
-        } catch (ConnectionException $e) {
-            Log::error('IP Location API error', ['error' => $e->getMessage()]);
-            return ['city' => 'Almaty'];
-        }
-    }
-}
-
-class TranslationService
-{
-    private const API_ENDPOINT = "https://trap.her.st/api/translate/";
-
-    public function translate(
-        string $text,
-        string $from = "en",
-        string $to = "kk",
-        string $engine = "google"
-    ): array
-    {
-        try {
-            $response = Http::timeout(3)
-                ->retry(2, 100)
-                ->get(self::API_ENDPOINT, [
-                    'engine' => $engine,
-                    'from' => $from,
-                    'to' => $to,
-                    'text' => $text
-                ]);
-
-            return $response->json();
-        } catch (ConnectionException $e) {
-            Log::error('Translation API error', ['error' => $e->getMessage()]);
-            return ['translated-text' => $text];
-        }
-    }
-}
-
-class CityService
-{
-    public function getFrequency(string $cityName): string
-    {
-        return City::where('name->en', $cityName)->value('frequency');
     }
 }
