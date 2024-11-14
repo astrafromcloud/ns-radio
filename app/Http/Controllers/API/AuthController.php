@@ -121,12 +121,12 @@ class AuthController extends Controller
 
     public function authenticate(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'authorization_type' => 'required|in:google,vk',
-            'token' => 'required|string',
+            'token' => 'required|text',
         ]);
 
-        $provider = $request->input('authorization_type');
+        $provider = $data['authorization_type'];
 
         switch ($provider) {
             case 'google':

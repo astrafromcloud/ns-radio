@@ -75,7 +75,7 @@ class SongResource extends Resource
                     ->icon('heroicon-o-trash')
                     ->action(function ($record) {
                         try {
-                            $response = Http::delete('http://localhost:8001/bc/top-chart/' . $record->id);
+                            $response = Http::delete('http://service.ns-radio.init.kz/bc/top-chart/' . $record->id);
 
                             if ($response->successful()) {
                                 Log::info("Song deleted successfully", ['song_id' => $record->id]);

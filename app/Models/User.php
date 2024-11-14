@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Golang\RadioService\Track;
+use App\Models\Golang\RadioService\UserLike;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -42,5 +44,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function trackLikes() {
+        return $this->hasMany(UserLike::class, "user_id");
+    }
+
+    public function likedTracks() {
+        return $this->belongsToMany(Track::class, UserLike::class, "user_id", "track_likes");
     }
 }

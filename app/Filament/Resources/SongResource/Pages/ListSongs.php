@@ -64,8 +64,7 @@ class ListSongs extends ListRecords
                     }
 
                     try {
-                        // Check if song exists in tracks
-                        $existingTracks = Http::get('http://localhost:8001/bc/tracks');
+                        $existingTracks = Http::get('http://service.ns-radio.init.kz/bc/tracks');
 
                         if ($existingTracks->successful()) {
                             $tracks = $existingTracks->json();
@@ -74,15 +73,13 @@ class ListSongs extends ListRecords
 
                                 Log::info('EXISTING SONG: ' . json_encode($songDetails['artists'][0]['name'], JSON_PRETTY_PRINT) . '  EXISTING TRACK: ' . json_encode($track['author'], JSON_PRETTY_PRINT));
 
-//                                $temp =
-
                                 return strtolower($track['name']) === strtolower($songDetails['name']) &&
                                     strtolower($track['author']) === strtolower($songDetails['artists'][0]['name']);
                             });
 
                             if ($existingSong) {
                                 // If song exists, add it directly to top chart
-                                $addToChartTracks = Http::patch('http://localhost:8001/bc/top-chart', [
+                                $addToChartTracks = Http::patch('http://service.ns-radio.init.kz/bc/top-chart', [
                                     'id' => $existingSong['id'],
                                 ]);
 
@@ -97,34 +94,32 @@ class ListSongs extends ListRecords
                                     dd('Something went wrong 2');
                                 }
                             } else {
-                                dd('Something went wrong 1');
-                            }
-                        }
+                                // If song doesn't exist, create new one
+                                $addToTracks = Http::attach(
+                                    'image',
+                                    file_get_contents($songDetails['album']['images'][0]['url'] ?? ''),
+                                    'logo_circle.png'
+                                )
+                                    ->post('http://service.ns-radio.init.kz/bc/tracks', [
+                                        'name' => $songDetails['name'],
+                                        'author_name' => $songDetails['artists'][0]['name'],
+                                        'has_in_chart' => true
+                                    ]);
 
-                        // If song doesn't exist, create new one
-                        $addToTracks = Http::attach(
-                            'image',
-                            file_get_contents($songDetails['album']['images'][0]['url'] ?? ''),
-                            'logo_circle.png'
-                        )
-                            ->post('http://localhost:8001/bc/tracks', [
-                                'name' => $songDetails['name'],
-                                'author_name' => $songDetails['artists'][0]['name'],
-                                'has_in_chart' => true
-                            ]);
+                                if ($addToTracks->successful()) {
+                                    $trackId = $addToTracks->json()['id'];
 
-                        if ($addToTracks->successful()) {
-                            $trackId = $addToTracks->json()['id'];
+                                    $addToChartTracks = Http::post('http://service.ns-radio.init.kz/bc/top-chart', [
+                                        'id' => $trackId,
+                                    ]);
 
-                            $addToChartTracks = Http::post('http://localhost:8001/bc/top-chart', [
-                                'id' => $trackId,
-                            ]);
-
-                            if ($addToChartTracks->successful()) {
-                                Notification::make()
-                                    ->title('New song added successfully')
-                                    ->success()
-                                    ->send();
+                                    if ($addToChartTracks->successful()) {
+                                        Notification::make()
+                                            ->title('New song added successfully')
+                                            ->success()
+                                            ->send();
+                                    }
+                                }
                             }
                         }
 

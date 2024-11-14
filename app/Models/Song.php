@@ -18,11 +18,11 @@ class Song extends Model
 
     public function getRows()
     {
-        $songs = Http::get('http://localhost:8001/bc/top-chart')->json();
+        $songs = Http::get('http://service.ns-radio.init.kz/bc/top-chart')->json();
 
         $songs = Arr::map($songs, function ($item) {
             return [
-                'id' => $item['id'],  // Use the external API's ID
+                'id' => $item['id'],
                 'name' => $item['name'],
                 'author_name' => $item['author'],
                 'image' => $item['image'] ?? null,
