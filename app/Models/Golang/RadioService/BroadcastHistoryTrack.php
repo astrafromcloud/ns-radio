@@ -8,6 +8,8 @@ class BroadcastHistoryTrack extends Model
 {
     protected $connection = "go-service-db";
 
+    protected $fillable = ["broadcast_history", "track_history"];
+
     public function broadcast() {
         return $this->belongsTo(Broadcast::class, "broadcast_history");
     }

@@ -44,7 +44,11 @@ return [
     ],
 
     'spotify' => [
-    'client_id' => env('SPOTIFY_CLIENT_ID'),
-    'client_secret' => env('SPOTIFY_CLIENT_SECRET'),
-],
+        'client_id' => env('SPOTIFY_CLIENT_ID'),
+        'client_secret' => env('SPOTIFY_CLIENT_SECRET'),
+    ],
+
+    "go-service" => [
+        "url" => env("GO_SERVICE_URL")
+    ]
 ];

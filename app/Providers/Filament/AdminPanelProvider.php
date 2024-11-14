@@ -35,6 +35,7 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => '#cb1f26',
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            ->discoverResources(in: app_path('Filament/Resources/RadioService'), for: 'App\\Filament\\Resources\\RadioService')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,

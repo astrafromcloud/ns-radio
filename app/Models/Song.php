@@ -6,13 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-use Sushi\Sushi;
 
 class Song extends Model
 {
     /** @use HasFactory<\Database\Factories\SongFactory> */
-    use HasFactory, Sushi;
+    use HasFactory;
 
     protected $guarded = false;
 

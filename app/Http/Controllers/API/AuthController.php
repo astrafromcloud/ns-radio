@@ -144,7 +144,7 @@ class AuthController extends Controller
     {
         try {
             $userData = $this->getGoogleUserByToken($token);
-
+            Log::info("test", [$userData]);
             if (!$userData['email_verified']) throw new Exception("Email is not verified!");
 
             $user = User::firstOrCreate(

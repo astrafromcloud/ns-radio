@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Track extends Model
 {
     protected $connection = "go-service-db";
-    protected $fillable = ["name", "sanitized_name", "likes_count"];
+    protected $fillable = ["name", "sanitized_name", "likes_count", "author_tracks"];
 
     public function author() {
         return $this->belongsTo(Author::class, "author_tracks");
@@ -30,6 +30,14 @@ class Track extends Model
 
     public function getLikedUsersAttribute() {
         return $this->likedUsers()->get();
+    }
+
+    public function image() {
+        return $this->hasOne(TrackImage::class, "track_image");
+    }
+
+    public function topChart() {
+        return $this->hasOne(ChartTrack::class, "track_chart_track");
     }
 
     public function newRelatedInstance($class)
