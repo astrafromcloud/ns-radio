@@ -2,6 +2,7 @@
 
 namespace App\Models\Golang\RadioService;
 
+use App\Utils\StrUtils;
 use Illuminate\Database\Eloquent\Model;
 
 class Author extends Model
@@ -18,6 +19,10 @@ class Author extends Model
 
     protected static function booted()
     {
+        static::saving(function ($author) {
+            $author->sanitized_name = StrUtils::sanitize($author->name);
+        });
+
         static::deleting(function (Author $author) {
             $authorTrackIds = $author->tracks()->pluck('id');
 

@@ -12,7 +12,7 @@ class TracksHeaderWidget extends BaseWidget
 {
     use InteractsWithPageTable;
 
-    protected static ?string $pollingInterval = "5s";
+    protected static ?string $pollingInterval = '45s';
 
     protected function getTablePage(): string
     {

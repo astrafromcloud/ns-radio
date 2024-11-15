@@ -3,30 +3,34 @@
 namespace App\Filament\Resources\RadioService;
 
 use App\Filament\Components\GoFileUpload;
-use App\Filament\Resources\RadioService\TopChartResource\Pages;
-use App\Models\Golang\RadioService\ChartTrack;
+use App\Filament\Resources\RadioService\BroadcastHistoryResource\Pages;
+use App\Filament\Resources\RadioService\BroadcastHistoryResource\RelationManagers;
+use App\Models\Golang\RadioService\Author;
+use App\Models\Golang\RadioService\BroadcastHistoryTrack;
+use App\Models\Golang\RadioService\Track;
+use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Table;
-use Filament\Forms;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Carbon;
 
-class TopChartResource extends Resource
+class BroadcastHistoryResource extends Resource
 {
-    protected static ?string $model = ChartTrack::class;
+    protected static ?string $model = BroadcastHistoryTrack::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-star';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Fieldset::make(__("radio-content.top-charts.labels.details"))
+                Forms\Components\Fieldset::make(__("radio-content.history.labels.details"))
                     ->schema([
-                        Forms\Components\Select::make('track_chart_track')
+                        Forms\Components\Select::make('track_history')
                             ->relationship('track', 'name')
                             ->native(false)
                             ->searchable()
@@ -34,9 +38,8 @@ class TopChartResource extends Resource
                             ->required()
                             ->preload()
                             ->columnSpanFull()
-                            ->label(__("radio-content.top-charts.labels.track")),
+                            ->label(__("radio-content.history.labels.track")),
                     ]),
-
             ]);
     }
 
@@ -45,9 +48,8 @@ class TopChartResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
-                    ->label(__("radio-content.top-charts.labels.id"))
+                    ->label(__("radio-content.history.labels.id"))
                     ->sortable()
-                    ->width("76px")
                     ->toggleable(),
                 Tables\Columns\ImageColumn::make('track.image')
                     ->label(__("radio-content.tracks.labels.image"))
@@ -60,12 +62,12 @@ class TopChartResource extends Resource
                     ->toggleable()
                     ->height("76px")
                     ->width("76px")
-                    ->url(fn($record) => TrackResource::getUrl("edit", ["record" => $record->track_chart_track])),
+                    ->url(fn($record) => TrackResource::getUrl("edit", ["record" => $record->track_history])),
                 Tables\Columns\TextColumn::make('track.name')
-                    ->label(__("radio-content.top-charts.labels.name"))
+                    ->label(__("radio-content.history.labels.name"))
                     ->sortable()
                     ->toggleable()
-                    ->url(fn($record) => TrackResource::getUrl("edit", ["record" => $record->track_chart_track])),
+                    ->url(fn($record) => TrackResource::getUrl("edit", ["record" => $record->track_history])),
                 Tables\Columns\TextColumn::make('track.author.name')
                     ->label(__("radio-content.tracks.labels.author"))
                     ->sortable()
@@ -79,41 +81,89 @@ class TopChartResource extends Resource
                     ->toggleable()
                     ->color("success"),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label(__("radio-content.top-charts.labels.updated"))
+                    ->label(__("radio-content.history.labels.updated"))
                     ->dateTimeTooltip()
                     ->since()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label(__("radio-content.top-charts.labels.created"))
+                    ->label(__("radio-content.history.labels.created"))
                     ->dateTimeTooltip()
                     ->since()
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('track.updated_at')
-                    ->label(__("radio-content.top-charts.labels.track_updated"))
+                    ->label(__("radio-content.history.labels.track_updated"))
                     ->dateTimeTooltip()
                     ->since()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('track.created_at')
-                    ->label(__("radio-content.top-charts.labels.track_created"))
+                    ->label(__("radio-content.history.labels.track_created"))
                     ->dateTimeTooltip()
                     ->since()
                     ->sortable()
                     ->toggleable(),
             ])
             ->filters([
+                Tables\Filters\Filter::make("except_name")
+                    ->form([
+                        Forms\Components\Select::make('track_history')
+                            ->relationship('track', 'name')
+                            ->native(false)
+                            ->searchable()
+                            ->searchDebounce(500)
+                            ->preload()
+                            ->columnSpanFull()
+                            ->multiple()
+                            ->label(__("radio-content.history.labels.except_track_name")),
+
+                        Forms\Components\Select::make('author_ids')
+                            ->relationship('track.author', 'name')
+                            ->native(false)
+                            ->searchable()
+                            ->searchDebounce(500)
+                            ->preload()
+                            ->columnSpanFull()
+                            ->multiple()
+                            ->label(__("radio-content.history.labels.except_author_name")),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        $query->when(
+                            !empty($data['track_history'] ?? null),
+                            fn(Builder $query): Builder => $query->whereNotIn('track_history', $data['track_history']),
+                        )->when(
+                            !empty($data['author_ids'] ?? null),
+                            fn(Builder $query): Builder => $query->whereHas('track', function (Builder $query) use ($data): Builder {
+                                return $query->whereNotIn('author_tracks', $data['author_ids']);
+                            }),
+                        );
+
+                        return $query;
+                    })->indicateUsing(function (array $data): array {
+                        $indicators = [];
+
+                        if (!empty($data['track_history'] ?? null)) {
+                            $indicators['track_history'] = __("radio-content.history.labels.except_track_name_indicator", ['tracks' => Track::whereIn('id', $data['track_history'])->pluck("name")->join(', ')]);
+                        }
+
+                        if (!empty($data['author_ids'] ?? null)) {
+                            $indicators['author_ids'] = __("radio-content.history.labels.except_author_name_indicator", ['authors' => Author::whereIn('id', $data['author_ids'])->pluck("name")->join(', ')]);
+                        }
+
+                        return $indicators;
+                    }),
+
                 Tables\Filters\Filter::make('created_at')
                     ->form([
                         Forms\Components\DatePicker::make('created_from')
                             ->placeholder(fn(): string => now()->subYear()->addMonth()->translatedFormat('M j, Y'))
                             ->native(false)
-                            ->label(__("radio-content.tracks.labels.created_from")),
+                            ->label(__("radio-content.history.labels.created_from")),
                         Forms\Components\DatePicker::make('created_until')
                             ->placeholder(fn(): string => now()->translatedFormat('M j, Y'))
                             ->native(false)
-                            ->label(__("radio-content.tracks.labels.created_until")),
+                            ->label(__("radio-content.history.labels.created_until")),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
@@ -153,35 +203,39 @@ class TopChartResource extends Resource
                 ]),
             ])
             ->groups([
-                Tables\Grouping\Group::make('track.author.name')
-                    ->label(__("radio-content.tracks.labels.author"))
+                Tables\Grouping\Group::make('author.name')
+                    ->label(__("radio-content.history.labels.author"))
                     ->collapsible(),
                 Tables\Grouping\Group::make('updated_at')
-                    ->label(__("radio-content.tracks.labels.updated"))
+                    ->label(__("radio-content.history.labels.updated"))
                     ->date()
                     ->collapsible(),
                 Tables\Grouping\Group::make('created_at')
-                    ->label(__("radio-content.tracks.labels.created"))
+                    ->label(__("radio-content.history.labels.created"))
                     ->date()
                     ->collapsible(),
             ])
+            ->defaultSort('created_at', 'desc')
             ->poll("45s")
             ->defaultPaginationPageOption(25);
     }
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTopCharts::route('/'),
-            'create' => Pages\CreateTopChart::route('/create'),
-            'edit' => Pages\EditTopChart::route('/{record}/edit'),
+            'index' => Pages\ListBroadcastHistories::route('/'),
+            'create' => Pages\CreateBroadcastHistory::route('/create'),
+            'edit' => Pages\EditBroadcastHistory::route('/{record}/edit'),
         ];
     }
+
 
     public static function getNavigationBadge(): ?string
     {
@@ -190,17 +244,17 @@ class TopChartResource extends Resource
 
     public static function getNavigationBadgeColor(): string | array | null
     {
-        return 'warning';
+        return 'gray';
     }
 
     public static function getModelLabel(): string
     {
-        return __('radio-content.top-charts.model_label');
+        return __('radio-content.history.model_label');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('radio-content.top-charts.navigation_label');
+        return __('radio-content.history.navigation_label');
     }
 
     public static function getNavigationGroup(): string
@@ -210,6 +264,6 @@ class TopChartResource extends Resource
 
     public static function getPluralLabel(): ?string
     {
-        return __('radio-content.top-charts.plural_label');
+        return __('radio-content.history.plural_label');
     }
 }

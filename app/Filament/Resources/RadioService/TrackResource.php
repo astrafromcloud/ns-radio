@@ -183,7 +183,7 @@ class TrackResource extends Resource
                     ->collapsible(),
             ])
             ->defaultSort('created_at', 'desc')
-            ->poll("5s")
+            ->poll("45s")
             ->defaultPaginationPageOption(25);
     }
 

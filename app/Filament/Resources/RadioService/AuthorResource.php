@@ -83,7 +83,9 @@ class AuthorResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->poll("45s")
+            ->defaultPaginationPageOption(25);
     }
 
     public static function getRelations(): array

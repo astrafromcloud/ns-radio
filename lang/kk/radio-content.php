@@ -47,8 +47,8 @@ return [
 
         'labels' => [
             'id' => 'ID',
-            'name' => 'Атауы',
-            'sanitized' => 'Нормаланған атау',
+            'name' => 'Аты',
+            'sanitized' => 'Нормаланған аты',
             'details' => 'Мәліметтер',
             'track_count' => 'Трек саны',
 
@@ -72,6 +72,39 @@ return [
 
             'track_updated' => 'Трек өзгерту күні',
             'track_created' => 'Трек жасау күні',
+
+            "tracks" => ':author тректері'
+        ]
+    ],
+
+    "history" => [
+        'navigation_label' => 'Тарих',
+        'plural_label' => 'Тарихтар',
+        'model_label' => 'Тарих',
+
+        'labels' => [
+            'id' => 'ID',
+            'image' => 'Қаптама',
+            'name' => 'Атау',
+            'sanitized' => 'Нормаланған атау',
+            'author' => 'Автор',
+            "track" => 'Трек',
+            'broadcast' => 'Таратылым',
+            'details' => 'Таратылым мәліметтері',
+            'updated' => 'Өзгерту күні',
+            'created' => 'Таратылым күні',
+
+            'created_from' => 'Жасалған уақыты',
+            'created_until' => 'Осы уақытқа дейін жасалған',
+
+            'track_updated' => 'Трек өзгертілген күні',
+            'track_created' => 'Трек жасалған күні',
+
+            "except_track_name" => 'Тректерді шығарып тастау',
+            "except_track_name_indicator" => 'Шығарылған тректер: :tracks',
+
+            "except_author_name" => 'Авторларды шығарып тастау',
+            "except_author_name_indicator" => 'Шығарылған авторлар: :authors'
         ]
     ]
 ];

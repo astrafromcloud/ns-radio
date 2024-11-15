@@ -85,6 +85,9 @@ class Track extends Model
 
                 $track->image->delete(); // Delete the related image
             }
+
+            ChartTrack::where("track_chart_track", $track->id)->delete();
+            BroadcastHistoryTrack::where("track_history", $track->id)->delete();
         });
     }
 }

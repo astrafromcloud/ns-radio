@@ -10,11 +10,17 @@ class BroadcastHistoryTrack extends Model
 
     protected $fillable = ["broadcast_history", "track_history"];
 
-    public function broadcast() {
+    protected $attributes = [
+        'broadcast_history' => 1,
+    ];
+
+    public function broadcast()
+    {
         return $this->belongsTo(Broadcast::class, "broadcast_history");
     }
 
-    public function track() {
+    public function track()
+    {
         return $this->belongsTo(Track::class, "track_history");
     }
 }

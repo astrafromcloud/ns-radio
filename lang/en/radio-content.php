@@ -72,6 +72,39 @@ return [
 
             'track_updated' => 'Track Updated Date',
             'track_created' => 'Track Creation Date',
+
+            "tracks" => 'Tracks by :author'
+        ]
+    ],
+
+    "history" => [
+        'navigation_label' => 'History',
+        'plural_label' => 'Histories',
+        'model_label' => 'History',
+
+        'labels' => [
+            'id' => 'ID',
+            'image' => 'Cover',
+            'name' => 'Title',
+            'sanitized' => 'Sanitized Title',
+            'author' => 'Author',
+            "track" => 'Track',
+            'broadcast' => 'Broadcast',
+            'details' => 'Broadcast Details',
+            'updated' => 'Date Updated',
+            'created' => 'Date of Broadcast',
+
+            'created_from' => 'Created From',
+            'created_until' => 'Created Until',
+
+            'track_updated' => 'Track Updated Date',
+            'track_created' => 'Track Created Date',
+
+            "except_track_name" => 'Exclude Tracks',
+            "except_track_name_indicator" => 'Excluding Tracks: :tracks',
+
+            "except_author_name" => 'Exclude Authors',
+            "except_author_name_indicator" => 'Excluding Authors: :authors'
         ]
     ]
 ];

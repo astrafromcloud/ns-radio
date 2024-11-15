@@ -48,8 +48,8 @@ return [
 
         'labels' => [
             'id' => 'ID',
-            'name' => 'Название',
-            'sanitized' => 'Нормализованное название',
+            'name' => 'Имя',
+            'sanitized' => 'Нормализованное имя',
             'details' => 'Детали',
             'track_count' => 'Кол-во Треков',
 
@@ -73,6 +73,39 @@ return [
 
             'track_updated' => 'Дата изменения трека',
             'track_created' => 'Дата создания трека',
+
+            "tracks" => 'Треки :author'
+        ]
+    ],
+
+    "history" => [
+        'navigation_label' => 'История',
+        'plural_label' => 'История',
+        'model_label' => 'История',
+
+        'labels' => [
+            'id' => 'ID',
+            'image' => 'Обложка',
+            'name' => 'Название',
+            'sanitized' => 'Нормализованное название',
+            'author' => 'Автор',
+            "track" => 'Трек',
+            'broadcast' => 'Радиовещание',
+            'details' => 'Детали трансляций',
+            'updated' => 'Дата изменения',
+            'created' => 'Дата трансляций',
+
+            'created_from' => 'Создан от',
+            'created_until' => 'Создан до',
+
+            'track_updated' => 'Дата изменения трека',
+            'track_created' => 'Дата создания трека',
+
+            "except_track_name" => 'Исключить треки',
+            "except_track_name_indicator" => 'Исключая треков: :tracks',
+
+            "except_author_name" => 'Исключить авторов',
+            "except_author_name_indicator" => 'Исключая авторов: :authors'
         ]
     ]
 ];
