@@ -31,6 +31,7 @@ class BroadcasterResource extends ResourceCollection
                 'youtube_url' => $item->youtube_url,
                 'whatsapp_url' => $item->whatsapp_url,
                 'telegram_url' => $item->telegram_url,
+                'tiktok_url' => $item->tiktok_url,
                 'created_at' => $item->created_at,
                 'updated_at' => $item->updated_at,
             ];

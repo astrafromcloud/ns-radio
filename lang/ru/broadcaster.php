@@ -10,6 +10,7 @@ return [
     'instagram_url_label' => 'Ссылка Instagram',
     'youtube_url_label' => 'Ссылка Youtube',
     'vk_url_label' => 'Ссылка ВКонтакте',
+    'tiktok_url_label' => 'Ссылка TikTok',
     'whatsapp_url_label' => 'Ссылка Whatsapp',
     'telegram_url_label' => 'Ссылка Telegram',
     'programs_label' => 'Программы',

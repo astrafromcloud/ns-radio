@@ -23,9 +23,7 @@ class CityController extends Controller
         private readonly IPToLocationService            $ipToLocationService,
         private readonly TrapHerStTranslationService    $translationService,
         private readonly CityLocationService            $cityService,
-    )
-    {
-    }
+    ) {}
 
     public function index()
     {
@@ -58,14 +56,14 @@ class CityController extends Controller
     {
         $city = City::findOrFail($id);
 
-//        $locale = app()->getLocale();
-//
-//        $data = $city->map(function ($city) use ($locale) {
-//            return [
-//                'name' => $city->getTranslation('name', $locale),
-//                'frequency' => $city->frequency
-//            ];
-//        });
+        //        $locale = app()->getLocale();
+        //
+        //        $data = $city->map(function ($city) use ($locale) {
+        //            return [
+        //                'name' => $city->getTranslation('name', $locale),
+        //                'frequency' => $city->frequency
+        //            ];
+        //        });
 
         $weather = Cache::remember("city_weather_" . $city->name, now()->addDay(), function () use ($city) {
             return $this->weatherService->getWeather($city->name);
@@ -100,14 +98,8 @@ class CityController extends Controller
 
     public function getCity(): JsonResponse
     {
-
-        Log::info('ROME!!!!');
-
         $clientIp = $this->getClientIp();
         $cityData = $this->getCityData($clientIp);
-
-        Log::info($clientIp);
-        Log::info(response()->json($this->decodeUnicode(json_encode($cityData['name'])), 200, [], JSON_PRETTY_PRINT));
 
         return response()->json(
             CityResource::make($cityData)->resolve()

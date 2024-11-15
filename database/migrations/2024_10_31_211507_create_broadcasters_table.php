@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('youtube_url')->nullable();
             $table->string('whatsapp_url')->nullable();
             $table->string('telegram_url')->nullable();
+            $table->string('tiktok_url')->nullable();
             $table->timestamps();
         });
     }

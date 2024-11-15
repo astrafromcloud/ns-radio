@@ -16,7 +16,7 @@ class BannerResource extends Resource
     protected static ?string $model = Banner::class;
     protected static ?string $navigationIcon = 'heroicon-o-photo';
     protected static ?string $navigationGroup = 'Content';
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {
@@ -44,8 +44,8 @@ class BannerResource extends Resource
                             ->directory('banners')
                             ->visibility('public')
                             ->columnSpanFull()
-                            ->required(fn (Forms\Get $get) => $get('content_type') === 'image')
-                            ->visible(fn (Forms\Get $get) => $get('content_type') === 'image'),
+                            ->required(fn(Forms\Get $get) => $get('content_type') === 'image')
+                            ->visible(fn(Forms\Get $get) => $get('content_type') === 'image'),
 
                         Forms\Components\FileUpload::make('content')
                             ->label(self::getVideoLabel())
@@ -54,8 +54,8 @@ class BannerResource extends Resource
                             ->directory('banners')
                             ->visibility('public')
                             ->columnSpanFull()
-                            ->visible(fn (Forms\Get $get) => $get('content_type') === 'video')
-                            ->required(fn (Forms\Get $get) => $get('content_type') === 'video')
+                            ->visible(fn(Forms\Get $get) => $get('content_type') === 'video')
+                            ->required(fn(Forms\Get $get) => $get('content_type') === 'video')
 
                     ])
             ]);
@@ -175,6 +175,4 @@ class BannerResource extends Resource
     {
         return __('banner.order_label');
     }
-
-
 }

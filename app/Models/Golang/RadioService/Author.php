@@ -11,7 +11,19 @@ class Author extends Model
     public $timestamps = false;
     protected $fillable = ["name", "sanitized_name"];
 
-    public function tracks() {
+    public function tracks()
+    {
         return $this->hasMany(Track::class, "author_tracks");
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function (Author $author) {
+            $authorTrackIds = $author->tracks()->pluck('id');
+
+            BroadcastHistoryTrack::whereIn("track_history", $authorTrackIds)->delete();
+
+            $author->tracks()->with("image")->get()->each(fn($tr) => $tr->delete());
+        });
     }
 }

@@ -25,8 +25,8 @@ class ContactResource extends ResourceCollection
                 'youtube_url' => $contact->youtube_url,
                 'whatsapp_url' => $contact->whatsapp_url,
                 'telegram_url' => $contact->telegram_url,
+                'tiktok_url' => $contact->tiktok_url,
             ];
         })->toArray();
-
     }
 }

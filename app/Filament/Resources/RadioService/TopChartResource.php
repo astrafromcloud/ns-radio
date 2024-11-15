@@ -3,68 +3,42 @@
 namespace App\Filament\Resources\RadioService;
 
 use App\Filament\Components\GoFileUpload;
-use App\Filament\Resources\RadioService\TrackResource\Pages;
-use App\Filament\Widgets\TracksHeaderWidget;
-use App\Models\Golang\RadioService\Track;
-use App\Utils\StrUtils;
-use Filament\Forms;
+use App\Filament\Resources\RadioService\TopChartResource\Pages;
+use App\Models\Golang\RadioService\ChartTrack;
 use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Table;
+use Filament\Forms;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 
-class TrackResource extends Resource
+class TopChartResource extends Resource
 {
-    protected static ?string $model = Track::class;
+    protected static ?string $model = ChartTrack::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-musical-note';
-
-    protected static ?int $navigationSort = 10;
+    protected static ?string $navigationIcon = 'heroicon-o-star';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Fieldset::make(__("radio-content.tracks.labels.details"))
+                Forms\Components\Fieldset::make(__("radio-content.top-charts.labels.details"))
                     ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->live()
-                            ->afterStateUpdated(function (Set $set, Get $get) {
-                                $set('sanitized_name', StrUtils::sanitize($get('name')));
-                            })
-                            ->label(__("radio-content.tracks.labels.name")),
-                        Forms\Components\Select::make('author_tracks')
-                            ->relationship('author', 'name')
+                        Forms\Components\Select::make('track_chart_track')
+                            ->relationship('track', 'name')
                             ->native(false)
                             ->searchable()
                             ->searchDebounce(500)
                             ->required()
                             ->preload()
-                            ->label(__("radio-content.tracks.labels.author")),
-                        Forms\Components\TextInput::make('sanitized_name')
-                            ->label(__("radio-content.tracks.labels.sanitized"))
-                            ->disabled(),
-                        Forms\Components\TextInput::make('likes_count')
-                            ->numeric()
-                            ->default(0)
-                            ->disabled()
-                            ->label(__("radio-content.tracks.labels.likes")),
-                    ]),
-                Forms\Components\Fieldset::make(__("radio-content.tracks.labels.image"))
-                    ->relationship("image")
-                    ->schema([
-                        GoFileUpload::make('name')
-                            ->hiddenLabel()
-                            ->image()
-                            ->directory('songs')
                             ->columnSpanFull()
+                            ->label(__("radio-content.top-charts.labels.track")),
                     ]),
+
             ]);
     }
 
@@ -73,48 +47,59 @@ class TrackResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
-                    ->label(__("radio-content.tracks.labels.id"))
+                    ->label(__("radio-content.top-charts.labels.id"))
                     ->sortable()
+                    ->width("76px")
                     ->toggleable(),
-                Tables\Columns\ImageColumn::make('image')
+                Tables\Columns\ImageColumn::make('track.image')
                     ->label(__("radio-content.tracks.labels.image"))
                     ->getStateUsing(function ($record) {
-                        if (!$record?->image?->name)
+                        if (!$record?->track?->image?->name)
                             return url()->to("/img/default-track.png");
 
-                        return GoFileUpload::getImageUrl($record->image->name);
+                        return GoFileUpload::getImageUrl($record->track->image->name);
                     })
                     ->toggleable()
                     ->height("76px")
-                    ->width("76px"),
-                Tables\Columns\TextColumn::make('name')
-                    ->label(__("radio-content.tracks.labels.name"))
+                    ->width("76px")
+                    ->url(fn($record) => TrackResource::getUrl("edit", ["record" => $record->track_chart_track])),
+                Tables\Columns\TextColumn::make('track.name')
+                    ->label(__("radio-content.top-charts.labels.name"))
                     ->sortable()
                     ->toggleable()
-                    ->searchable()
-                    ->formatStateUsing(function ($state) {
-                        return $state . request()->query('activeTab');
-                    }),
-                Tables\Columns\TextColumn::make('author.name')
+                    ->url(fn($record) => TrackResource::getUrl("edit", ["record" => $record->track_chart_track])),
+                Tables\Columns\TextColumn::make('track.author.name')
                     ->label(__("radio-content.tracks.labels.author"))
                     ->sortable()
                     ->toggleable()
                     ->searchable()
-                    ->url(fn($record) => AuthorResource::getUrl("edit", ["record" => $record->author_tracks])),
-                Tables\Columns\TextColumn::make('likes_count')
+                    ->url(fn($record) => AuthorResource::getUrl("edit", ["record" => $record->track->author_tracks])),
+                Tables\Columns\TextColumn::make('track.likes_count')
                     ->label(__("radio-content.tracks.labels.likes"))
                     ->sortable()
                     ->badge()
                     ->toggleable()
                     ->color("success"),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label(__("radio-content.tracks.labels.updated"))
+                    ->label(__("radio-content.top-charts.labels.updated"))
                     ->dateTimeTooltip()
                     ->since()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label(__("radio-content.tracks.labels.created"))
+                    ->label(__("radio-content.top-charts.labels.created"))
+                    ->dateTimeTooltip()
+                    ->since()
+                    ->sortable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('track.updated_at')
+                    ->label(__("radio-content.top-charts.labels.track_updated"))
+                    ->dateTimeTooltip()
+                    ->since()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('track.created_at')
+                    ->label(__("radio-content.top-charts.labels.track_created"))
                     ->dateTimeTooltip()
                     ->since()
                     ->sortable()
@@ -170,7 +155,7 @@ class TrackResource extends Resource
                 ]),
             ])
             ->groups([
-                Tables\Grouping\Group::make('author.name')
+                Tables\Grouping\Group::make('track.author.name')
                     ->label(__("radio-content.tracks.labels.author"))
                     ->collapsible(),
                 Tables\Grouping\Group::make('updated_at')
@@ -182,7 +167,6 @@ class TrackResource extends Resource
                     ->date()
                     ->collapsible(),
             ])
-            ->defaultSort('created_at', 'desc')
             ->poll("5s")
             ->defaultPaginationPageOption(25);
     }
@@ -194,22 +178,12 @@ class TrackResource extends Resource
         ];
     }
 
-    /**
-     * @return array<class-string<Widget>>
-     */
-    public static function getWidgets(): array
-    {
-        return [
-            TracksHeaderWidget::class
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTracks::route('/'),
-            'create' => Pages\CreateTrack::route('/create'),
-            'edit' => Pages\EditTrack::route('/{record}/edit'),
+            'index' => Pages\ListTopCharts::route('/'),
+            'create' => Pages\CreateTopChart::route('/create'),
+            'edit' => Pages\EditTopChart::route('/{record}/edit'),
         ];
     }
 
@@ -218,14 +192,19 @@ class TrackResource extends Resource
         return static::getModel()::count();
     }
 
+    public static function getNavigationBadgeColor(): string | array | null
+    {
+        return 'warning';
+    }
+
     public static function getModelLabel(): string
     {
-        return __('radio-content.tracks.model_label');
+        return __('radio-content.top-charts.model_label');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('radio-content.tracks.navigation_label');
+        return __('radio-content.top-charts.navigation_label');
     }
 
     public static function getNavigationGroup(): string
@@ -235,6 +214,6 @@ class TrackResource extends Resource
 
     public static function getPluralLabel(): ?string
     {
-        return __('radio-content.tracks.plural_label');
+        return __('radio-content.top-charts.plural_label');
     }
 }

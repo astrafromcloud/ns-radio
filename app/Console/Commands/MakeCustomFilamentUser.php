@@ -26,9 +26,5 @@ class MakeCustomFilamentUser extends Command
             'email' => $email,
             'password' => Hash::make($password),
         ]);
-
-//        $admin->assignRole('admin');
-
-        $this->info('User created successfully!');
     }
 }

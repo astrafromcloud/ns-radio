@@ -123,7 +123,7 @@ class AuthController extends Controller
     {
         $data = $request->validate([
             'authorization_type' => 'required|in:google,vk',
-            'token' => 'required|text',
+            'token' => 'required|string',
         ]);
 
         $provider = $data['authorization_type'];
@@ -144,7 +144,6 @@ class AuthController extends Controller
     {
         try {
             $userData = $this->getGoogleUserByToken($token);
-            Log::info("test", [$userData]);
             if (!$userData['email_verified']) throw new Exception("Email is not verified!");
 
             $user = User::firstOrCreate(

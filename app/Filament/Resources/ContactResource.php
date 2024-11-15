@@ -112,6 +112,17 @@ class ContactResource extends Resource
                                     ->icon('heroicon-m-arrow-top-right-on-square')
                                     ->url(fn($record) => $record?->telegram_url, true)
                             ),
+
+                        Forms\Components\TextInput::make('tiktok_url')
+                            ->label(__('broadcaster.tiktok_url_label'))
+                            ->placeholder('https://tiktok.com/')
+                            ->prefixIcon('icon-tiktok')
+                            ->columnSpanFull()
+                            ->suffixAction(
+                                Forms\Components\Actions\Action::make('visit')
+                                    ->icon('heroicon-m-arrow-top-right-on-square')
+                                    ->url(fn($record) => $record?->tiktok_url, true)
+                            ),
                     ])
                     ->columns(2)
             ]);
@@ -160,6 +171,14 @@ class ContactResource extends Resource
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle')
                     ->getStateUsing(fn($record) => !empty($record->telegram_url)),
+
+                Tables\Columns\IconColumn::make('tiktok_url')
+                    ->label('TikTok')
+                    ->alignCenter()
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->getStateUsing(fn($record) => !empty($record->tiktok_url)),
             ])
             ->filters([
                 //
@@ -251,6 +270,4 @@ class ContactResource extends Resource
             'phones.*.phone' => ['required', 'string'],
         ];
     }
-
-
 }

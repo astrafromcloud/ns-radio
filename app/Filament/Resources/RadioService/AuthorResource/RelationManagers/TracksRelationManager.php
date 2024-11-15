@@ -1,32 +1,32 @@
 <?php
 
-namespace App\Filament\Resources\RadioService;
+namespace App\Filament\Resources\RadioService\AuthorResource\RelationManagers;
 
 use App\Filament\Components\GoFileUpload;
-use App\Filament\Resources\RadioService\TrackResource\Pages;
-use App\Filament\Widgets\TracksHeaderWidget;
-use App\Models\Golang\RadioService\Track;
 use App\Utils\StrUtils;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
-use Filament\Resources\Resource;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Carbon;
 
-class TrackResource extends Resource
+class TracksRelationManager extends RelationManager
 {
-    protected static ?string $model = Track::class;
+    protected static string $relationship = 'tracks';
 
-    protected static ?string $navigationIcon = 'heroicon-o-musical-note';
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return __("radio-content.authors.labels.tracks", ['author' => $ownerRecord->name]);
+    }
 
-    protected static ?int $navigationSort = 10;
-
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -34,7 +34,7 @@ class TrackResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->required()
-                            ->live()
+                            ->live(false, 500)
                             ->afterStateUpdated(function (Set $set, Get $get) {
                                 $set('sanitized_name', StrUtils::sanitize($get('name')));
                             })
@@ -42,10 +42,11 @@ class TrackResource extends Resource
                         Forms\Components\Select::make('author_tracks')
                             ->relationship('author', 'name')
                             ->native(false)
-                            ->searchable()
-                            ->searchDebounce(500)
                             ->required()
-                            ->preload()
+                            ->default(function (RelationManager $livewire) {
+                                return $livewire->getOwnerRecord()->id;
+                            })
+                            ->disabled()
                             ->label(__("radio-content.tracks.labels.author")),
                         Forms\Components\TextInput::make('sanitized_name')
                             ->label(__("radio-content.tracks.labels.sanitized"))
@@ -68,9 +69,10 @@ class TrackResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label(__("radio-content.tracks.labels.id"))
@@ -91,16 +93,12 @@ class TrackResource extends Resource
                     ->label(__("radio-content.tracks.labels.name"))
                     ->sortable()
                     ->toggleable()
-                    ->searchable()
-                    ->formatStateUsing(function ($state) {
-                        return $state . request()->query('activeTab');
-                    }),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('author.name')
                     ->label(__("radio-content.tracks.labels.author"))
                     ->sortable()
                     ->toggleable()
-                    ->searchable()
-                    ->url(fn($record) => AuthorResource::getUrl("edit", ["record" => $record->author_tracks])),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('likes_count')
                     ->label(__("radio-content.tracks.labels.likes"))
                     ->sortable()
@@ -157,6 +155,9 @@ class TrackResource extends Resource
                         return $indicators;
                     }),
             ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\EditAction::make(),
@@ -168,8 +169,7 @@ class TrackResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
-            ->groups([
+            ])->groups([
                 Tables\Grouping\Group::make('author.name')
                     ->label(__("radio-content.tracks.labels.author"))
                     ->collapsible(),
@@ -185,56 +185,5 @@ class TrackResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->poll("5s")
             ->defaultPaginationPageOption(25);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    /**
-     * @return array<class-string<Widget>>
-     */
-    public static function getWidgets(): array
-    {
-        return [
-            TracksHeaderWidget::class
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListTracks::route('/'),
-            'create' => Pages\CreateTrack::route('/create'),
-            'edit' => Pages\EditTrack::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
-    }
-
-    public static function getModelLabel(): string
-    {
-        return __('radio-content.tracks.model_label');
-    }
-
-    public static function getNavigationLabel(): string
-    {
-        return __('radio-content.tracks.navigation_label');
-    }
-
-    public static function getNavigationGroup(): string
-    {
-        return __('radio-content.navigation_group_label');
-    }
-
-    public static function getPluralLabel(): ?string
-    {
-        return __('radio-content.tracks.plural_label');
     }
 }

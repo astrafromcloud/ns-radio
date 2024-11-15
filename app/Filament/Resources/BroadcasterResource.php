@@ -33,36 +33,36 @@ class BroadcasterResource extends Resource
                     ->image()
                     ->required(),
                 Forms\Components\Grid::make(2) // Creates a grid with 2 columns
-                ->schema([
-                    Forms\Components\RichEditor::make('bio.ru')
-                        ->label(__('broadcaster.bio_label_russian'))
-                        ->required()
-                        ->toolbarButtons([
-                            'bold',
-                            'italic',
-                            'link',
-                            'bulletList',
-                            'orderedList',
-                            'redo',
-                            'undo',
-                        ])
-                        ->default(fn($record) => $record ? $record->getTranslation('name', 'ru') : '')
-                        ->columnSpan(1), // Set column span to 1 for each editor to take half width
-                    Forms\Components\RichEditor::make('bio.kk')
-                        ->label(__('broadcaster.bio_label_kazakh'))
-                        ->required()
-                        ->toolbarButtons([
-                            'bold',
-                            'italic',
-                            'link',
-                            'bulletList',
-                            'orderedList',
-                            'redo',
-                            'undo',
-                        ])
-                        ->default(fn($record) => $record ? $record->getTranslation('name', 'kk') : '')
-                        ->columnSpan(1), // Set column span to 1 for each editor to take half width
-                ]),
+                    ->schema([
+                        Forms\Components\RichEditor::make('bio.ru')
+                            ->label(__('broadcaster.bio_label_russian'))
+                            ->required()
+                            ->toolbarButtons([
+                                'bold',
+                                'italic',
+                                'link',
+                                'bulletList',
+                                'orderedList',
+                                'redo',
+                                'undo',
+                            ])
+                            ->default(fn($record) => $record ? $record->getTranslation('name', 'ru') : '')
+                            ->columnSpan(1), // Set column span to 1 for each editor to take half width
+                        Forms\Components\RichEditor::make('bio.kk')
+                            ->label(__('broadcaster.bio_label_kazakh'))
+                            ->required()
+                            ->toolbarButtons([
+                                'bold',
+                                'italic',
+                                'link',
+                                'bulletList',
+                                'orderedList',
+                                'redo',
+                                'undo',
+                            ])
+                            ->default(fn($record) => $record ? $record->getTranslation('name', 'kk') : '')
+                            ->columnSpan(1), // Set column span to 1 for each editor to take half width
+                    ]),
 
                 Forms\Components\TextInput::make('instagram_url')
                     ->label(__('broadcaster.instagram_url_label'))
@@ -100,6 +100,17 @@ class BroadcasterResource extends Resource
                         Forms\Components\Actions\Action::make('visit')
                             ->icon('heroicon-m-arrow-top-right-on-square')
                             ->url(fn($record) => $record?->telegram_url, true)
+                    ),
+
+                Forms\Components\TextInput::make('tiktok_url')
+                    ->label(__('broadcaster.tiktok_url_label'))
+                    ->placeholder('https://tiktok.com/')
+                    ->prefixIcon('icon-tiktok')
+                    ->columnSpanFull()
+                    ->suffixAction(
+                        Forms\Components\Actions\Action::make('visit')
+                            ->icon('heroicon-m-arrow-top-right-on-square')
+                            ->url(fn($record) => $record?->tiktok_url, true)
                     ),
 
                 Forms\Components\Select::make('programs')

@@ -9,6 +9,7 @@ return [
     'image_path_label' => 'Сурет',
     'instagram_url_label' => 'Instagram-ға сілтеме',
     'youtube_url_label' => 'Youtube-ке сілтеме',
+    'tiktok_url_label' => 'TikTok-қа сілтеме',
     'vk_url_label' => 'VK-ға сілтеме',
     'whatsapp_url_label' => 'Whatsapp-қа сілтеме',
     'telegram_url_label' => 'Telegram-ға сілтеме',

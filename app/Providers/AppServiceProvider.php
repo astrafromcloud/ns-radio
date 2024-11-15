@@ -7,10 +7,7 @@ use App\Observers\UserObserver;
 use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentColor;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
-use SocialiteProviders\Google\Provider;
-use SocialiteProviders\Manager\SocialiteWasCalled;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,7 +26,6 @@ class AppServiceProvider extends ServiceProvider
     {
         FilamentColor::register([
             'primary' => Color::hex('#ffffff'),
-            'gray' => Color::hex('#5e6477'),
         ]);
 
         User::observe(UserObserver::class);
@@ -42,10 +38,5 @@ class AppServiceProvider extends ServiceProvider
                     'kk'
                 ]);
         });
-
-        Event::listen(function (SocialiteWasCalled $event) {
-            $event->extendSocialite('google', Provider::class);
-        });
-
     }
 }

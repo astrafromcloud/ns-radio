@@ -19,6 +19,7 @@ class Contact extends Model
         'description' => 'array',
         'address' => 'array',
     ];
+
     public $translatable = ['description', 'address'];
 
     public function getPhoneNumbersAttribute(): string
@@ -53,5 +54,4 @@ class Contact extends Model
             ? preg_replace('/(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})/', '+$1 ($2) $3-$4-$5', $firstPhone)
             : null;
     }
-
 }

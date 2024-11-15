@@ -1,7 +1,9 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
+import preset from "./vendor/filament/support/tailwind.config.preset";
 
 /** @type {import('tailwindcss').Config} */
 export default {
+    preset: [preset],
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
@@ -16,7 +18,6 @@ export default {
             },
             colors: {
                 primary: '#cb1f26',
-                'gray-custom': '#5e6477',
             },
         },
     },

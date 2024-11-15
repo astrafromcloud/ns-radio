@@ -8,6 +8,7 @@ return [
     'bio_label_kazakh' => 'Bio in Kazakh',
     'image_path_label' => 'Image',
     'instagram_url_label' => 'Instagram URL',
+    'tiktok_url_label' => 'TikTokURL',
     'youtube_url_label' => 'Youtube URL',
     'vk_url_label' => 'VK URL',
     'whatsapp_url_label' => 'Whatsapp URL',

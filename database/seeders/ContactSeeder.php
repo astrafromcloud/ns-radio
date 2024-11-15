@@ -28,7 +28,8 @@ class ContactSeeder extends Seeder
             'instagram_url' => 'https://www.instagram.com/radio_ns/',
             'youtube_url' => 'https://www.youtube.com/@radions5722/videos',
             'whatsapp_url' => 'https://wa.me/77751060011',
-            'telegram_url' => 'https://t.me/AlmatyRadioNS'
+            'telegram_url' => 'https://t.me/AlmatyRadioNS',
+            'tiktok_url' => 'https://tiktok.com/AlmatyRadioNS'
         ];
 
         Contact::create($contact);
