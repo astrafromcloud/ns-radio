@@ -26,16 +26,17 @@ class ListBroadcasters extends ListRecords
                         ->options([
                             self::getBroadcasterViewtypeLabelList(),
                             self::getBroadcasterViewtypeLabelSlider()
-                        ])->default(0)
+                        ])->default(BroadcasterViewType::first()->type)
 
-                ])->action(function (array $data): void {
-                    $type = BroadcasterViewType::first();
+                ])->action(
+                    function (array $data): void {
+                        $type = BroadcasterViewType::first();
 
-                    if ($type) {
-                        $type->update(['type' => $data['type']]);
-                        $type->fresh();
+                        if ($type) {
+                            $type->update(['type' => $data['type']]);
+                            $type->fresh();
+                        }
                     }
-                }
                 )
                 ->modalWidth(MaxWidth::ExtraLarge),
             Actions\CreateAction::make(),
