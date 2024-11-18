@@ -29,8 +29,8 @@ class ResetPasswordEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('support@ns-radio.kz', 'NS Radio'),
-            cc: 'support@ns-radio.kz',
+//            from: new Address('support@ns-radio.kz', 'NS Radio'),
+//            cc: 'support@ns-radio.kz',
             subject: 'Reset Password Email',
         );
     }
