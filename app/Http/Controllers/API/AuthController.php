@@ -257,7 +257,7 @@ class AuthController extends Controller
             $status = Password::sendResetLink(
                 $request->only('email'),
                 function ($user, $token) use ($locale) {
-                    $resetUrl = url("/reset-password?token={$token}?email={$user->email}");
+                    $resetUrl = url("/reset-password?token={$token}&email={$user->email}");
                     Mail::to($user->email)->locale($locale)->send(new ResetPasswordEmail($resetUrl));
                 }
             );
