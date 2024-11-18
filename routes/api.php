@@ -17,9 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+
 Route::apiResource('users', AuthController::class);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+Route::patch('/resetPassword', [AuthController::class, 'resetPassword']);
 
 Route::apiResource('/banners', BannerController::class);
 Route::get('/banners', function (Request $request) {
@@ -42,8 +45,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-Route::POST('/get-user-by-email', [UserController::class, 'getByEmail']);
+Route::post('/get-user-by-email', [UserController::class, 'getByEmail']);
 Route::post('/getUserByToken', [AuthController::class, 'getUserByToken']);
+
+
 Route::get('/guests/{id}', [GuestController::class, 'show']);
 Route::get('/guests', function (Request $request) {
     return new \App\Http\Resources\GuestResource(Guest::all());

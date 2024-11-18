@@ -8,6 +8,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Exception;
 use GuzzleHttp\Client as GuzzleClient;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -185,16 +186,15 @@ class AuthController extends Controller
         try {
             // Get VK user info via the VK API
             $vkUser = $this->getVKUserByToken($token);
-            dd($vkUser);
 
             // Find or create a user
             $user = User::firstOrCreate(
-                ['email' => $vkUser->getEmail()],
-                [
-                    'name' => $vkUser->getName(),
-                    'vk_id' => $vkUser->getId(),
-                    'avatar' => $vkUser->getAvatar(),
-                ]
+//                ['email' => $vkUser->getEmail()],
+//                [
+//                    'name' => $vkUser->getName(),
+//                    'vk_id' => $vkUser->getId(),
+//                    'avatar' => $vkUser->getAvatar(),
+//                ]
             );
 
             // Login the user
@@ -203,8 +203,6 @@ class AuthController extends Controller
             // Respond with user data or token
             return response()->json(['user' => $user, 'token' => $user->createToken('YourApp')->plainTextToken]);
         } catch (\Exception $e) {
-
-            dd($e);
             return response()->json(['error' => 'VK authentication failed'], 400);
         }
     }
@@ -240,5 +238,23 @@ class AuthController extends Controller
         }
 
         return array_merge($formToken, $response['response'][0]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $data = $request->validate([
+            'token' => 'required',
+            'email' => 'required|string|email',
+            'password' => 'required|string|confirmed',
+        ]);
+
+        $user = User::where('password_reset_token', $request->token)->first();
+
+        $user->update(['password' => bcrypt($data['password'])]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Password reset successfully'
+        ], ResponseAlias::HTTP_OK);
     }
 }
