@@ -22,7 +22,8 @@ Route::get('/user', function (Request $request) {
 Route::apiResource('users', AuthController::class);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::patch('/resetPassword', [AuthController::class, 'resetPassword']);
+Route::post('/password/email', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::post('/password/reset', [AuthController::class, 'resetPassword']);
 
 Route::apiResource('/banners', BannerController::class);
 Route::get('/banners', function (Request $request) {

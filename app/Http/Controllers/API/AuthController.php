@@ -5,15 +5,21 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Mail\ResetPasswordEmail;
 use App\Models\User;
 use Exception;
+use Filament\Notifications\Notification;
 use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Validator;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Illuminate\Support\Str;
@@ -240,21 +246,53 @@ class AuthController extends Controller
         return array_merge($formToken, $response['response'][0]);
     }
 
+        public function sendResetLinkEmail(Request $request)
+        {
+            $data = request()->validate([
+                'email' => 'required|string|email',
+            ]);
+
+            $locale = app()->getLocale();
+
+            $status = Password::sendResetLink(
+                $request->only('email'),
+                function ($user, $token) use ($locale) {
+                    $resetUrl = url("https://ns-radio.init.kz/reset-password?token={$token}?email={$user->email}");
+                    Mail::to($user->email)->locale($locale)->send(new ResetPasswordEmail($resetUrl));
+                }
+            );
+
+            return $status === Password::RESET_LINK_SENT
+                ? response()->json(['message' => __($status)], 200)
+                : response()->json(['message' => __($status)], 500);
+        }
+
+    /**
+     * Reset the password.
+     */
     public function resetPassword(Request $request)
     {
-        $data = $request->validate([
+        $validator = Validator::make($request->all(), [
             'token' => 'required',
-            'email' => 'required|string|email',
-            'password' => 'required|string|confirmed',
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|min:8|confirmed',
         ]);
 
-        $user = User::where('password_reset_token', $request->token)->first();
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
-        $user->update(['password' => bcrypt($data['password'])]);
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password),
+                ])->save();
+            }
+        );
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Password reset successfully'
-        ], ResponseAlias::HTTP_OK);
+        return $status === Password::PASSWORD_RESET
+            ? response()->json(['message' => __($status)], 200)
+            : response()->json(['message' => __($status)], 500);
     }
 }
