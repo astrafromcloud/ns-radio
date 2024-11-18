@@ -257,7 +257,7 @@ class AuthController extends Controller
             $status = Password::sendResetLink(
                 $request->only('email'),
                 function ($user, $token) use ($locale) {
-                    $resetUrl = url("https://ns-radio.init.kz/reset-password?token={$token}?email={$user->email}");
+                    $resetUrl = url("/reset-password?token={$token}?email={$user->email}");
                     Mail::to($user->email)->locale($locale)->send(new ResetPasswordEmail($resetUrl));
                 }
             );
@@ -274,7 +274,7 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'token' => 'required',
-            'email' => 'required|email|exists:users,email',
+            'email' => 'required|email',
             'password' => 'required|min:8|confirmed',
         ]);
 
