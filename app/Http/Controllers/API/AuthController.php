@@ -195,12 +195,12 @@ class AuthController extends Controller
 
             // Find or create a user
             $user = User::firstOrCreate(
-                //                ['email' => $vkUser->getEmail()],
-                //                [
-                //                    'name' => $vkUser->getName(),
-                //                    'vk_id' => $vkUser->getId(),
-                //                    'avatar' => $vkUser->getAvatar(),
-                //                ]
+//                ['email' => $vkUser->getEmail()],
+//                [
+//                    'name' => $vkUser->getName(),
+//                    'vk_id' => $vkUser->getId(),
+//                    'avatar' => $vkUser->getAvatar(),
+//                ]
             );
 
             // Login the user
@@ -246,26 +246,26 @@ class AuthController extends Controller
         return array_merge($formToken, $response['response'][0]);
     }
 
-    public function sendResetLinkEmail(Request $request)
-    {
-        $data = request()->validate([
-            'email' => 'required|string|email',
-        ]);
+        public function sendResetLinkEmail(Request $request)
+        {
+            $data = request()->validate([
+                'email' => 'required|string|email',
+            ]);
 
-        $locale = app()->getLocale();
+            $locale = app()->getLocale();
 
-        $status = Password::sendResetLink(
-            $request->only('email'),
-            function ($user, $token) use ($locale) {
-                $resetUrl = url("/reset-password?token={$token}?email={$user->email}");
-                Mail::to($user->email)->locale($locale)->send(new ResetPasswordEmail($resetUrl));
-            }
-        );
+            $status = Password::sendResetLink(
+                $request->only('email'),
+                function ($user, $token) use ($locale) {
+                    $resetUrl = url("/reset-password?token={$token}&email={$user->email}");
+                    Mail::to($user->email)->locale($locale)->send(new ResetPasswordEmail($resetUrl));
+                }
+            );
 
-        return $status === Password::RESET_LINK_SENT
-            ? response()->json(['message' => __($status)], 200)
-            : response()->json(['message' => __($status)], 500);
-    }
+            return $status === Password::RESET_LINK_SENT
+                ? response()->json(['message' => __($status)], 200)
+                : response()->json(['message' => __($status)], 500);
+        }
 
     /**
      * Reset the password.
@@ -278,26 +278,18 @@ class AuthController extends Controller
             'password' => 'required|min:8|confirmed',
         ]);
 
-        Log::info('first');
-
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        Log::info('secind');
-
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
-                Log::info('third');
                 $user->forceFill([
                     'password' => Hash::make($password),
                 ])->save();
-                Log::info('fourth');
             }
         );
-
-        Log::info('fifth');
 
         return $status === Password::PASSWORD_RESET
             ? response()->json(['message' => __($status)], 200)
