@@ -249,7 +249,7 @@ class AuthController extends Controller
         public function sendResetLinkEmail(Request $request)
         {
             $data = request()->validate([
-                'email' => 'required|string|email',
+                'email' => 'required|string|email|exists:users,email',
             ]);
 
             $locale = app()->getLocale();
@@ -274,7 +274,7 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'token' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|exists:users,email',
             'password' => 'required|min:8|confirmed',
         ]);
 
