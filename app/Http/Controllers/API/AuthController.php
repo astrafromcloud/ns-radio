@@ -8,21 +8,18 @@ use App\Http\Requests\RegisterRequest;
 use App\Mail\ResetPasswordEmail;
 use App\Models\User;
 use Exception;
-use Filament\Notifications\Notification;
 use GuzzleHttp\Client as GuzzleClient;
-use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Cache\RateLimiter;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
-use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -251,6 +248,11 @@ class AuthController extends Controller
             $data = request()->validate([
                 'email' => 'required|string|email|exists:users,email',
             ]);
+
+            $rateLimiter = RateLimiter::class;
+
+            $throttleKey = $request->email . '|' . $request->ip();
+            $rateLimiter->clear($throttleKey);
 
             $locale = app()->getLocale();
 
