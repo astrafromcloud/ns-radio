@@ -183,8 +183,7 @@ class TrackResource extends Resource
                     ->collapsible(),
             ])
             ->defaultSort('created_at', 'desc')
-            ->poll("45s")
-            ->defaultPaginationPageOption(25);
+            ->poll("60s");
     }
 
     public static function getRelations(): array
@@ -215,7 +214,11 @@ class TrackResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return cache()->remember(
+            "track_resource_badge",
+            now()->addMinute(),
+            fn() => static::getModel()::count()
+        );
     }
 
     public static function getModelLabel(): string

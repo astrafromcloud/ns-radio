@@ -81,15 +81,15 @@ class LeadResource extends Resource
                         [
                             Section::make(self::getLeadSectionInformationLabel())
                                 ->schema(([
-                                    TextEntry::make('name')->label(self::getNameLabel()),
-                                    TextEntry::make('email')->label(self::getEmailLabel()),
-                                    TextEntry::make('phone')->label(self::getPhoneLabel()),
-                                ])
+                                        TextEntry::make('name')->label(self::getNameLabel()),
+                                        TextEntry::make('email')->label(self::getEmailLabel()),
+                                        TextEntry::make('phone')->label(self::getPhoneLabel()),
+                                    ])
                                 )->columns(),
                             Section::make(self::getMessageSectionLabel())
                                 ->schema(([
-                                    TextEntry::make('message')->label(''),
-                                ])
+                                        TextEntry::make('message')->label(''),
+                                    ])
                                 )
                                 ->columnSpan('full'),
                         ]
@@ -116,7 +116,11 @@ class LeadResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return cache()->remember(
+            "leads_resource_badge",
+            now()->addMinute(),
+            fn() => static::getModel()::count()
+        );
     }
 
     public static function getPages(): array
@@ -129,7 +133,7 @@ class LeadResource extends Resource
         ];
     }
 
-    public static function getLeadSectionInformationLabel() : string
+    public static function getLeadSectionInformationLabel(): string
     {
         return __('lead.information_label');
     }
@@ -139,7 +143,7 @@ class LeadResource extends Resource
         return __('lead.plural_label');
     }
 
-    public static function getMessageSectionLabel() : string
+    public static function getMessageSectionLabel(): string
     {
         return __('lead.message_section_label');
     }
@@ -188,6 +192,4 @@ class LeadResource extends Resource
     {
         return false;
     }
-
-
 }
