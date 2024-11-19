@@ -9,13 +9,14 @@ use App\Mail\ResetPasswordEmail;
 use App\Models\User;
 use Exception;
 use GuzzleHttp\Client as GuzzleClient;
-use Illuminate\Cache\RateLimiter;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use RuntimeException;
@@ -249,10 +250,8 @@ class AuthController extends Controller
                 'email' => 'required|string|email|exists:users,email',
             ]);
 
-            $rateLimiter = RateLimiter::class;
-
             $throttleKey = $request->email . '|' . $request->ip();
-            $rateLimiter->clear($throttleKey);
+            RateLimiter::clear($throttleKey);
 
             $locale = app()->getLocale();
 
