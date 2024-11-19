@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\BroadcasterResource;
 use App\Models\Broadcaster;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Broadcast;
 
 class BroadcasterController extends Controller
 {

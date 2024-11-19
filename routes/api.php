@@ -68,3 +68,5 @@ Route::post('/leads', [LeadController::class, 'store']);
 
 
 Route::post('/service-login', [AuthController::class, 'authenticate']);
+
+Route::get('/validate-reset-token', [AuthController::class, 'validateResetToken']);

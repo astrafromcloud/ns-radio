@@ -16,15 +16,13 @@ class SetLocale
      */
     public function handle($request, Closure $next)
     {
-        // Check if the 'locale' header is present
         if ($request->hasHeader('locale')) {
             $locale = $request->header('locale');
 
-            // Check if the locale is supported
             if (in_array($locale, ['ru', 'kk'])) {
-                App::setLocale($locale); // Set the locale
+                App::setLocale($locale);
             } else {
-                App::setLocale('ru'); // Default to Russian if unsupported
+                App::setLocale('ru');
             }
         }
 

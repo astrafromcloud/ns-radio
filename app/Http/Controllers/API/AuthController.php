@@ -296,4 +296,21 @@ class AuthController extends Controller
             ? response()->json(['message' => __($status)], 200)
             : response()->json(['message' => __($status)], 500);
     }
+
+    public function validateResetToken(Request $request)
+    {
+        $data = $request->validate([
+            'token' => 'required|string',
+            'email' => 'required|email|exists:users,email',
+        ]);
+
+        $status = Password::broker()->tokenExists(
+            User::where('email', $request->email)->first(),
+            $request->token
+        );
+
+        return response()->json([
+            'valid' => $status,
+        ]);
+    }
 }

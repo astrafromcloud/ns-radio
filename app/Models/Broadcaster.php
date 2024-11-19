@@ -14,7 +14,7 @@ class Broadcaster extends Model
 
     protected $guarded = false;
 
-    public $translatable = ['bio'];
+    public array $translatable = ['bio'];
 
     protected $casts = [
         'bio' => 'array'
