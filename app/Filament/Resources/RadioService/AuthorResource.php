@@ -84,8 +84,7 @@ class AuthorResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->poll("45s")
-            ->defaultPaginationPageOption(25);
+            ->poll("60s");
     }
 
     public static function getRelations(): array
@@ -106,7 +105,11 @@ class AuthorResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return cache()->remember(
+            "auth_resource_badge",
+            now()->addMinute(),
+            fn() => static::getModel()::count()
+        );
     }
 
     public static function getNavigationBadgeColor(): string | array | null

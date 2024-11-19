@@ -128,7 +128,11 @@ class UserResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return cache()->remember(
+            "users_resource_badge",
+            now()->addMinute(),
+            fn() => static::getModel()::count()
+        );
     }
 
     public static function canCreate(): bool

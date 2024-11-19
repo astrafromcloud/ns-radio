@@ -165,8 +165,7 @@ class TopChartResource extends Resource
                     ->date()
                     ->collapsible(),
             ])
-            ->poll("45s")
-            ->defaultPaginationPageOption(25);
+            ->poll("60s");
     }
 
     public static function getRelations(): array
@@ -185,7 +184,11 @@ class TopChartResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return cache()->remember(
+            "top_chart_resource_badge",
+            now()->addMinute(),
+            fn() => static::getModel()::count()
+        );
     }
 
     public static function getNavigationBadgeColor(): string | array | null

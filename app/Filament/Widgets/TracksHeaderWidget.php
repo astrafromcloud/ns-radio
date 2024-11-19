@@ -22,19 +22,35 @@ class TracksHeaderWidget extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make(__("radio-content.tracks.labels.stats.total"), Track::count())
+            Stat::make(__("radio-content.tracks.labels.stats.total"), cache()->remember(
+                "total_tracks_count",
+                now()->addMinute(),
+                fn() => Track::count()
+            ))
                 ->color('primary')
                 ->icon('heroicon-o-musical-note'),
 
-            Stat::make(__("radio-content.tracks.labels.stats.no_likes"), Track::where('likes_count', 0)->count())
+            Stat::make(__("radio-content.tracks.labels.stats.no_likes"), cache()->remember(
+                "total_track_likes_count",
+                now()->addMinute(),
+                fn() => Track::where('likes_count', 0)->count()
+            ))
                 ->color('danger')
                 ->icon('heroicon-o-heart'),
 
-            Stat::make(__("radio-content.tracks.labels.stats.avg_likes"), number_format(Track::avg('likes_count'), 2))
+            Stat::make(__("radio-content.tracks.labels.stats.avg_likes"), cache()->remember(
+                "total_track_likes_avg_count",
+                now()->addMinute(),
+                fn() => number_format(Track::avg('likes_count'), 2)
+            ))
                 ->color('danger')
                 ->icon('heroicon-m-heart'),
 
-            Stat::make(__("radio-content.tracks.labels.stats.today"), Track::whereDate('created_at', \Carbon\Carbon::today())->count())
+            Stat::make(__("radio-content.tracks.labels.stats.today"), cache()->remember(
+                "total_track_created_today_count",
+                now()->addMinute(),
+                fn() => Track::whereDate('created_at', \Carbon\Carbon::today())->count()
+            ))
                 ->color('info')
                 ->icon('heroicon-o-calendar'),
         ];
