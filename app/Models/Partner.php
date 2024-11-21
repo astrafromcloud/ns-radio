@@ -9,4 +9,6 @@ class Partner extends Model
 {
     /** @use HasFactory<\Database\Factories\PartnerFactory> */
     use HasFactory;
+
+    protected $guarded = false;
 }
