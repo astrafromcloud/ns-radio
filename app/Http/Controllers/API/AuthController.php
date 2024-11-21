@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Jobs\SendResetPasswordEmail;
 use App\Mail\ResetPasswordEmail;
 use App\Models\User;
 use Exception;
@@ -124,149 +125,31 @@ class AuthController extends Controller
         ]);
     }
 
-    public function authenticate(Request $request)
+    public function sendResetLinkEmail(Request $request)
     {
         $data = $request->validate([
-            'authorization_type' => 'required|in:google,vk',
-            'token' => 'required|string',
+            'email' => 'required|string|email|exists:users,email',
         ]);
 
-        $provider = $data['authorization_type'];
+        $throttleKey = $request->email . '|' . $request->ip();
+        RateLimiter::clear($throttleKey);
 
-        switch ($provider) {
-            case 'google':
-                return $this->handleGoogleAuth($request->input('token'));
+        $locale = app()->getLocale();
 
-            case 'vk':
-                return $this->handleVkAuth($request->input('token'));
+        $status = Password::sendResetLink(
+            $request->only('email'),
+            function ($user, $token) use ($locale) {
+                $resetUrl = env('APP_URL') . "/reset-password?token={$token}&email={$user->email}";
 
-            default:
-                return response()->json(['error' => 'Invalid provider'], 400);
-        }
-    }
-
-    private function handleGoogleAuth($token)
-    {
-        try {
-            $userData = $this->getGoogleUserByToken($token);
-            if (!$userData['email_verified']) throw new Exception("Email is not verified!");
-
-            $user = User::firstOrCreate(
-                ['email' => $userData['email']],
-                [
-                    'name' => $userData['given_name'],
-                    'last_name' => $userData['family_name'],
-                    'phone' => null,
-                    'email_verified_at' => now(),
-                    'password' => bcrypt(Str::random(20))
-                ]
-            );
-
-            Auth::login($user);
-
-            return response()->json(['user' => $user, 'token' => $user->createToken('NS-Radio')->plainTextToken]);
-        } catch (\Exception $e) {
-            Log::error("HERE", [$e]);
-            return response()->json(['error' => 'Google authentication failed'], 400);
-        }
-    }
-
-    private function getGoogleUserByToken($token)
-    {
-        $response = $this->http->get(
-            'https://www.googleapis.com/oauth2/v3/userinfo',
-            [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $token,
-                ],
-            ]
+                // Dispatch the job
+                SendResetPasswordEmail::dispatch($user->email, $resetUrl)->onQueue('emails');
+            }
         );
 
-        return json_decode($response->getBody()->getContents(), true);
+        return $status === Password::RESET_LINK_SENT
+            ? response()->json(['message' => __($status)], 200)
+            : response()->json(['message' => __($status)], 500);
     }
-
-    private function handleVkAuth($token)
-    {
-        try {
-            // Get VK user info via the VK API
-            $vkUser = $this->getVKUserByToken($token);
-
-            // Find or create a user
-            $user = User::firstOrCreate(
-//                ['email' => $vkUser->getEmail()],
-//                [
-//                    'name' => $vkUser->getName(),
-//                    'vk_id' => $vkUser->getId(),
-//                    'avatar' => $vkUser->getAvatar(),
-//                ]
-            );
-
-            // Login the user
-            Auth::login($user);
-
-            // Respond with user data or token
-            return response()->json(['user' => $user, 'token' => $user->createToken('YourApp')->plainTextToken]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'VK authentication failed'], 400);
-        }
-    }
-
-    protected function getVKUserByToken($token)
-    {
-        $formToken = [];
-
-        if (is_array($token)) {
-            $formToken['email'] = $token['email'] ?? null;
-
-            $token = $token['access_token'];
-        }
-
-        $params = http_build_query([
-            'access_token' => $token,
-            'fields'       => implode(',', ['id', 'email', 'first_name', 'last_name', 'screen_name', 'photo_200', 'verified', 'phone_number']),
-            'lang'         => config("app.locale"),
-            'v'            => "5.131",
-        ]);
-
-        $response = $this->http->get('https://api.vk.com/method/users.get?' . $params);
-
-        $contents = (string) $response->getBody();
-
-        $response = json_decode($contents, true);
-
-        if (!is_array($response) || !isset($response['response'][0])) {
-            throw new RuntimeException(sprintf(
-                'Invalid JSON response from VK: %s',
-                $contents
-            ));
-        }
-
-        return array_merge($formToken, $response['response'][0]);
-    }
-
-        public function sendResetLinkEmail(Request $request)
-        {
-            $data = request()->validate([
-                'email' => 'required|string|email|exists:users,email',
-            ]);
-
-            $throttleKey = $request->email . '|' . $request->ip();
-            RateLimiter::clear($throttleKey);
-
-            $locale = app()->getLocale();
-
-            $status = Password::sendResetLink(
-                $request->only('email'),
-                function ($user, $token) use ($locale) {
-                    $resetUrl = env('APP_URL') . "/reset-password?token={$token}&email={$user->email}";
-                    Mail::to($user->email)->locale($locale)->send(new ResetPasswordEmail($resetUrl));
-                }
-            );
-
-            return $status === Password::RESET_LINK_SENT
-                ? response()->json(['message' => __($status)], 200)
-                : response()->json(['message' => __($status)], 500);
-        }
 
     /**
      * Reset the password.

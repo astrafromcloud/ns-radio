@@ -21,8 +21,8 @@ class PartnerSeeder extends Seeder
             ],
             [
                 'type' => "Координатор региональных представительств",
-                'name' => "Сергей Ребров",
-                'email' => "rebrov@gmail.com",
+                'name' => "",
+                'email' => "rebrov@mail.ru",
                 'phone' => "87002561221",
             ],
         ];
