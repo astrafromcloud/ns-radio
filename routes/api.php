@@ -66,6 +66,8 @@ Route::apiResource('liveTranslations', \App\Http\Controllers\API\LiveTranslation
 
 Route::post('/leads', [LeadController::class, 'store']);
 
+Route::get('/partners', [\App\Http\Controllers\API\PartnerController::class, 'index']);
+
 
 Route::post('/service-login', [AuthController::class, 'authenticate']);
 

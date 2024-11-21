@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             BroadcasterSeeder::class,
-//            SongSeeder::class,
             CitySeeder::class,
             ProgramSeeder::class,
             UserSeeder::class,
@@ -29,7 +28,8 @@ class DatabaseSeeder extends Seeder
             BannerSeeder::class,
             LiveTranslationSeeder::class,
             LeadSeeder::class,
-            BroadcasterViewTypeSeeder::class
+            BroadcasterViewTypeSeeder::class,
+            PartnerSeeder::class
         ]);
     }
 }
