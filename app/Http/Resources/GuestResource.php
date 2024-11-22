@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Models\Program;
 
 class GuestResource extends ResourceCollection
 {
@@ -19,11 +20,15 @@ class GuestResource extends ResourceCollection
     {
         return $this->collection->transform(function ($item) {
 
+            $program = Program::whereId($item->program_id)->first();
+
+            // dd($program->get());
+
             return [
                 'id' => $item->id,
                 'name' => $item->name,
-                'program' => $item->program,
-                'image_url' => asset('/storage/'.$item->image_url),
+                'program' => $program->name,
+                'image_url' => asset('/storage/' . $item->image_url),
                 'views' => $item->views,
                 'hashtag' => $item->hashtag,
                 'video_url' => $item->video_url,
