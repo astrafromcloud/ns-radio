@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('guests', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('program');
+            $table->foreignId('program_id')->index()->constrained('programs');
             $table->string('image_url');
             $table->integer('views')->default(0);
             $table->string('hashtag')->nullable();

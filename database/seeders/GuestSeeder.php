@@ -12,7 +12,7 @@ class GuestSeeder extends Seeder
         $guests = [
             [
                 'name' => 'Полина Гагарина',
-                'program' => 'Утреннее шоу «Твоё утро!»',
+                'program_id' => 1,
                 'views' => 625,
                 'image_url' => 'guests/program1.webp',
                 'hashtag' => '#RadioNS',
@@ -23,7 +23,7 @@ class GuestSeeder extends Seeder
             ],
             [
                 'name' => 'Алена Малышева',
-                'program' => 'Утреннее шоу «Твоё утро!»',
+                'program_id' => 1,
                 'views' => 625,
                 'image_url' => 'guests/program2.webp',
                 'hashtag' => '#RadioNS',
@@ -32,7 +32,7 @@ class GuestSeeder extends Seeder
             ],
             [
                 'name' => 'Павел Смелов',
-                'program' => 'Утреннее шоу «Твоё утро!»',
+                'program_id' => 1,
                 'views' => 625,
                 'image_url' => 'guests/program3.webp',
                 'hashtag' => '#RadioNS',
@@ -41,7 +41,7 @@ class GuestSeeder extends Seeder
             ],
             [
                 'name' => 'Павел Смелов',
-                'program' => 'Утреннее шоу «Твоё утро!»',
+                'program_id' => 1,
                 'views' => 625,
                 'image_url' => 'guests/program4.webp',
                 'hashtag' => '#RadioNS',
@@ -50,7 +50,7 @@ class GuestSeeder extends Seeder
             ],
             [
                 'name' => 'Павел Смелов',
-                'program' => 'Утреннее шоу «Твоё утро!»',
+                'program_id' => 1,
                 'views' => 625,
                 'image_url' => 'guests/program5.webp',
                 'hashtag' => '#RadioNS',

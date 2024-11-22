@@ -73,6 +73,27 @@ class GuestResource extends Resource
                                     ->icon('heroicon-m-arrow-top-right-on-square')
                                     ->url(fn($record) => $record?->youtube_url, true)
                             ),
+
+                        Forms\Components\Select::make('programs')
+                            ->columnSpanFull()
+                            ->label(__('broadcaster.programs_label'))
+                            ->multiple()
+                            ->relationship('programs', 'name')
+                            ->preload()
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('name')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('from')
+                                    ->numeric()
+                                    ->nullable(),
+                                Forms\Components\TextInput::make('to')
+                                    ->numeric()
+                                    ->nullable(),
+                                Forms\Components\FileUpload::make('image')
+                                    ->image()
+                                    ->nullable(),
+                            ]),
                     ]),
             ]);
     }

@@ -18,4 +18,8 @@ class Program extends Model
         return $this->belongsToMany(Broadcaster::class, 'broadcaster_program')
             ->withTimestamps();
     }
+
+    public function guests(): BelongsToMany {
+        return $this->belongsToMany(Guest::class);
+    }
 }

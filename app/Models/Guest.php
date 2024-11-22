@@ -11,4 +11,8 @@ class Guest extends Model
     use HasFactory;
 
     protected $guarded = false;
+
+    public function program() {
+        return $this->belongsTo(Program::class);
+    }
 }
