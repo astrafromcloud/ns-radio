@@ -74,11 +74,11 @@ class GuestResource extends Resource
                                     ->url(fn($record) => $record?->youtube_url, true)
                             ),
 
-                        Forms\Components\Select::make('programs')
+                        Forms\Components\Select::make('program_id')
                             ->columnSpanFull()
                             ->label(__('broadcaster.programs_label'))
-                            ->multiple()
-                            ->relationship('programs', 'name')
+                            // ->multiple()
+                            ->relationship('program', 'name')
                             ->preload()
                             ->createOptionForm([
                                 Forms\Components\TextInput::make('name')
@@ -122,7 +122,7 @@ class GuestResource extends Resource
                 IconColumn::make('video_type')
                     ->label(self::getVideoTypeLabel())
                     ->alignCenter()
-                    ->icon(fn (string $state): string => match ($state) {
+                    ->icon(fn(string $state): string => match ($state) {
                         'vk' => 'icon-vk',
                         'youtube' => 'icon-youtube',
                     }),
@@ -133,8 +133,7 @@ class GuestResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('created_at', 'desc')
-            ->filters([
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make()->label('')->color('grey'),
                 Tables\Actions\DeleteAction::make()->label(''),
