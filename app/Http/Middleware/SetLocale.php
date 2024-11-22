@@ -24,6 +24,8 @@ class SetLocale
             } else {
                 App::setLocale('ru');
             }
+        } else {
+            App::setLocale('ru');
         }
 
         return $next($request);
