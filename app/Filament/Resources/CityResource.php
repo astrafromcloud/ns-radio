@@ -29,11 +29,11 @@ class CityResource extends Resource
                             ->label(self::getEnterCityRussianLabel())
                             ->required()
                             ->autofocus()
-                            ->default(fn ($record) => $record ? $record->getTranslation('name', 'ru') : ''),
+                            ->default(fn($record) => $record ? $record->getTranslation('name', 'ru') : ''),
                         TextInput::make('name.kk')
                             ->label(self::getEnterCityKazakhLabel())
                             ->required()
-                            ->default(fn ($record) => $record ? $record->getTranslation('name', 'kk') : ''),
+                            ->default(fn($record) => $record ? $record->getTranslation('name', 'kk') : ''),
                         Forms\Components\TextInput::make('frequency')
                             ->label(self::getFrequencyLabel())
                             ->required()
@@ -52,7 +52,7 @@ class CityResource extends Resource
                     ->label(self::getNameLabel())
                     ->searchable()
                     ->sortable(true, function (\Illuminate\Database\Eloquent\Builder $query, string $direction) {
-                        $query->orderByRaw("name->>'kk' $direction");
+                        $query->orderByRaw("JSON_UNQUOTE(JSON_EXTRACT(name, '$.kk')) $direction");
                     }),
                 Tables\Columns\TextColumn::make('frequency')
                     ->label(self::getFrequencyLabel())
@@ -123,7 +123,8 @@ class CityResource extends Resource
         return __('city.model_label');
     }
 
-    public static function getEnterRadioFrequencyLabel(): ?string {
+    public static function getEnterRadioFrequencyLabel(): ?string
+    {
         return __('city.enter_radio_frequency');
     }
 
@@ -151,5 +152,4 @@ class CityResource extends Resource
     {
         return __('lead.updated_at_label');
     }
-
 }
