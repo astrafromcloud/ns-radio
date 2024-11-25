@@ -31,10 +31,6 @@ class GuestResource extends Resource
                         Forms\Components\FileUpload::make('image_url')
                             ->label(self::getImageLabel())
                             ->image()
-                            ->imageResizeMode('cover')
-                            ->imageCropAspectRatio('16:9')
-                            ->imageResizeTargetWidth('1920')
-                            ->imageResizeTargetHeight('1080')
                             ->directory('guests')
                             ->required(),
 
