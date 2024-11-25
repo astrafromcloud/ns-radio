@@ -29,20 +29,20 @@ class ProgramResource extends Resource
                     ->columnSpanFull()
                     ->required()
                     ->maxLength(255),
-Forms\Components\Grid::make('Time')
-    ->columns(2)
-            ->schema([
-                Forms\Components\TimePicker::make('from')
-                    ->label(self::getFromLabel())
-                    ->withoutSeconds()
-                    ->time()
-                    ->nullable(),
-                Forms\Components\TimePicker::make('to')
-                    ->label(self::getToLabel())
-                    ->withoutSeconds()
-                    ->time()
-                    ->nullable(),
-            ]),
+                Forms\Components\Grid::make('Time')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\TimePicker::make('from')
+                            ->label(self::getFromLabel())
+                            ->withoutSeconds()
+                            ->time()
+                            ->nullable(),
+                        Forms\Components\TimePicker::make('to')
+                            ->label(self::getToLabel())
+                            ->withoutSeconds()
+                            ->time()
+                            ->nullable(),
+                    ]),
                 Forms\Components\FileUpload::make('image')
                     ->label(self::getImageLabel())
                     ->columnSpanFull()
@@ -98,15 +98,11 @@ Forms\Components\Grid::make('Time')
                     ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('from')
+                    ->suffix(fn(Program $record) => '-' . $record->to)
                     ->label(self::getFromLabel())
                     ->alignCenter()
                     ->numeric(),
-//                    ->sortable(),
-                Tables\Columns\TextColumn::make('to')
-                    ->label(self::getToLabel())
-                    ->alignCenter()
-                    ->numeric(),
-//                    ->sortable(),
+                //                    ->sortable(),
                 Tables\Columns\TextColumn::make('broadcasters.name')
                     ->label(self::getBroadcastersLabel())
                     ->alignCenter()
@@ -163,7 +159,7 @@ Forms\Components\Grid::make('Time')
         return __('program.navigation_label');
     }
 
-    public static function getPluralLabel() : ?string
+    public static function getPluralLabel(): ?string
     {
         return __('program.plural_model');
     }
@@ -201,5 +197,4 @@ Forms\Components\Grid::make('Time')
     {
         return __('lead.updated_at_label');
     }
-
 }

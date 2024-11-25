@@ -5,7 +5,7 @@ return [
     'plural_model' => 'Programs',
     'model_label' => 'Program',
     'name_label' => 'Name',
-    'from_label' => 'From',
+    'from_label' => 'Time',
     'to_label' => 'To',
     'image_label' => 'Image',
     'broadcasters_label' => 'Broadcasters',

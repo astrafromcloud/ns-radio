@@ -203,7 +203,7 @@ class BroadcastHistoryResource extends Resource
                 ]),
             ])
             ->groups([
-                Tables\Grouping\Group::make('author.name')
+                Tables\Grouping\Group::make('track.author.name')
                     ->label(__("radio-content.history.labels.author"))
                     ->collapsible(),
                 Tables\Grouping\Group::make('updated_at')

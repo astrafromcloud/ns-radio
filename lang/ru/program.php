@@ -5,7 +5,7 @@ return [
     'plural_model' => 'Программы',
     'model_label' => 'Программа',
     'name_label' => 'Имя',
-    'from_label' => 'С',
+    'from_label' => 'Время',
     'to_label' => 'До',
     'image_label' => 'Картинка',
     'broadcasters_label' => 'Ведущие',
